@@ -377,6 +377,37 @@ harvest:
       (SwaggerHub auto-mock)
     - https://sandbox.greenbuttonalliance.org:8443/DataCustodian (production sandbox)
     - https://sandboxdev.greenbuttonalliance.org:8443/DataCustodian (development sandbox)
+  - file: openapi/green-button-alliance-authorization-server-openapi.yml
+    sourceURL: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/openespi-authserver/docs/openapi.yaml
+    repository: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java
+    fetchDate: '2026-07-27'
+    fetchRound: enrichment 2026-07-27 (NOT found in the bootstrap round)
+    httpStatus: 200
+    lines: 1384
+    openapiVersion: 3.0.3
+    title: OpenESPI Authorization Server API
+    license: Apache 2.0
+    parses: true
+    pathCount: 12
+    operationCount: 16
+    tags: [OAuth2 Client Management, DataCustodian Integration, OIDC, OAuth2 Standard]
+    servers:
+    - https://authorization.greenbuttonalliance.org (Production - DNS does not resolve, 2026-07-27)
+    - https://staging-authorization.greenbuttonalliance.org (Staging - DNS does not resolve, 2026-07-27)
+    securitySchemes: [BearerAuth (http/bearer JWT), ClientCredentials (http/basic), ClientCertificate (mutualTLS)]
+    note: >-
+      The headline find of the enrichment round and a material correction to the
+      bootstrap answer. GBA does publish a modern, write-bearing OpenAPI - it just
+      lives inside the openespi-authserver module of the OpenESPI-GreenButton-Java
+      monorepo rather than in a documentation repository, which is why the first pass
+      missed it. Sixteen operations: OAuth2 client CRUD plus per-client metrics,
+      DataCustodian integration (verify-user, customer, usage-points, health), an OIDC
+      /userinfo extended with ESPI claims, and the standard authorize/token/introspect/
+      revoke endpoints. Declares "TLS 1.3 ONLY", X.509 mutual TLS client authentication,
+      PFS-only cipher suites, and claims certification for NAESB ESPI 4.0 including
+      Function Block 4.5.15+. Two real weaknesses: no operation declares an operationId,
+      and neither declared server host resolves - the contract is published ahead of
+      its deployment.
   notHarvested:
   - what: Swagger 1.2 resource listings (legacy)
     where: >-

@@ -1,0 +1,298 @@
+generated: '2026-07-27'
+method: searched
+source: https://www.greenbuttonalliance.org/function-blocks
+also_published_at: https://www.greenbuttonalliance.org/cmd-function-blocks
+name: Green Button / NAESB REQ.21 ESPI Function Blocks
+description: >-
+  The controlled vocabulary the Green Button Alliance publishes for NAESB REQ.21
+  ESPI Function Blocks. GBA's own words: "The NAESB REQ.21 ESPI standard uses
+  Function Blocks to define the type of data a Utility can provide a Third Party
+  service provider and the type of data a Third Party service provider requests
+  from the Utility during the OAuth 2.0 access-token request process. The list of
+  available Function Blocks a Utility supports is shown in the <scope> (from ESPI)
+  element field of the <ApplicationInformation> resource - and the resource may
+  contain multiple <scope> entries." Function Blocks are therefore both the
+  certification test grouping AND the OAuth scope vocabulary of Green Button
+  Connect My Data (see scopes/green-button-alliance-scopes.yml).
+  Names, ids and mandatory markers below are transcribed verbatim from the two
+  GBA pages above (both HTTP 200, 2026-07-27). No Function Block has been invented
+  and none has been renamed.
+certification_categories:
+- Certification
+- Cyber Security
+- Data Element
+- Data Format
+- File Name Format
+- Fundamental
+- Privacy
+- Protocol
+- User Interface
+- Usage Data
+- Retail Customer
+mandatory_key:
+  MANDATORY: Required for both CMD and DMD certification.
+  CMD-MANDATORY: Required only for Connect My Data certification.
+  DMD-MANDATORY: Required only for Download My Data certification.
+  unmarked: Optional for certification.
+interval_data_rule: >-
+  GBA note - "[FB_04] requires that at least one type of Interval Data from the
+  following list MUST be certified in addition to [FB_04] for both CMD and DMD
+  certification": FB_05, FB_10, FB_11, FB_29.
+function_blocks:
+- id: FB_01
+  name: Usage Data Common
+  group: usage-data
+  requirement: MANDATORY
+  url: https://www.greenbuttonalliance.org/fb01
+- id: FB_02
+  name: Usage Data Download My Data
+  group: usage-data
+  requirement: DMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb02
+- id: FB_03
+  name: Usage Data Connect My Data
+  group: usage-data
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb03
+- id: FB_04
+  name: Interval Metering
+  group: usage-data
+  requirement: MANDATORY
+  url: https://www.greenbuttonalliance.org/fb04
+- id: FB_05
+  name: Electricity Interval Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb05
+- id: FB_06
+  name: Demand Electricity Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb06
+- id: FB_07
+  name: Net Electricity Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb07
+- id: FB_08
+  name: Forward and Reverse Electricity Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb08
+- id: FB_09
+  name: Register Values Electricity Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb09
+- id: FB_10
+  name: Natural Gas Interval Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb10
+- id: FB_11
+  name: Water Interval Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb11
+- id: FB_12
+  name: Cost of Interval Data
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb12
+- id: FB_13
+  name: Energy Usage Security and Privacy Class
+  group: usage-data
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb13
+  note: >-
+    Listed as "Usage Data Security and Privacy Classes" on /cmd-function-blocks
+    and as "Energy Usage Security and Privacy Class" on /function-blocks.
+- id: FB_15
+  name: Usage Summary
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb15
+- id: FB_16
+  name: Usage Summary with Cost
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb16
+- id: FB_17
+  name: Electricity Power Quality Summary
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb17
+- id: FB_27
+  name: Usage Summary with Demands and Previous Day Attributes
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb27
+- id: FB_28
+  name: Usage Summary Costs for Current Billing Period
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb28
+- id: FB_29
+  name: Temperature Interval Metering
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb29
+- id: FB_30
+  name: Usage Data Common User Experience
+  group: usage-data
+  requirement: DMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb30
+- id: FB_31
+  name: Usage Data Authorization and Authentication w/o Pre-Negotiated Scope
+  group: usage-data
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb31
+- id: FB_34
+  name: SFTP for Usage Data Bulk
+  group: usage-data
+  requirement: optional
+  url: null
+- id: FB_35
+  name: REST for Usage Data Bulk
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb35
+- id: FB_37
+  name: Usage Data Query Parameters
+  group: usage-data
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb37
+- id: FB_39
+  name: Usage Data PUSH Model
+  group: usage-data
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb39
+- id: FB_40
+  name: Usage Data Offline Authorization
+  group: usage-data
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb40
+- id: FB_41
+  name: Manage ApplicationInformation Resource
+  group: usage-data
+  requirement: optional
+  url: null
+- id: FB_44
+  name: Manage Authorization Resource
+  group: usage-data
+  requirement: optional
+  url: null
+  note: >-
+    /function-blocks labels this FB_44; /cmd-function-blocks labels the same row
+    FB_40 (a duplicate id on that page). FB_44 is recorded here as the value from
+    the authoritative /function-blocks page. The ESPI scope grammar in GBA's own
+    OpenESPI contract fixtures uses "FB=44" for the registration access token.
+- id: FB_51
+  name: Retail Customer Common
+  group: retail-customer
+  requirement: MANDATORY
+  url: https://www.greenbuttonalliance.org/fb51
+- id: FB_52
+  name: Retail Customer Download My Data
+  group: retail-customer
+  requirement: DMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb52
+- id: FB_53
+  name: Retail Customer Connect My Data
+  group: retail-customer
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb53
+- id: FB_54
+  name: Retail Customer Basic Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb54
+- id: FB_55
+  name: Retail Customer Demographic Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb55
+- id: FB_56
+  name: Retail Customer Billing Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb56
+- id: FB_57
+  name: Retail Customer Account-Agreement Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb57
+- id: FB_58
+  name: Retail Customer Service-Location Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb58
+- id: FB_59
+  name: Retail Customer Service-Supplier Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb59
+- id: FB_60
+  name: Retail Customer Meter Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb60
+- id: FB_61
+  name: Retail Customer End-Device Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb61
+- id: FB_62
+  name: Retail Customer Program-Date-ID-Mappings Information
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb62
+- id: FB_63
+  name: Retail Customer Common User Experience
+  group: retail-customer
+  requirement: DMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb63
+- id: FB_64
+  name: Retail Customer Security and Privacy Class
+  group: retail-customer
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb64
+- id: FB_65
+  name: Retail Customer Authorization and Authentication w/o Pre-Negotiated Scope
+  group: retail-customer
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb65
+- id: FB_66
+  name: SFTP for Retail Customer Bulk
+  group: retail-customer
+  requirement: optional
+  url: null
+- id: FB_67
+  name: REST for Retail Customer Bulk
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb67
+- id: FB_69
+  name: Retail Customer PUSH Model
+  group: retail-customer
+  requirement: CMD-MANDATORY
+  url: https://www.greenbuttonalliance.org/fb69
+- id: FB_70
+  name: Retail Customer Offline Authorization
+  group: retail-customer
+  requirement: optional
+  url: https://www.greenbuttonalliance.org/fb70
+counts:
+  usage_data: 28
+  retail_customer: 19
+  total: 47
+  with_dedicated_page: 43
+notes:
+- >-
+  /cmd-function-blocks additionally shows [FB_68] RESERVED in the retail-customer
+  list; /function-blocks omits it. It is recorded here as a note rather than an
+  entry because the two GBA pages disagree.
+- >-
+  Function Block ids appear in the OAuth scope string as an underscore-joined set,
+  e.g. FB=1_3_4_5_13_31_37_39. See scopes/green-button-alliance-scopes.yml for the
+  full scope grammar.

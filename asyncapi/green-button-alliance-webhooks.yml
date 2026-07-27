@@ -1,0 +1,98 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://www.greenbuttonalliance.org/function-blocks (FB_39, FB_69),
+  openapi/green-button-alliance-application-information-openapi.yml
+  (thirdPartyNotifyUri), and
+  https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/tree/main/contracts
+spec_type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  Green Button has a real, certifiable push surface but GBA publishes NO AsyncAPI
+  document for it. This file is the webhook catalog, not a fabricated AsyncAPI. Green
+  Button's push model is notable in API design history - GBA's own article "How Green
+  Button made the pull-only OAuth standard support push APIs too"
+  (greenbuttonalliance.org/news) describes it as an extension of OAuth 2.0 rather
+  than a fork of it.
+description: >-
+  The Data Custodian to Third Party notification channel. When new energy data is
+  available for an authorized subscription, the Data Custodian POSTs an ESPI BatchList
+  XML document to the Third Party's registered thirdPartyNotifyUri; the Third Party
+  then pulls each listed resource URI with its bearer token. Delivery is the push;
+  the payload is a list of URIs to fetch, not the data itself.
+transport: HTTPS POST
+delivery_model: notification-then-pull
+certification:
+  function_blocks:
+  - id: FB_39
+    name: Usage Data PUSH Model
+    requirement: CMD-MANDATORY
+    url: https://www.greenbuttonalliance.org/fb39
+    categories: [Protocol]
+  - id: FB_69
+    name: Retail Customer PUSH Model
+    requirement: CMD-MANDATORY
+    url: https://www.greenbuttonalliance.org/fb69
+  note: >-
+    Both push Function Blocks are CMD-MANDATORY - a Data Custodian cannot be Green
+    Button Connect My Data certified without implementing the push model.
+subscription_registration:
+  field: thirdPartyNotifyUri
+  resource: ApplicationInformation
+  description: >-
+    "URI value used to notify the Third Party application the Data Custodian has data
+    available" - registered by the Third Party at client-registration time (RFC 7591),
+    not per-subscription.
+  example: https://sandbox.greenbuttonalliance.org:8443/ThirdParty/espi/1_1/Notification
+  source: openapi/green-button-alliance-application-information-openapi.yml
+events:
+- name: BatchList notification
+  direction: data-custodian-to-third-party
+  method: POST
+  target: '{thirdPartyNotifyUri}'
+  content_type: application/xml
+  payload_root: BatchList
+  namespace: http://naesb.org/espi
+  payload_shape: >-
+    <BatchList> containing one or more <resources> elements, each a fully-qualified
+    subscription batch URI, optionally carrying published-min / published-max bounds
+    for the window of new data.
+  example_file: examples/green-button-alliance-notification-batchlist.xml
+  example_value: >-
+    https://{datacustodian}/DataCustodian/espi/1_1/resource/Batch/Subscription/503888?published-min=2025-01-01T00:00:00Z&published-max=2025-02-01T00:00:00Z
+  consumer_action: >-
+    GET each listed resource URI with the subscription's OAuth 2.0 bearer token to
+    retrieve the Atom/ESPI feed of new data.
+- name: Back-channel subscription provisioning
+  direction: authorization-server-to-data-custodian
+  method: POST
+  target: '{dc}/internal/backchannel/v1/subscriptions'
+  content_type: application/json
+  success_status: 201
+  description: >-
+    At token-mint time the Authorization Server calls the Data Custodian to provision
+    the Authorization plus Subscription(s) the customer approved on the DC-hosted
+    authorization screen. GBA's README is explicit that this is an IMPLEMENTATION
+    contract, not part of the ESPI standard.
+  request_fields: [correlation_id, client_id, granted_scope, retail_customer_id, selected_usage_point_ids]
+  response_fields: [authorization_id, resource_subscription_id, customer_subscription_id, resource_uri, authorization_uri, customer_resource_uri]
+  example_request: examples/green-button-alliance-backchannel-subscription-request.json
+  example_response: examples/green-button-alliance-backchannel-subscription-response.json
+  internal: true
+security:
+  scheme: OAuth 2.0 bearer on the subsequent pull; the notification POST itself is authenticated per the Data Custodian's registration with the Third Party.
+  detail: authentication/green-button-alliance-authentication.yml
+signature_verification: null
+signature_note: No webhook signing scheme (HMAC header, JWS) is documented in any public GBA artifact.
+retry_policy: null
+retry_note: No retry, backoff or delivery-guarantee contract is published; the normative rules sit in the paywalled NAESB REQ.21 standard.
+alternatives:
+- name: SFTP bulk transfer
+  function_blocks: [FB_34 SFTP for Usage Data Bulk, FB_66 SFTP for Retail Customer Bulk]
+- name: REST bulk transfer
+  function_blocks: [FB_35 REST for Usage Data Bulk, FB_67 REST for Retail Customer Bulk]
+  operation: openapi/green-button-alliance-green-button-api-openapi.yml#downloadBulkData
+gaps:
+- No AsyncAPI document.
+- No event catalog page on greenbuttonalliance.org - the push model is documented only as certification Function Blocks and via the paywalled standard.
+- No webhook signature or replay-protection scheme is published.

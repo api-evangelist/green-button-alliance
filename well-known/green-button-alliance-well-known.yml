@@ -1,0 +1,75 @@
+generated: '2026-07-27'
+method: searched
+source: live anonymous HTTPS probes of every apis.yml baseURL host, every OpenAPI servers[] host, and the docs host
+probe_date: '2026-07-27'
+note: >-
+  www.greenbuttonalliance.org sits behind a bot filter that returns 403 to a bare
+  curl User-Agent; every probe below was repeated with a browser User-Agent and the
+  higher of the two statuses is recorded. Absence is real data - GBA publishes no
+  security.txt, no api-catalog and no ai-plugin.json anywhere.
+hosts:
+- host: https://www.greenbuttonalliance.org
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: green-button-alliance-openid-configuration.json
+    kind: OIDC discovery (RFC 8414 / OpenID Connect Discovery 1.0)
+    note: >-
+      Member single sign-on for the association management system - issuer
+      https://www.greenbuttonalliance.org, authorization_code + refresh_token,
+      PKCE S256, scopes openid/email/profile, RS256 id tokens. Not a route to
+      energy data.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://sandbox.greenbuttonalliance.org:8443
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /DataCustodian/openapi.json
+    status: 403
+  - path: /DataCustodian/v3/api-docs
+    status: 403
+  note: >-
+    GBA's ESPI sandbox. Every anonymous probe is refused, consistent with GBA's
+    /sandbox page stating the reference implementation is no longer provided and a
+    replacement is expected 2026Q3.
+- host: https://services.greenbuttondata.org
+  documents:
+  - path: /openapi.json
+    status: 200
+    file: null
+    note: >-
+      NOT a spec. This host answers 200 with a zero-byte body for every path,
+      including invented ones - verified against /zzz-nonexistent-xyz (200, 0
+      bytes). Recorded so a future round does not mistake it for a live contract.
+  - path: /ThirdParty
+    status: 200
+    note: 200 with an empty body; same null-response behaviour as above.
+- host: https://greenbuttonalliance.github.io
+  documents:
+  - path: /OpenESPI-GreenButton-API-Documentation/llms.txt
+    status: 404
+  - path: /OpenESPI-GreenButton-API-Documentation/API/
+    status: 200
+    note: Rendered Swagger UI reference for the CMD resource server (docs host, not a well-known document).
+- host: https://authorization.greenbuttonalliance.org
+  documents: []
+  note: >-
+    The production server URL declared in the OpenESPI Authorization Server OpenAPI.
+    DNS does not resolve as of 2026-07-27 - the contract is published ahead of the
+    deployment. staging-authorization.greenbuttonalliance.org likewise does not
+    resolve.
+summary:
+  documents_found: 1
+  security_txt: false
+  api_catalog: false
+  oauth_authorization_server: false
+  openid_configuration: true

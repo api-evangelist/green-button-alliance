@@ -1,0 +1,121 @@
+generated: '2026-07-27'
+method: searched
+source: openapi/green-button-alliance-authorization-server-openapi.yml, openapi/green-button-alliance-green-button-api-openapi.yml
+docs: https://www.greenbuttonalliance.org/access-tokens
+additional_docs:
+- https://www.greenbuttonalliance.org/oauth-20-access-and-refresh-token-duration
+- https://www.greenbuttonalliance.org/function-blocks
+- https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OAUTH2_CLIENT_MANAGEMENT_API.md
+- https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OIDC_USERINFO_ENDPOINT.md
+- https://archive.greenbuttondata.org/espi/access_tokens/
+description: >-
+  Three distinct authentication surfaces sit under the Green Button Alliance name
+  and must not be conflated. (1) The CMD ESPI resource server contract - OAuth 2.0
+  authorization_code and client_credentials, bearer tokens, ESPI Function Block
+  scope grammar; this is the interface every certified Data Custodian implements,
+  not a service GBA runs. (2) The OpenESPI Authorization Server GBA publishes as a
+  reference implementation - JWT bearer, HTTP basic client credentials, and X.509
+  mutual TLS client certificates, TLS 1.3 only. (3) GBA's own member single sign-on
+  - a standard OIDC provider for the association's membership system, which grants
+  no access to any energy data at all.
+summary:
+  types:
+  - http
+  - mutualTLS
+  - oauth2
+  - openIdConnect
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+  - refreshToken
+  api_key_in: []
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/green-button-alliance-authorization-server-openapi.yml
+- name: ClientCredentials
+  type: http
+  scheme: basic
+  description: HTTP Basic client authentication (client_secret_basic) at the token endpoint.
+  sources:
+  - openapi/green-button-alliance-authorization-server-openapi.yml
+- name: ClientCertificate
+  type: mutualTLS
+  description: >-
+    X.509 client certificate authentication (tls_client_auth). The authorization
+    server spec states "TLS 1.3 ONLY", "Certificate Authentication - Support for
+    X.509 client certificates" and "Perfect Forward Secrecy - All cipher suites
+    support PFS".
+  sources:
+  - openapi/green-button-alliance-authorization-server-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/authorize
+    tokenUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    scopes: 0
+  - flow: clientCredentials
+    tokenUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    scopes: 0
+  scope_model: >-
+    ESPI Function Block grammar (FB=1_3_4_5;IntervalDuration=900;...). The spec
+    declares an empty scopes map; see scopes/green-button-alliance-scopes.yml.
+  sources:
+  - openapi/green-button-alliance-green-button-api-openapi.yml
+client_authentication_methods:
+- client_secret_basic
+- client_secret_post
+- tls_client_auth
+grant_types:
+- authorization_code
+- client_credentials
+- refresh_token
+dynamic_client_registration:
+  supported: true
+  specs:
+  - RFC 7591 OAuth 2.0 Dynamic Client Registration
+  - RFC 7592 OAuth 2.0 Dynamic Client Registration Management
+  evidence: >-
+    Both RFCs are listed as normative references on GBA's /developer-resources, and
+    the published ApplicationInformation resource carries the full RFC 7591/7592
+    field set (client_id, client_secret, client_id_issued_at,
+    client_secret_expires_at, registration_client_uri, registration_access_token,
+    token_endpoint_auth_method, grant_types, response_types).
+  registration_endpoint_field: authorizationServerRegistrationEndpoint
+token_types:
+  source: https://www.greenbuttonalliance.org/access-tokens
+  values:
+  - access_token
+  - refresh_token
+  - datacustodian_access_token
+  - client_access_token
+  - upload_access_token
+  - registration_access_token
+  detail: scopes/green-button-alliance-scopes.yml
+token_duration_guidance:
+  source: https://www.greenbuttonalliance.org/oauth-20-access-and-refresh-token-duration
+  summary: >-
+    GBA publishes a guidance article on OAuth 2.0 access and refresh token duration
+    in the Green Button Connect context - access tokens short-lived; refresh tokens
+    "long lifespans (days to weeks) and be rotated whenever used to meet best
+    practice security standards". Verbatim numeric ceilings live in the paywalled
+    NAESB REQ.21 ESPI standard and are not reproduced.
+member_sso:
+  note: Association membership single sign-on. NOT a route to energy data.
+  type: openIdConnect
+  discovery: https://www.greenbuttonalliance.org/.well-known/openid-configuration
+  file: well-known/green-button-alliance-openid-configuration.json
+  issuer: https://www.greenbuttonalliance.org
+  grant_types: [authorization_code, refresh_token]
+  scopes: [openid, email, profile]
+  pkce: [S256]
+  id_token_signing_alg: [RS256]
+  token_endpoint_auth_methods: [client_secret_post, client_secret_basic]
+transport_security:
+  espi_v4_0: TLS 1.3 minimum
+  espi_v3_3: TLS 1.2
+  authorization_server: TLS 1.3 only (stated in the OpenESPI Authorization Server spec)

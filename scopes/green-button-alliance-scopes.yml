@@ -1,0 +1,122 @@
+generated: '2026-07-27'
+method: searched
+source: openapi/green-button-alliance-green-button-api-openapi.yml
+docs: https://www.greenbuttonalliance.org/function-blocks
+additional_docs:
+- https://www.greenbuttonalliance.org/cmd-function-blocks
+- https://www.greenbuttonalliance.org/access-tokens
+- https://www.greenbuttonalliance.org/oauth-20-access-and-refresh-token-duration
+- https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/tree/main/contracts
+description: >-
+  Green Button does not use conventional string scopes such as "read:usage". The
+  NAESB REQ.21 ESPI profile encodes the entire authorization request into a single
+  structured OAuth 2.0 scope value built from Function Block ids plus data-shape
+  parameters. GBA's own words on /function-blocks - "The NAESB REQ.21 ESPI
+  standard uses Function Blocks to define the type of data a Utility can provide a
+  Third Party service provider and the type of data a Third Party service provider
+  requests from the Utility during the OAuth 2.0 access-token request process. The
+  list of available Function Blocks a Utility supports is shown in the <scope>
+  element field of the <ApplicationInformation> resource - and the resource may
+  contain multiple <scope> entries."
+  The harvested OpenAPI declares oauth2 with an EMPTY scopes map for both flows,
+  so the scope vocabulary below comes from GBA's published Function Block catalog
+  and from GBA's own wire-contract fixtures - not from the spec, and not invented.
+scope_model: espi-function-block-grammar
+schemes:
+- name: oauth2
+  source: openapi/green-button-alliance-green-button-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/authorize
+    tokenUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    declared_scopes_in_spec: 0
+  - flow: clientCredentials
+    tokenUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    declared_scopes_in_spec: 0
+grammar:
+  shape: FB=<fb_ids>;<parameter>=<value>;...
+  separator: ';'
+  fb_id_separator: '_'
+  parameters:
+  - name: FB
+    required: true
+    description: >-
+      Underscore-joined list of NAESB ESPI Function Block ids being requested,
+      without the FB_ prefix and without leading zeros (e.g. FB=1_3_4_5_13_31_37_39
+      means FB_01, FB_03, FB_04, FB_05, FB_13, FB_31, FB_37, FB_39). The catalog of
+      valid ids is vocabulary/green-button-alliance-function-blocks.yml.
+  - name: IntervalDuration
+    required: false
+    description: Interval length in seconds for interval data (observed published values 900, 3600).
+  - name: BlockDuration
+    required: false
+    description: Aggregation block for the data (observed published values monthly, daily).
+  - name: HistoryLength
+    required: false
+    description: How much history is being authorized (observed published value 13).
+  - name: BR
+    required: false
+    description: >-
+      Observed in GBA's client-credentials Bulk fixture (BR=1). The normative
+      definition lives in the paywalled NAESB REQ.21 ESPI standard and is not
+      reproduced here.
+  published_examples:
+  - value: FB=1_3_4_5_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13
+    source: openapi/green-button-alliance-application-information-openapi.yml (ApplicationInformation.scope example)
+  - value: FB=1_3_4_10_13_15_31_37_39;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13
+    source: openapi/green-button-alliance-application-information-openapi.yml (ApplicationInformation.scope example)
+  - value: FB=1_3_4_11_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13
+    source: openapi/green-button-alliance-application-information-openapi.yml (ApplicationInformation.scope example)
+  - value: FB=4_5_15;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13
+    source: examples/green-button-alliance-token-response-subscription.json (authorization_code grant)
+  - value: FB=1_3_4_5_10_11_35;BlockDuration=daily;BR=1
+    source: examples/green-button-alliance-token-response-bulk.json (client_credentials / Bulk grant)
+  - value: FB=44
+    source: >-
+      openapi/green-button-alliance-application-information-openapi.yml -
+      registration_access_token is "generated in response to a Third Party OAuth 2.0
+      Client Credentials Request with FB=44 in the Scope parameter" (FB_44 Manage
+      Authorization Resource).
+scopes: []
+scopes_note: >-
+  Deliberately empty. There is no flat scope-string list to enumerate: a Green
+  Button scope is composed at request time from the Function Block catalog plus the
+  parameters above. Enumerating a synthetic list of "scopes" here would fabricate a
+  vocabulary GBA does not publish. Use vocabulary/green-button-alliance-function-blocks.yml
+  as the scope vocabulary and the grammar block above as the composition rule.
+token_types:
+  source: https://www.greenbuttonalliance.org/access-tokens
+  types:
+  - name: access_token
+    description: >-
+      Allocated by the Data Custodian for individual account authorizations. The
+      normal access token used for accessing individual subscriptions.
+    obtained: During the Customer authorization process.
+  - name: refresh_token
+    description: >-
+      Allocated at the time of an authorization and used to renew an access_token
+      once it expires.
+    obtained: During the Customer authorization process.
+  - name: datacustodian_access_token
+    description: Access token used by trusted administrative accounts, allocated by administrative action by the Data Custodian.
+  - name: client_access_token
+    description: >-
+      Used by Third-Party applications to access bulk or multiple authorization
+      subscriptions; allocated at Third Party registration when the Data Custodian
+      provides Bulk data transfers. Obtained via the OAuth client_credentials flow.
+  - name: upload_access_token
+    description: >-
+      Used by Meter Data Management (backend) systems to upload/import data into a
+      Data Custodian; allocated by administrative action.
+  - name: registration_access_token
+    description: >-
+      Used by the Third Party to manage its ApplicationInformation (RFC 7592
+      registration management). Assigned during registration or minted via a
+      client_credentials request with FB=44.
+member_sso_scopes:
+  note: >-
+    Separate and unrelated to energy data - these are the scopes of GBA's own
+    member single sign-on (association management), harvested from
+    well-known/green-button-alliance-openid-configuration.json.
+  source: https://www.greenbuttonalliance.org/.well-known/openid-configuration
+  scopes: [openid, email, profile]

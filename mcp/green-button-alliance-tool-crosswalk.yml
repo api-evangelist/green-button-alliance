@@ -1,0 +1,132 @@
+generated: '2026-07-27'
+method: derived
+source: mcp/green-button-alliance-mcp.yml, openapi/green-button-alliance-green-button-api-openapi.yml, openapi/green-button-alliance-authorization-server-openapi.yml
+description: >-
+  Binds every candidate MCP tool to the OpenAPI operation that supplies its real input
+  contract, so no tool carries a guessed inputSchema. Confidence is high throughout for
+  one reason only - the tools were derived FROM these operations, so the binding is
+  exact by construction. There is no published MCP server and no GraphQL surface, so
+  there are no mcp_only rows.
+surfaces:
+  openapi:
+  - file: openapi/green-button-alliance-green-button-api-openapi.yml
+    operations: 7
+    gated: >-
+      Contract only. The single declared server
+      (https://sandbox.greenbuttonalliance.org:8443/DataCustodian) refused anonymous
+      probes with 403 and GBA states the sandbox is out of service until 2026Q3.
+  - file: openapi/green-button-alliance-authorization-server-openapi.yml
+    operations: 16
+    gated: >-
+      Contract only. Declared servers authorization.greenbuttonalliance.org and
+      staging-authorization.greenbuttonalliance.org do not resolve in DNS.
+  - file: openapi/green-button-alliance-application-information-openapi.yml
+    operations: 1
+    gated: SwaggerHub auto-mock + the same out-of-service sandbox.
+  graphql:
+    endpoint: null
+    note: No GraphQL surface exists.
+  mcp:
+    url: null
+    note: No MCP server exists; tools/list was never callable.
+crosswalk:
+- tool: list_usage_points
+  category: usage-data
+  rest: [findUsagePoints]
+  binding: rest
+  confidence: high
+- tool: get_usage_point
+  category: usage-data
+  rest: [getUsagePoint]
+  binding: rest
+  confidence: high
+- tool: list_authorizations
+  category: authorization
+  rest: [findAuthorizations]
+  binding: rest
+  confidence: high
+- tool: get_authorization
+  category: authorization
+  rest: [getAuthorization]
+  binding: rest
+  confidence: high
+- tool: list_application_information
+  category: registration
+  rest: [findApplicationInformations]
+  binding: rest
+  confidence: high
+- tool: get_application_information
+  category: registration
+  rest: [getApplicationInformation]
+  binding: rest
+  confidence: high
+  note: >-
+    operationId getApplicationInformation exists in BOTH
+    green-button-api-openapi.yml (item by id) and
+    application-information-openapi.yml (collection). A real implementation must
+    disambiguate; bind to the green-button-api document.
+- tool: download_bulk_data
+  category: bulk
+  rest: [downloadBulkData]
+  binding: rest
+  confidence: high
+- tool: list_oauth_clients
+  category: client-management
+  rest: ['GET /api/v1/oauth2/clients']
+  binding: rest
+  confidence: high
+  note: The authorization server spec declares no operationIds, so operations are bound by method+path.
+- tool: get_oauth_client
+  category: client-management
+  rest: ['GET /api/v1/oauth2/clients/{clientId}']
+  binding: rest
+  confidence: high
+- tool: get_oauth_client_metrics
+  category: client-management
+  rest: ['GET /api/v1/oauth2/clients/{clientId}/metrics']
+  binding: rest
+  confidence: high
+- tool: get_customer_usage_points
+  category: datacustodian-integration
+  rest: ['GET /api/v1/datacustodian/customers/{customerId}/usage-points']
+  binding: rest
+  confidence: high
+- tool: datacustodian_health
+  category: operations
+  rest: ['GET /api/v1/datacustodian/health']
+  binding: rest
+  confidence: high
+mcp_only: []
+rest_only:
+- capability: OAuth2 client lifecycle writes
+  operations:
+  - 'POST /api/v1/oauth2/clients'
+  - 'PUT /api/v1/oauth2/clients/{clientId}'
+  - 'DELETE /api/v1/oauth2/clients/{clientId}'
+  reason: Consequential writes deliberately excluded from the candidate tool set pending an agentic-access contract.
+- capability: Credential verification
+  operations: ['POST /api/v1/datacustodian/verify-user']
+  reason: Handles end-user credentials; excluded from any agent-facing tool set.
+- capability: Retail customer lookup
+  operations: ['GET /api/v1/datacustodian/customers/{customerId}']
+  reason: Returns PII; excluded pending a purpose-bound access contract.
+- capability: OAuth 2.0 protocol endpoints
+  operations:
+  - 'GET /oauth2/authorize'
+  - 'POST /oauth2/token'
+  - 'POST /oauth2/introspect'
+  - 'POST /oauth2/revoke'
+  reason: Protocol endpoints belong to the OAuth client runtime, not to a tool surface.
+- capability: OIDC UserInfo
+  operations: ['GET /userinfo', 'POST /userinfo']
+  reason: Identity claims endpoint; consumed by the auth layer, not exposed as a tool.
+- capability: ApplicationInformation collection (SwaggerHub document)
+  operations: ['getApplicationInformation (application-information-openapi.yml)']
+  reason: Duplicate of the same resource in the primary CMD document.
+coverage:
+  tools_named: 12
+  tools_bound: 12
+  mcp_only: 0
+  rest_ops_total: 24
+  rest_ops_with_tool: 12
+  rest_ops_without_tool: 12

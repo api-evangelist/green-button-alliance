@@ -1,0 +1,54 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Green Button CMD ESPI Resource Server API
+  version: 1.0.0
+extends: openapi/green-button-alliance-green-button-api-openapi.yml
+x-generated: '2026-07-27'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment round 2026-07-27. Captures what we learned about this
+  contract without mutating the Apache-2.0 document GBA publishes.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: green-button-alliance
+    x-apievangelist-artifacts:
+      authentication: authentication/green-button-alliance-authentication.yml
+      scopes: scopes/green-button-alliance-scopes.yml
+      vocabulary: vocabulary/green-button-alliance-function-blocks.yml
+      conventions: conventions/green-button-alliance-conventions.yml
+      errors: errors/green-button-alliance-problem-types.yml
+      lifecycle: lifecycle/green-button-alliance-lifecycle.yml
+      webhooks: asyncapi/green-button-alliance-webhooks.yml
+      data_model: data-model/green-button-alliance-data-model.yml
+    x-apievangelist-note: >-
+      This document specifies the interface every certified Green Button Data
+      Custodian implements. It is not a service the Green Button Alliance operates.
+- target: $.servers
+  update:
+    x-apievangelist-server-status:
+      url: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+      probed: '2026-07-27'
+      http_status: 403
+      live: false
+      note: >-
+        GBA states the reference-implementation sandbox is no longer provided and the
+        replacement platform is expected 2026Q3. Point this spec at a certified Data
+        Custodian's dataCustodianResourceEndpoint instead.
+- target: $.components.securitySchemes.oauth2
+  update:
+    x-apievangelist-scope-model: espi-function-block-grammar
+    x-apievangelist-scope-note: >-
+      The scopes maps are empty in the published document. Green Button encodes the
+      whole authorization request into one structured scope value, e.g.
+      FB=4_5_15;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13. The
+      function-block catalog is vocabulary/green-button-alliance-function-blocks.yml.
+- target: $.paths
+  update:
+    x-apievangelist-shared-query-parameters:
+      function_block: FB_37 Usage Data Query Parameters (CMD-MANDATORY)
+      parameters: [published-min, published-max, updated-min, updated-max, start-index, max-results, depth]
+      pagination: offset - start-index is 1-indexed, max-results caps the page
+    x-apievangelist-error-gap: >-
+      Every 400 and 403 response in this document is declared with a description only -
+      no schema, no media type. Consumers get a status code and nothing else.

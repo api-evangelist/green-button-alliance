@@ -16,16 +16,18 @@ description: >-
   standards-and-certification layer of the United States energy value chain,
   above the investor-owned utilities and the energy-data platforms (UtilityAPI,
   Con Edison and Enbridge Gas are sponsor members) that actually move consumer
-  data. Its API posture is contracts without a service: two real OpenAPI 3.x
-  definitions of the CMD ESPI resource server are published free under Apache
-  2.0 on GitHub, but the normative ESPI v4.0 standard itself must be purchased
+  data. Its API posture is contracts without a service: three real OpenAPI 3.x
+  definitions - the CMD ESPI resource server, the ApplicationInformation
+  registration resource, and the OpenESPI OAuth 2.0 / OIDC authorization server -
+  are published free under Apache 2.0 on GitHub, but the normative ESPI v4.0
+  standard itself must be purchased
   from NAESB, GBA operates no production consumer-data or market-data API of
   its own, and its ESPI sandbox at sandbox.greenbuttonalliance.org:8443 is
   offline pending a replacement platform expected 2026Q3. Green Button in the
   United States is voluntary — there is no federal mandate — with obligation
   arriving only through state action and, outside the US, Ontario's O. Reg.
   633/21.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+image: https://assets-002.noviams.com/novi-file-uploads/gba/structure/gba-logo-2023-tm-500-1.png
 tags:
 - Energy
 - United States
@@ -70,6 +72,12 @@ apis:
     url: openapi/green-button-alliance-green-button-api-openapi.yml
   - type: OpenAPI
     url: openapi/green-button-alliance-application-information-openapi.yml
+  - type: Overlay
+    url: overlays/green-button-alliance-green-button-api-overlay.yaml
+  - type: Overlay
+    url: overlays/green-button-alliance-application-information-overlay.yaml
+  - type: Examples
+    url: examples/_index.yml
   - type: APIReference
     url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
   - type: Documentation
@@ -108,7 +116,144 @@ apis:
     url: https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
   - type: Repository
     url: https://github.com/GreenButtonAlliance/OpenESPI-Common-java
+- aid: green-button-alliance:openespi-authorization-server-api
+  name: OpenESPI Authorization Server API
+  description: >-
+    The OAuth 2.0 / OpenID Connect authorization server the Green Button Alliance
+    publishes as part of its OpenESPI reference implementation, and the only Green
+    Button contract with a modern write surface. Sixteen operations across four
+    groups - OAuth2 client management (/api/v1/oauth2/clients CRUD plus per-client
+    usage metrics), DataCustodian integration (user verification, retail-customer
+    lookup, customer usage points, health), an OIDC /userinfo endpoint extended with
+    ESPI claims (customer_id, customer_type, account_number, service_territory,
+    espi_scopes, authorized_usage_points), and the standard OAuth2 protocol endpoints
+    (authorize, token, introspect, revoke). Security posture is unusually strong -
+    JWT bearer, HTTP basic client authentication and X.509 mutual TLS
+    (tls_client_auth), with the specification stating "TLS 1.3 ONLY" and
+    Perfect-Forward-Secrecy-only cipher suites, and describing itself as certified for
+    NAESB ESPI 4.0 compliance including Function Block 4.5.15+. Harvested verbatim
+    from the openespi-authserver module under Apache 2.0 on 2026-07-27. Both declared
+    servers (authorization.greenbuttonalliance.org and its staging sibling) failed to
+    resolve in DNS on that date - the contract is published ahead of its deployment.
+    No operation in the document declares an operationId.
+  humanURL: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/tree/main/openespi-authserver
+  baseURL: https://authorization.greenbuttonalliance.org
+  tags:
+  - Green Button
+  - OAuth 2.0
+  - OpenID Connect
+  - ESPI
+  - Authorization Server
+  - Mutual TLS
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-authorization-server-openapi.yml
+  - type: Overlay
+    url: overlays/green-button-alliance-authorization-server-overlay.yaml
+  - type: Documentation
+    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/API_DOCUMENTATION.md
+  - type: Documentation
+    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OAUTH2_CLIENT_MANAGEMENT_API.md
+  - type: Documentation
+    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OIDC_USERINFO_ENDPOINT.md
+  - type: GettingStarted
+    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/QUICK_START.md
+  - type: RateLimits
+    url: rate-limits/green-button-alliance-rate-limits.yml
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java
 common:
+- type: AgenticAccess
+  url: agentic-access/green-button-alliance-agentic-access.yml
+- type: DomainSecurity
+  url: security/green-button-alliance-domain-security.yml
+- type: OAuthScopes
+  url: scopes/green-button-alliance-scopes.yml
+- type: Authentication
+  url: authentication/green-button-alliance-authentication.yml
+- type: Vocabulary
+  url: vocabulary/green-button-alliance-function-blocks.yml
+  name: NAESB REQ.21 ESPI Function Blocks
+  description: >-
+    GBA's published catalog of 47 ESPI Function Blocks - simultaneously the
+    certification test grouping and the OAuth scope vocabulary of Green Button
+    Connect My Data. Transcribed from /function-blocks and /cmd-function-blocks.
+- type: Conventions
+  url: conventions/green-button-alliance-conventions.yml
+- type: ErrorCatalog
+  url: errors/green-button-alliance-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/green-button-alliance-lifecycle.yml
+- type: Conformance
+  url: conformance/green-button-alliance-conformance.yml
+- type: DataModel
+  url: data-model/green-button-alliance-data-model.yml
+- type: RateLimits
+  url: rate-limits/green-button-alliance-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/green-button-alliance-webhooks.yml
+  name: Green Button Data Custodian to Third Party push notifications
+  description: >-
+    The CMD-mandatory push model (FB_39 Usage Data, FB_69 Retail Customer) - the Data
+    Custodian POSTs an ESPI BatchList of resource URIs to the Third Party's registered
+    thirdPartyNotifyUri, which then pulls each one. Real webhook surface; no AsyncAPI
+    document is published for it.
+- type: Examples
+  url: examples/_index.yml
+  name: Published ESPI wire-contract fixtures
+- type: AgentSkill
+  url: skills/_index.yml
+  name: Green Button Agent Skills
+- type: MCPServer
+  url: mcp/green-button-alliance-mcp.yml
+  name: Candidate MCP tool surface (derived, not published)
+  description: >-
+    Green Button Alliance operates no MCP server. This is an API Evangelist candidate
+    tool set derived from the operations in GBA's own OpenAPI documents.
+- type: ToolCrosswalk
+  url: mcp/green-button-alliance-tool-crosswalk.yml
+- type: Packages
+  url: packages/green-button-alliance-packages.yml
+  name: Package registry survey (no published client libraries)
+- type: WellKnown
+  url: well-known/green-button-alliance-well-known.yml
+- type: LLMsTxt
+  url: llms/green-button-alliance-llms.txt
+- type: Sandbox
+  url: sandbox/green-button-alliance-sandbox.yml
+  name: Sandbox status and substitutes
+- type: VulnerabilityDisclosure
+  url: security/green-button-alliance-vulnerability-disclosure.yml
+- type: Security
+  url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-common/SECURITY.md
+  name: OpenESPI Security Policy
+  description: >-
+    GBA's published vulnerability-reporting policy - security@greenbuttonalliance.org,
+    no public issues for vulnerabilities, acknowledgment within 48 hours and an initial
+    assessment within one week. There is no /.well-known/security.txt.
+- type: DeveloperPortal
+  url: https://www.greenbuttonalliance.org/developer-resources
+- type: Support
+  url: https://www.greenbuttonalliance.org/faqs-technical
+  name: Technical FAQs
+- type: Support
+  url: https://www.greenbuttonalliance.org/faqs
+  name: Informational FAQs
+- type: Pricing
+  url: https://www.greenbuttonalliance.org/offerings/certification
+  name: Certification pricing
+  description: >-
+    Data Custodian DMD $3,000, CMD $3,200, combined $3,700, additional 2-hour window
+    $2,500, pre-certification testing $250/hour. Membership not required.
+- type: SignUp
+  url: https://www.greenbuttonalliance.org/register
+- type: Login
+  url: https://www.greenbuttonalliance.org/login
+- type: TermsOfService
+  url: https://www.greenbuttonalliance.org/legal
+  name: Legal - Terms & Conditions, Permitted Uses, Trademark Usage, Email Security, Hosting and Analytics
+- type: PrivacyPolicy
+  url: https://www.greenbuttonalliance.org/privacy-policy
 - type: Website
   url: https://www.greenbuttonalliance.org/
 - type: About

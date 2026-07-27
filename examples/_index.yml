@@ -1,0 +1,65 @@
+generated: '2026-07-27'
+method: searched
+source: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/tree/main/contracts
+description: >-
+  Canonical wire-format fixtures published by the Green Button Alliance, harvested
+  verbatim. GBA's own README calls these "the single source of truth both services bind
+  to in their own tests - a lightweight, framework-free consumer-driven contract". Both
+  a producer test (the service's real output matches the file) and a consumer test (the
+  service parses the file) bind to each one, so a wire-format drift on either side
+  fails that side's build. These are the most concrete examples GBA publishes anywhere -
+  the OpenAPI documents themselves carry almost no request/response examples.
+provenance_note: >-
+  Token values in these files are literal placeholders (OPAQUE_ACCESS_TOKEN,
+  OPAQUE_REFRESH_TOKEN) and the ids are illustrative. GBA states "UUIDs/ids/tokens in
+  the fixtures are illustrative; the contract is the shape - field names, the
+  Batch/{Subscription|Bulk|RetailCustomer} URI forms, and the ESPI FB=... scope grammar."
+examples:
+- file: green-button-alliance-token-response-subscription.json
+  format: json
+  direction: authorization-server-to-third-party
+  grant_type: authorization_code
+  describes: >-
+    ESPI 4.0 token response for a customer-consented Subscription. Carries only the
+    three *URI fields (resourceURI, authorizationURI, customerResourceURI) - no *_id
+    fields - with resourceURI in Batch/Subscription/{id} form.
+  source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/contracts/token-response-subscription.json
+- file: green-button-alliance-token-response-bulk.json
+  format: json
+  direction: authorization-server-to-third-party
+  grant_type: client_credentials
+  describes: >-
+    ESPI 4.0 token response for a Bulk grant, with resourceURI in Batch/Bulk/{bulkId}
+    form and the BR=1 scope parameter.
+  source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/contracts/token-response-bulk.json
+- file: green-button-alliance-notification-batchlist.xml
+  format: xml
+  direction: data-custodian-to-third-party
+  describes: >-
+    The push notification payload - an ESPI <BatchList> of subscription batch URIs with
+    published-min/published-max bounds, POSTed to the Third Party's thirdPartyNotifyUri.
+    This is Function Block FB_39 on the wire.
+  source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/contracts/notification-batchlist.xml
+- file: green-button-alliance-backchannel-subscription-request.json
+  format: json
+  direction: authorization-server-to-data-custodian
+  describes: >-
+    AS to DC back-channel subscription provisioning request at token-mint time
+    (POST {dc}/internal/backchannel/v1/subscriptions). Fields correlation_id, client_id,
+    granted_scope, retail_customer_id, selected_usage_point_ids. GBA marks this an
+    IMPLEMENTATION contract, not part of the ESPI standard.
+  source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/contracts/backchannel-subscription-request.json
+- file: green-button-alliance-backchannel-subscription-response.json
+  format: json
+  direction: data-custodian-to-authorization-server
+  status: 201
+  describes: >-
+    The 201 Created response - authorization_id, resource_subscription_id,
+    customer_subscription_id and the three resolved URIs.
+  source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/contracts/backchannel-subscription-response.json
+in_spec_examples:
+  note: >-
+    The SwaggerHub ApplicationInformation document is the only Green Button OpenAPI that
+    carries per-field examples - including three real function-block scope strings and
+    the full RFC 7591 registration field set. The primary CMD document carries none.
+  file: openapi/green-button-alliance-application-information-openapi.yml

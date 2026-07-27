@@ -1,0 +1,74 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  npm registry search, PyPI JSON API, Maven Central (search.maven.org +
+  central.sonatype.com + repo1.maven.org group probe), and the
+  github.com/GreenButtonAlliance organisation listing
+description: >-
+  The Green Button Alliance ships NO published client library on any public package
+  registry. This is a deliberate, verified negative result, not an unsearched gap.
+  What GBA does ship is Apache-2.0 source: a Maven multi-module reference
+  implementation of the whole ESPI stack on GitHub, consumable only by cloning and
+  building. There is therefore no SDKs pointer on this provider - adding one would
+  claim client libraries that do not exist.
+packages: []
+registry_probes:
+- registry: maven-central
+  query: g:org.greenbuttonalliance
+  result: 0 artifacts
+- registry: maven-central
+  query: greenbutton (full-text)
+  result: 0 artifacts
+- registry: maven-central
+  query: repo1.maven.org/maven2/org/greenbuttonalliance/
+  result: HTTP 404 - group id has never been published
+- registry: npm
+  query: green button espi
+  result: no first-party package (all hits unrelated)
+- registry: pypi
+  query: greenbutton, green-button, espi, pyespi, greenbutton-parser
+  result: HTTP 404 for every candidate
+- registry: github-packages
+  query: orgs/GreenButtonAlliance/packages
+  result: not readable anonymously (403, requires read:packages)
+source_distributions:
+- name: OpenESPI-GreenButton-Java
+  language: java
+  build: maven (multi-module - openespi-common, openespi-datacustodian, openespi-thirdparty, openespi-authserver, openespi-handoff)
+  url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java
+  license: Apache-2.0
+  official: true
+  published_to_registry: false
+  install: git clone + mvn install (no coordinates on Maven Central)
+  note: >-
+    The active reference implementation. openespi-authserver is the module whose
+    OpenAPI is harvested to
+    openapi/green-button-alliance-authorization-server-openapi.yml.
+- name: OpenESPI-DataCustodian-java
+  language: java
+  url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  license: Apache-2.0
+  official: true
+  archived: true
+  published_to_registry: false
+- name: OpenESPI-ThirdParty-java
+  language: java
+  url: https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
+  license: Apache-2.0
+  official: true
+  archived: true
+  published_to_registry: false
+- name: OpenESPI-Common-java
+  language: java
+  url: https://github.com/GreenButtonAlliance/OpenESPI-Common-java
+  license: Apache-2.0
+  official: true
+  archived: true
+  published_to_registry: false
+  note: Superseded by the openespi-common module inside OpenESPI-GreenButton-Java.
+- name: green-button-grapher
+  language: javascript
+  url: https://github.com/GreenButtonAlliance/green-button-grapher
+  official: true
+  published_to_registry: false
+  note: Browser app that parses and displays Green Button XML. Not a client library.

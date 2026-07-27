@@ -1,0 +1,25 @@
+generated: '2026-07-27'
+method: generated
+source: >-
+  Grounded entirely in operationIds that exist verbatim in
+  openapi/green-button-alliance-green-button-api-openapi.yml, plus the conventions,
+  errors, scopes and webhook artifacts in this repo. No provider-published skills or
+  AGENTS.md exist in the GreenButtonAlliance GitHub organisation (searched
+  2026-07-27).
+note: >-
+  These skills describe how to use the Green Button CMD ESPI interface at a CERTIFIED
+  DATA CUSTODIAN. The Green Button Alliance publishes the contract and certifies
+  implementations; it operates no production endpoint of its own.
+skills:
+- file: green-button-alliance-read-authorized-usage.md
+  name: Read authorized Green Button usage data
+  api: openapi/green-button-alliance-green-button-api-openapi.yml
+  operations: [findAuthorizations, getAuthorization, findUsagePoints, getUsagePoint]
+- file: green-button-alliance-bulk-batch-download.md
+  name: Download a Green Button bulk batch
+  api: openapi/green-button-alliance-green-button-api-openapi.yml
+  operations: [downloadBulkData, getAuthorization]
+- file: green-button-alliance-inspect-third-party-registration.md
+  name: Inspect a Green Button Third Party registration
+  api: openapi/green-button-alliance-green-button-api-openapi.yml
+  operations: [findApplicationInformations, getApplicationInformation]

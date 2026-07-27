@@ -1,0 +1,142 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://www.greenbuttonalliance.org/technical-info and the linked technical notes
+  (atom-elements, atom-and-espi, generating-persistent-uuids, daylight-savings-time,
+  poweroftenmultiplier, costandcurrency, accuracy), plus derivation from
+  openapi/green-button-alliance-green-button-api-openapi.yml and
+  openapi/green-button-alliance-authorization-server-openapi.yml
+description: >-
+  Cross-cutting request/response semantics of the Green Button CMD ESPI interface
+  and of the OpenESPI Authorization Server GBA publishes alongside it. These are
+  contract conventions a certified Data Custodian implements - GBA itself runs no
+  production endpoint, so nothing here was measured against a live service.
+api_style: >-
+  REST over HTTPS. The resource server is read-only Atom/XML (RFC 4287 feeds whose
+  entries carry ESPI resources in the http://naesb.org/espi namespace). The
+  authorization server is JSON.
+base_paths:
+  resource_server: /espi/1_1/resource
+  bulk: /espi/1_1/resource/Batch/Bulk/{bulkId}
+  subscription: /espi/1_1/resource/Batch/Subscription/{subscriptionId}
+  authorization_server: /api/v1
+media_types:
+  resource_server:
+  - application/atom+xml
+  authorization_server:
+  - application/json
+authentication:
+  scheme: OAuth 2.0 bearer (resource server); JWT bearer / HTTP basic / X.509 mutual TLS (authorization server)
+  scope_style: ESPI Function Block grammar - FB=1_3_4_5;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13
+  detail: authentication/green-button-alliance-authentication.yml
+idempotency:
+  supported: false
+  mechanism: null
+  evidence: >-
+    No Idempotency-Key header, parameter or documented replay contract exists in any
+    published Green Button artifact. Every operation in the CMD resource server
+    OpenAPI is a GET (inherently idempotent); the authorization server's writes
+    (POST/PUT/DELETE on /api/v1/oauth2/clients, POST /api/v1/datacustodian/verify-user)
+    declare no idempotency key. The AS to DC back-channel does carry a
+    correlation_id (see tracing below) but GBA does not document it as a dedupe key.
+  note: >-
+    Recorded as false on purpose. No Idempotency pointer is wired into apis.yml,
+    because there is no idempotency contract to point at.
+pagination:
+  style: offset (OpenSearch-style, over Atom feeds)
+  request_params:
+    start-index: Index of the first result, 1-indexed (integer int64).
+    max-results: Maximum number of results to return (integer int64).
+    depth: Response depth control (integer int64).
+  filter_params:
+    published-min: Minimum publication date, RFC 3339 instant.
+    published-max: Maximum publication date, RFC 3339 instant.
+    updated-min: Minimum update date, RFC 3339 instant.
+    updated-max: Maximum update date, RFC 3339 instant.
+  response_fields:
+    feed: Atom <feed> with <id>, <title>, <updated>, one-or-more <link>, and <entry> array.
+    entry: Atom <entry> carrying <id>, <title>, <published>, <updated>, at least two <link> (rel=self, rel=up) and <content> holding the ESPI resource.
+  function_block: FB_37 Usage Data Query Parameters (CMD-MANDATORY)
+  source: openapi/green-button-alliance-green-button-api-openapi.yml
+  note: >-
+    Every collection and item operation in the CMD spec accepts the same seven query
+    parameters, which is why they are captured once here rather than per operation.
+resource_identity:
+  scheme: >-
+    Persistent UUIDs. GBA publishes /generating-persistent-uuids as the normative
+    guidance for minting stable ESPI resource identifiers, and its own wire fixtures
+    use UUID v5-shaped values (e.g. 00000000-0000-5000-8000-000000000001).
+  uri_forms:
+  - /espi/1_1/resource/Batch/Subscription/{subscriptionId}
+  - /espi/1_1/resource/Batch/Bulk/{bulkId}
+  - /espi/1_1/resource/Batch/RetailCustomer/{retailCustomerId}
+  - /espi/1_1/resource/Authorization/{authorizationId}
+  - /espi/1_1/resource/ApplicationInformation/{applicationInformationId}
+  source: https://www.greenbuttonalliance.org/generating-persistent-uuids
+request_tracing:
+  header: null
+  fields:
+  - name: correlationId
+    where: authorization server ErrorResponse body
+    source: openapi/green-button-alliance-authorization-server-openapi.yml
+  - name: correlation_id
+    where: AS to DC back-channel subscription request body
+    source: examples/green-button-alliance-backchannel-subscription-request.json
+  note: No request-id response header is documented on any surface.
+versioning:
+  standard_versions:
+  - NAESB REQ.21 ESPI v4.0 (ratified December 2023 - TLS 1.3 minimum, bill images)
+  - NAESB REQ.21 ESPI v3.3 (2020 - OAuth 2.0, TLS 1.2)
+  uri_version_segment: /espi/1_1/ (unchanged across ESPI 3.x and 4.0 - the path segment is not the standard version)
+  authorization_server: /api/v1 path versioning
+  detail: lifecycle/green-button-alliance-lifecycle.yml
+error_envelope:
+  resource_server:
+    shape: >-
+      Status code only. The CMD OpenAPI declares 400 Bad Request and 403 Forbidden
+      with a description and no response schema or media type - there is no
+      machine-readable error body in the published contract.
+  authorization_server:
+    shape: OAuth 2.0 style JSON error object (RFC 6749 section 5.2 shaped, extended)
+    fields: [error, error_description, error_uri, timestamp, path, correlationId]
+    validation_extension: details[] of {field, message}
+    problem_json: false
+  detail: errors/green-button-alliance-problem-types.yml
+rate_limit_signaling:
+  supported: true
+  surface: authorization server only
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  status: 429
+  detail: rate-limits/green-button-alliance-rate-limits.yml
+push_model:
+  supported: true
+  note: >-
+    ESPI inverts the pull-only OAuth model with a Data Custodian to Third Party
+    notification POST. See asyncapi/green-button-alliance-webhooks.yml.
+data_conventions:
+  - name: Power-of-ten multiplier
+    url: https://www.greenbuttonalliance.org/poweroftenmultiplier
+  - name: Cost and currency
+    url: https://www.greenbuttonalliance.org/costandcurrency
+  - name: Daylight savings time handling
+    url: https://www.greenbuttonalliance.org/daylight-savings-time
+  - name: Atom elements
+    url: https://www.greenbuttonalliance.org/atom-elements
+  - name: Atom and ESPI
+    url: https://www.greenbuttonalliance.org/atom-and-espi
+  - name: Accuracy and quality
+    url: https://www.greenbuttonalliance.org/accuracy
+  - name: Usage-point location
+    url: https://www.greenbuttonalliance.org/usagepoint-location
+  - name: Usage point for aggregated data
+    url: https://www.greenbuttonalliance.org/aggregated-data
+  - name: Utility-bill data mapping
+    url: https://www.greenbuttonalliance.org/utility-bill-data
+cross_links:
+  errors: errors/green-button-alliance-problem-types.yml
+  lifecycle: lifecycle/green-button-alliance-lifecycle.yml
+  authentication: authentication/green-button-alliance-authentication.yml
+  scopes: scopes/green-button-alliance-scopes.yml
+  rate_limits: rate-limits/green-button-alliance-rate-limits.yml
+  vocabulary: vocabulary/green-button-alliance-function-blocks.yml
+  webhooks: asyncapi/green-button-alliance-webhooks.yml

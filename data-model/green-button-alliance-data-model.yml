@@ -1,0 +1,210 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/green-button-alliance-green-button-api-openapi.yml,
+  openapi/green-button-alliance-application-information-openapi.yml,
+  openapi/green-button-alliance-authorization-server-openapi.yml
+description: >-
+  Entity-relationship graph derived from the schemas and id-reference fields of the
+  three published Green Button OpenAPI documents. Two layers exist: the ESPI resource
+  model carried inside Atom entries (ApplicationInformation, Authorization,
+  UsagePoint, Batch), and the authorization-server administrative model (OAuth2
+  Client, RetailCustomer, UsagePoint projection). Only entities that appear in a
+  published spec are listed - the wider ESPI resource set (MeterReading, IntervalBlock,
+  ReadingType, UsageSummary, ElectricPowerQualitySummary, LocalTimeParameters,
+  ServiceStatus) is documented only in the legacy Swagger 1.2 listings and the
+  paywalled standard, and is recorded under out_of_spec rather than modelled.
+envelope:
+  name: Atom
+  spec: RFC 4287
+  entities:
+  - name: AtomFeed
+    fields: [id, title, updated, 'link[]', 'entry[]']
+    note: Requires a minimum of one link.
+  - name: AtomEntry
+    fields: [id, title, published, updated, 'link[]', content]
+    note: Requires a minimum of two links (rel=self, rel=up) per the spec description.
+  - name: AtomLink
+    fields: [href, rel, type]
+  - name: AtomContent
+    fields: [type]
+    note: Carries the ESPI resource, typically application/xml.
+entities:
+- name: ApplicationInformation
+  namespace: http://naesb.org/espi
+  spec: openapi/green-button-alliance-application-information-openapi.yml
+  description: >-
+    Created when a Third Party application registers with a Data Custodian. Doubles as
+    the RFC 7591/7592 dynamic client registration record.
+  id_field: client_id
+  path: /espi/1_1/resource/ApplicationInformation/{applicationInformationId}
+  key_fields:
+  - dataCustodianId
+  - dataCustodianApplicationStatus
+  - thirdPartyApplicationStatus
+  - thirdPartyApplicationType
+  - thirdPartyApplicationUse
+  - client_id
+  - client_secret
+  - client_name
+  - redirect_uri[]
+  - scope[]
+  - grant_types[]
+  - response_types
+  - token_endpoint_auth_method
+  - software_id
+  - software_version
+  - client_id_issued_at
+  - client_secret_expires_at
+  - registration_client_uri
+  - registration_access_token
+  uri_fields:
+  - authorizationServerUri
+  - authorizationServerAuthorizationEndpoint
+  - authorizationServerTokenEndpoint
+  - authorizationServerRegistrationEndpoint
+  - dataCustodianResourceEndpoint
+  - dataCustodianBulkRequestURI
+  - thirdPartyNotifyUri
+  - thirdPartyUserPortalScreenURI
+  - logo_uri
+  - client_uri
+  - tos_uri
+  - policy_uri
+  deprecated_fields: [thirdPartyScopeSelectionURI, dataCustodianScopeSelectionScreenURI]
+  enums:
+    dataCustodianApplicationStatus: {1: Review, 2: Production (Live), 3: On Hold, 4: Revoked}
+    thirdPartyApplicationStatus: {1: Development, 2: Review/Test, 3: Production (Live), 4: Retired (Removed)}
+    thirdPartyApplicationType: {1: Web, 2: Desktop, 3: Mobile, 4: Device}
+    thirdPartyApplicationUse: {1: Energy Management, 2: Analytical, 3: Governmental, 4: Academic, 5: Law Enforcement}
+- name: Authorization
+  namespace: http://naesb.org/espi
+  spec: openapi/green-button-alliance-green-button-api-openapi.yml
+  description: A permission granted by an owner for access to a resource.
+  path: /espi/1_1/resource/Authorization/{authorizationId}
+  key_fields: [status, expires_at, grant_type, scope, token_type, resourceURI, authorizationURI, customerResourceURI]
+  enums:
+    status: {0: Revoked, 1: Active, 2: Denied}
+- name: UsagePoint
+  namespace: http://naesb.org/espi
+  spec: openapi/green-button-alliance-green-button-api-openapi.yml
+  description: Logical point on a network at which consumption or production is measured or estimated.
+  path: /espi/1_1/resource/UsagePoint/{usagePointId}
+  key_fields: [roleFlags, ServiceCategory, status, isSdp, isVirtual, connectionState]
+  enums:
+    ServiceCategory: {0: electricity, 1: gas, 2: water}
+    status: {0: 'off', 1: 'on'}
+- name: Batch
+  namespace: http://naesb.org/espi
+  spec: openapi/green-button-alliance-green-button-api-openapi.yml
+  description: >-
+    Bulk / subscription transfer surface. Three URI forms appear in GBA's own wire
+    contracts - Batch/Bulk/{bulkId}, Batch/Subscription/{subscriptionId} and
+    Batch/RetailCustomer/{retailCustomerId}.
+  paths:
+  - /espi/1_1/resource/Batch/Bulk/{bulkId}
+  - /espi/1_1/resource/Batch/Subscription/{subscriptionId}
+  - /espi/1_1/resource/Batch/RetailCustomer/{retailCustomerId}
+- name: OAuth2Client
+  spec: openapi/green-button-alliance-authorization-server-openapi.yml
+  description: Administrative record of a registered OAuth 2.0 client in the OpenESPI Authorization Server.
+  id_field: clientId
+  path: /api/v1/oauth2/clients/{clientId}
+  key_fields: [clientName, 'redirectUris[]', 'scopes[]', 'authorizationGrantTypes[]', 'clientAuthenticationMethods[]', espiCompliant, securityLevel, certificationStatus, createdAt, updatedAt, lastUsed]
+  enums:
+    securityLevel: [LOW, MEDIUM, HIGH]
+    certificationStatus: [PENDING, CERTIFIED, EXPIRED, REVOKED]
+- name: RetailCustomer
+  spec: openapi/green-button-alliance-authorization-server-openapi.yml
+  description: Customer record projected from the Data Custodian through the authorization server.
+  id_field: customerId
+  path: /api/v1/datacustodian/customers/{customerId}
+  key_fields: [customer_id, customer_type, account_number, service_territory]
+  enums:
+    customer_type: [RESIDENTIAL, COMMERCIAL, INDUSTRIAL]
+- name: ClientMetrics
+  spec: openapi/green-button-alliance-authorization-server-openapi.yml
+  path: /api/v1/oauth2/clients/{clientId}/metrics
+  key_fields: [usageMetrics, weeklyStats]
+relationships:
+- from: ApplicationInformation
+  to: Authorization
+  type: has_many
+  via: client_id
+  note: A registered Third Party accumulates one Authorization per customer consent.
+- from: Authorization
+  to: Batch
+  type: has_one
+  via: resourceURI
+  note: resourceURI points at Batch/Subscription/{id} (auth code grant) or Batch/Bulk/{id} (client credentials grant).
+- from: Authorization
+  to: Authorization
+  type: has_one
+  via: authorizationURI
+  note: Self-referential management URI used to update or delete the authorization.
+- from: Authorization
+  to: RetailCustomer
+  type: has_one
+  via: customerResourceURI
+  note: Points at Batch/RetailCustomer/{id}; may be an empty string per the ESPI standard.
+- from: Authorization
+  to: UsagePoint
+  type: has_many
+  via: selected_usage_point_ids
+  source: examples/green-button-alliance-backchannel-subscription-request.json
+- from: RetailCustomer
+  to: UsagePoint
+  type: has_many
+  via: /api/v1/datacustodian/customers/{customerId}/usage-points
+- from: UsagePoint
+  to: Batch
+  type: belongs_to
+  via: subscription batch feed
+- from: AtomFeed
+  to: AtomEntry
+  type: has_many
+  via: entry
+- from: AtomEntry
+  to: AtomContent
+  type: has_one
+  via: content
+  note: content carries the ESPI resource - this is how every entity above is transported.
+- from: AtomEntry
+  to: AtomLink
+  type: has_many
+  via: link
+- from: OAuth2Client
+  to: ClientMetrics
+  type: has_one
+  via: clientId
+- from: OAuth2Client
+  to: ApplicationInformation
+  type: mirrors
+  via: client_id
+  note: >-
+    The authorization server's administrative client record and the ESPI
+    ApplicationInformation resource describe the same registration from two sides.
+identifier_conventions:
+  scheme: Persistent UUID
+  guidance: https://www.greenbuttonalliance.org/generating-persistent-uuids
+  observed_shape: UUID v5-style (e.g. 00000000-0000-5000-8000-000000000001)
+  note: retail_customer_id appears as an integer in the back-channel contract while usage point ids are UUIDs.
+out_of_spec:
+  note: >-
+    ESPI resources documented only in the legacy Swagger 1.2 listings at
+    greenbuttonalliance.github.io and in the paywalled NAESB standard. Not modelled
+    here because no current OpenAPI defines them.
+  entities:
+  - MeterReading
+  - IntervalBlock
+  - ReadingType
+  - UsageSummary
+  - ElectricPowerQualitySummary
+  - LocalTimeParameters
+  - ServiceStatus
+  - Customer / CustomerAccount / CustomerAgreement / ServiceLocation / EndDevice / Meter
+  in_progress_note: >-
+    The OpenESPI-GreenButton-Java monorepo carries phase implementation plans for
+    CustomerAccount, Customer, ServiceLocation, CustomerAgreement, EndDevice and Meter -
+    evidence these resources are being built out but not yet expressed in a published
+    OpenAPI.

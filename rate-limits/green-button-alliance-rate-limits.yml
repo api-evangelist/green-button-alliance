@@ -1,0 +1,47 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+provider: Green Button Alliance
+providerId: green-button-alliance
+generated: '2026-07-27'
+method: derived
+source: openapi/green-button-alliance-authorization-server-openapi.yml
+created: '2026-07-27'
+modified: '2026-07-27'
+tags:
+- Rate Limiting
+- Energy
+- OAuth
+description: >-
+  Rate-limit signalling is declared on exactly one Green Button surface - the
+  OpenESPI Authorization Server's OAuth2 client-management API, which returns 429
+  with three X-RateLimit-* headers. No numeric limit is published anywhere: the
+  header descriptions say "Request limit per hour" and "Remaining requests in
+  current window" without stating the value. The CMD ESPI resource server contract
+  declares no 429 and no rate-limit headers at all, so throttling on a certified
+  Data Custodian is that utility's own policy, not a Green Button contract term.
+sources:
+- https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/openapi.yaml
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+header_semantics:
+  X-RateLimit-Limit: Request limit per hour (integer)
+  X-RateLimit-Remaining: Remaining requests in current window (integer)
+  X-RateLimit-Reset: Unix timestamp when limit resets (integer)
+responseCodes:
+  throttled: 429
+  error_code: rate_limit_exceeded
+window: hour
+limits: []
+limits_note: >-
+  Deliberately empty - GBA publishes header names and a window unit but no numeric
+  ceiling. Inventing a number here would fabricate a limit.
+applies_to:
+- operation: GET /api/v1/oauth2/clients
+  spec: openapi/green-button-alliance-authorization-server-openapi.yml
+not_applicable:
+- spec: openapi/green-button-alliance-green-button-api-openapi.yml
+  reason: No 429 response and no rate-limit headers declared on any operation.
+- spec: openapi/green-button-alliance-application-information-openapi.yml
+  reason: No 429 response declared.

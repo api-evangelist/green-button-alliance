@@ -1,0 +1,161 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://www.greenbuttonalliance.org/developer-resources,
+  https://www.greenbuttonalliance.org/technical-info,
+  https://www.greenbuttonalliance.org/function-blocks, the three harvested OpenAPI
+  documents, and the OpenESPI Authorization Server security statement
+description: >-
+  Which cross-cutting standards the Green Button interface conforms to. GBA is
+  itself a conformance body - its product is certification of OTHER organisations
+  against NAESB REQ.21 ESPI - so this file separates (a) the standards the Green
+  Button contract is built on, from (b) the certification programme GBA operates.
+standards:
+- id: naesb-req21-espi-4.0
+  name: NAESB REQ.21 Energy Services Provider Interface v4.0
+  conforms: true
+  evidence: >-
+    Every published GBA OpenAPI is titled or described as ESPI 4.0; the
+    certification programme tests against REQ.21 ESPI v4.0 and v3.3.
+  note: The normative document is paywalled and sold by NAESB, not GBA.
+- id: naesb-req21-espi-3.3
+  name: NAESB REQ.21 ESPI v3.3
+  conforms: true
+  evidence: Still a certifiable target; recent GBA certification announcements cite v3.3.
+- id: rfc4287-atom
+  name: Atom Syndication Format
+  conforms: true
+  evidence: >-
+    All resource-server responses are application/atom+xml; the OpenAPI models
+    AtomFeed/AtomEntry/AtomLink/AtomContent in the http://www.w3.org/2005/Atom
+    namespace and notes entries require a minimum of two links.
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: >-
+    securitySchemes type oauth2 with authorizationCode and clientCredentials flows in
+    openapi/green-button-alliance-green-button-api-openapi.yml; token, introspection
+    and revocation endpoints in the authorization server spec.
+- id: rfc6750-bearer
+  name: OAuth 2.0 Bearer Token Usage (RFC 6750)
+  conforms: true
+  evidence: token_type "Bearer" in GBA's published token-response contract fixtures.
+- id: rfc7591-dynamic-client-registration
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence: >-
+    Listed as a normative reference on /developer-resources; ApplicationInformation
+    carries the full RFC 7591 metadata set (client_id_issued_at,
+    client_secret_expires_at, token_endpoint_auth_method, grant_types,
+    response_types, software_id, software_version, logo_uri, tos_uri, policy_uri).
+- id: rfc7592-dynamic-client-registration-management
+  name: OAuth 2.0 Dynamic Client Registration Management
+  conforms: true
+  evidence: registration_client_uri and registration_access_token on ApplicationInformation.
+- id: rfc7662-token-introspection
+  name: OAuth 2.0 Token Introspection
+  conforms: true
+  evidence: POST /oauth2/introspect with IntrospectionRequest/IntrospectionResponse in the authorization server spec.
+- id: rfc7009-token-revocation
+  name: OAuth 2.0 Token Revocation
+  conforms: true
+  evidence: POST /oauth2/revoke with RevocationRequest in the authorization server spec.
+- id: rfc7636-pkce
+  name: Proof Key for Code Exchange
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"] in the published OIDC discovery document (member SSO surface).
+- id: openid-connect
+  name: OpenID Connect Core / Discovery
+  conforms: true
+  evidence: >-
+    /.well-known/openid-configuration served at HTTP 200 (member SSO), and a
+    /userinfo endpoint with an ESPI-extended UserInfoResponse in the authorization
+    server spec.
+- id: rfc8705-mtls-client-auth
+  name: OAuth 2.0 Mutual-TLS Client Authentication
+  conforms: true
+  evidence: >-
+    securityScheme type mutualTLS (ClientCertificate) and clientAuthenticationMethods
+    enum including tls_client_auth in the authorization server spec.
+- id: tls-1.3
+  name: TLS 1.3
+  conforms: true
+  evidence: >-
+    ESPI v4.0 sets TLS 1.3 as the transport minimum; the authorization server spec
+    states "TLS 1.3 ONLY" and "Perfect Forward Secrecy - All cipher suites support
+    PFS". Live probes of www.greenbuttonalliance.org, sandbox.greenbuttonalliance.org
+    and services.greenbuttondata.org all negotiated TLSv1.3.
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    No response uses application/problem+json. The authorization server uses an
+    OAuth-style JSON error object; the resource server declares no error body at all.
+- id: json-api
+  name: JSON:API
+  conforms: false
+  evidence: The resource server is Atom/XML, not JSON:API.
+- id: odata
+  name: OData
+  conforms: false
+- id: fhir
+  name: HL7 FHIR
+  conforms: false
+  evidence: Out of domain - energy usage data, not health.
+- id: fapi
+  name: FAPI (Financial-grade API)
+  conforms: false
+  evidence: >-
+    Not claimed. Note that Green Button's mTLS + PKCE + short-lived token posture
+    lands in similar territory without asserting FAPI conformance.
+- id: rfc8594-sunset-header
+  name: The Sunset HTTP Header Field
+  conforms: false
+  evidence: No Sunset or Deprecation header contract is published.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    A real push/notification surface exists (FB_39, FB_69) but no AsyncAPI document
+    is published for it. See asyncapi/green-button-alliance-webhooks.yml.
+- id: opensearch-pagination
+  name: OpenSearch-style offset pagination
+  conforms: true
+  evidence: start-index / max-results query parameters on every collection operation (FB_37).
+- id: rfc4122-uuid
+  name: UUID
+  conforms: true
+  evidence: >-
+    GBA publishes /generating-persistent-uuids as normative guidance and uses
+    UUID-shaped resource ids throughout its wire contracts.
+certification_programme:
+  is_the_product: true
+  name: Green Button Testing and Certification Program
+  url: https://www.greenbuttonalliance.org/testing
+  purchase_url: https://www.greenbuttonalliance.org/offerings/certification
+  certifies_against: [NAESB REQ.21 ESPI v4.0, NAESB REQ.21 ESPI v3.3]
+  profiles: [Download My Data (DMD), Connect My Data (CMD)]
+  roles:
+  - Data Custodian (utility)
+  - Third-Party Service Provider (CMD verification delayed)
+  test_structure:
+    grouping: Function Blocks
+    catalog: vocabulary/green-button-alliance-function-blocks.yml
+    categories: [Certification, Cyber Security, Data Element, Data Format, File Name Format, Fundamental, Privacy, Protocol, User Interface, Usage Data, Retail Customer]
+  membership_required: false
+  directory: https://www.greenbuttonalliance.org/directory-services
+  machine_readable_registry: false
+  machine_readable_note: >-
+    There is no certified-products feed or registry API. Directory Services is
+    HTML-only and its terms forbid automated retrieval.
+privacy_programme:
+  name: U.S. DOE DataGuard Energy Data Privacy Program
+  role: GBA is an inaugural member of the DataGuard Energy Data Privacy partnership programme.
+  evidence: >-
+    GBA press release "GBA becomes inaugural member of DataGuard Energy Data Privacy
+    Partnership Program" on greenbuttonalliance.org/news.
+  security_privacy_function_blocks: [FB_13 Energy Usage Security and Privacy Class, FB_64 Retail Customer Security and Privacy Class]
+certifications_held_by_gba: []
+certifications_note: >-
+  GBA publishes no SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation of its own
+  and operates no trust center. It certifies others; it is not itself certified.

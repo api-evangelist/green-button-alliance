@@ -1,0 +1,122 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://www.greenbuttonalliance.org/purchase-the-standard,
+  https://www.greenbuttonalliance.org/sandbox,
+  https://www.greenbuttonalliance.org/testing,
+  https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-common/SECURITY.md,
+  plus derivation from the three harvested OpenAPI documents
+description: >-
+  How the Green Button interface changes over time. Two clocks run here and they are
+  not synchronised: the NAESB REQ.21 ESPI standard version (what a Data Custodian is
+  certified against) and the OpenESPI reference implementation version (what GBA's
+  own code is on). GBA publishes no API deprecation policy, no Sunset/Deprecation
+  header contract, no SLA and no status page - all four are recorded as absent
+  rather than guessed.
+versioning:
+  scheme: standard-version + uri-path
+  standard: NAESB REQ.21 Energy Services Provider Interface (ESPI)
+  current: ESPI v4.0
+  versions:
+  - version: ESPI v4.0
+    ratified: '2023-12'
+    changes: TLS 1.3 minimum for transport security; adds bill image delivery.
+    certifiable: true
+  - version: ESPI v3.3
+    published: '2020'
+    changes: OAuth 2.0, TLS 1.2, revised data structures.
+    certifiable: true
+  uri_path_segment: /espi/1_1/
+  uri_path_note: >-
+    The 1_1 segment has not moved across ESPI 3.x and 4.0 - it is not the standard
+    version and must not be read as one.
+  authorization_server_path: /api/v1
+  docs: https://www.greenbuttonalliance.org/purchase-the-standard
+  standard_access: >-
+    Paywalled. Implementers must purchase REQ.21 ESPI v4.0 or v3.3 from NAESB, or
+    receive it as a NAESB member benefit.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    GBA publishes no API deprecation or sunset policy and no RFC 8594 header
+    contract. What it does publish are in-spec [DEPRECATED] field markers and a
+    supported-versions table for its own reference implementation - both recorded
+    below. No Deprecation pointer is wired into apis.yml because there is no policy
+    page to point at.
+  deprecated_fields:
+  - field: thirdPartyScopeSelectionURI
+    resource: ApplicationInformation
+    marker: '\[DEPRECATED\] URI of the Third Party''s Scope Selection API used by Data Custodian Applications to initiate OAuth 2.0 Authorization Code Request'
+    source: openapi/green-button-alliance-application-information-openapi.yml
+  - field: dataCustodianScopeSelectionScreenURI
+    resource: ApplicationInformation
+    marker: '\[DEPRECATED\] URI used by the Third Party Application to obtain supported OAuth 2.0 Scope values during OAuth 2.0 Authorization Code Request'
+    source: openapi/green-button-alliance-application-information-openapi.yml
+  deprecated_operations: []
+  reference_implementation_support:
+    source: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-common/SECURITY.md
+    supported:
+    - version: 1.4.x
+      supported: true
+      note: Current Spring Boot 3.5 migration
+    - version: 1.3.x
+      supported: false
+      note: Legacy version, archived
+    - version: '< 1.3'
+      supported: false
+      note: Legacy versions, archived
+  archived_repositories:
+  - https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
+  - https://github.com/GreenButtonAlliance/OpenESPI-Common-java
+  archived_note: >-
+    The three original OpenESPI repositories are archived on GitHub and superseded
+    by the OpenESPI-GreenButton-Java monorepo. That is the clearest deprecation
+    signal GBA emits, and it is emitted by GitHub, not by a policy page.
+  superseded_documentation:
+  - what: Swagger 1.2 resource listings
+    where: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/api-docs
+    status: still served, superseded by the OpenAPI 3.0.0 document
+  - what: archive.greenbuttondata.org
+    status: explicitly "frozen in time" and no longer updated
+sla:
+  url: null
+  uptime_target: null
+  note: GBA operates no production API, so it publishes no availability commitment.
+status_page:
+  url: null
+  probed:
+  - {url: 'https://status.greenbuttonalliance.org', status: 403, note: 'Cloudflare edge answers for the wildcard; no status page is served.'}
+  note: >-
+    No status page exists. No StatusPage pointer is wired into apis.yml. The nearest
+    operational statement GBA makes is the /sandbox page.
+service_availability:
+  sandbox:
+    state: unavailable
+    expected_replacement: 2026Q3
+    statement: >-
+      GBA states it no longer provides access to the original reference
+      implementation and "The new platform won't be ready until sometime in 2026Q3
+      (based on our current assessments)"; developers are directed to the contact
+      form to be placed on a notification list.
+    url: https://www.greenbuttonalliance.org/sandbox
+  authorization_server:
+    state: contract-published-host-not-resolving
+    hosts:
+    - https://authorization.greenbuttonalliance.org
+    - https://staging-authorization.greenbuttonalliance.org
+    note: Both declared as servers in the OpenESPI Authorization Server OpenAPI; neither resolves in DNS as of 2026-07-27.
+certification_lifecycle:
+  url: https://www.greenbuttonalliance.org/testing
+  roles:
+  - Data Custodian (utility) - DMD and CMD testing available
+  - Third-Party Service Provider - GBA states CMD verification for third parties "has been delayed until 2024"
+  certification_status_values: [PENDING, CERTIFIED, EXPIRED, REVOKED]
+  certification_status_source: openapi/green-button-alliance-authorization-server-openapi.yml (ClientResponse.certificationStatus)
+  note: >-
+    The reference authorization server models certificate lifecycle per OAuth client,
+    including an EXPIRED and REVOKED state - the only machine-readable expression of
+    certification lifecycle GBA publishes anywhere.

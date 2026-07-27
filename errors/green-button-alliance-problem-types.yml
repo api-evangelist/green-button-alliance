@@ -1,0 +1,156 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/green-button-alliance-authorization-server-openapi.yml,
+  openapi/green-button-alliance-green-button-api-openapi.yml,
+  openapi/green-button-alliance-application-information-openapi.yml
+format: oauth2-error
+rfc9457: false
+description: >-
+  Derived from every 4xx/5xx response declared across the three published Green
+  Button OpenAPI documents. Two very different error postures sit side by side. The
+  CMD ESPI resource server contract declares status codes with a description and NO
+  response schema at all - there is no machine-readable error body in the published
+  contract, which is a real gap worth raising with GBA. The OpenESPI Authorization
+  Server declares a reusable, well-shaped OAuth 2.0 style JSON error object on every
+  failure path. Nothing here is invented: no title, remediation or type URI has been
+  authored beyond what the specs say.
+envelopes:
+- name: ErrorResponse
+  media_type: application/json
+  source: openapi/green-button-alliance-authorization-server-openapi.yml
+  fields:
+  - error
+  - error_description
+  - error_uri
+  - timestamp
+  - path
+  - correlationId
+- name: ValidationErrorResponse
+  media_type: application/json
+  source: openapi/green-button-alliance-authorization-server-openapi.yml
+  extends: ErrorResponse
+  fields:
+  - details[].field
+  - details[].message
+- name: (none)
+  source: openapi/green-button-alliance-green-button-api-openapi.yml
+  note: >-
+    The CMD resource server spec declares 400 and 403 with a description only - no
+    content block, no schema, no media type.
+problems:
+- status: 400
+  name: BadRequest
+  description: Bad Request
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /api/v1/oauth2/clients
+  - openapi/green-button-alliance-authorization-server-openapi.yml#PUT /api/v1/oauth2/clients/{clientId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /api/v1/datacustodian/verify-user
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findApplicationInformations
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getApplicationInformation
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findAuthorizations
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getAuthorization
+  - openapi/green-button-alliance-green-button-api-openapi.yml#downloadBulkData
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findUsagePoints
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getUsagePoint
+  - openapi/green-button-alliance-application-information-openapi.yml#getApplicationInformation
+- status: 401
+  name: Unauthorized
+  description: Unauthorized - authentication required or token invalid
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/health
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /userinfo
+  - openapi/green-button-alliance-application-information-openapi.yml#getApplicationInformation
+- status: 403
+  name: Forbidden / InsufficientScope
+  description: >-
+    Forbidden. On the OIDC UserInfo endpoint the authorization server returns the
+    InsufficientScope response with error "insufficient_scope" and
+    error_description "Token missing required openid scope".
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /userinfo
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /userinfo
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findApplicationInformations
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getApplicationInformation
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findAuthorizations
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getAuthorization
+  - openapi/green-button-alliance-green-button-api-openapi.yml#downloadBulkData
+  - openapi/green-button-alliance-green-button-api-openapi.yml#findUsagePoints
+  - openapi/green-button-alliance-green-button-api-openapi.yml#getUsagePoint
+  - openapi/green-button-alliance-application-information-openapi.yml#getApplicationInformation
+  live_observation: >-
+    HTTP 403 is also what GBA's own sandbox host returns to every anonymous probe,
+    because the sandbox is out of service - not because of a scope failure.
+- status: 404
+  name: NotFound
+  description: Resource not found
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#PUT /api/v1/oauth2/clients/{clientId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#DELETE /api/v1/oauth2/clients/{clientId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}/metrics
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}/usage-points
+  - openapi/green-button-alliance-application-information-openapi.yml#getApplicationInformation
+- status: 409
+  name: Conflict
+  description: Conflict - client already exists
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /api/v1/oauth2/clients
+- status: 422
+  name: ValidationError
+  description: Unprocessable entity - request failed field validation
+  envelope: ValidationErrorResponse
+  example_detail: '{field: clientName, message: "Client name is required"}'
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /api/v1/oauth2/clients
+  - openapi/green-button-alliance-authorization-server-openapi.yml#PUT /api/v1/oauth2/clients/{clientId}
+- status: 429
+  name: RateLimit
+  description: Rate limit exceeded
+  envelope: ErrorResponse
+  error_code: rate_limit_exceeded
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients
+- status: 500
+  name: InternalServerError
+  description: Internal server error
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /userinfo
+- status: 502
+  name: DataCustodianError
+  description: >-
+    Upstream Data Custodian error - the authorization server could not reach or was
+    rejected by the Data Custodian it federates with.
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /api/v1/datacustodian/verify-user
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}/usage-points
+- status: default
+  name: OAuth2Error
+  description: >-
+    Standard OAuth 2.0 error response on the /oauth2/authorize, /oauth2/token,
+    /oauth2/introspect and /oauth2/revoke endpoints.
+  envelope: ErrorResponse
+  source_operations:
+  - openapi/green-button-alliance-authorization-server-openapi.yml#POST /oauth2/token
+  - openapi/green-button-alliance-authorization-server-openapi.yml#GET /oauth2/authorize
+gaps:
+- >-
+  The CMD ESPI resource server contract - the one every certified Data Custodian
+  implements - declares no error body schema at all. An agent calling a certified
+  utility has only the HTTP status to work with.
+- >-
+  No error code registry is published. There is no named catalogue of ESPI error
+  conditions on greenbuttonalliance.org; the normative error rules live in the
+  paywalled NAESB REQ.21 standard.
+- No responses use application/problem+json (RFC 9457).

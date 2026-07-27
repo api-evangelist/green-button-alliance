@@ -1,0 +1,40 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the OpenESPI Authorization Server API
+  version: 1.0.0
+extends: openapi/green-button-alliance-authorization-server-openapi.yml
+x-generated: '2026-07-27'
+x-method: generated
+x-source: API Evangelist enrichment round 2026-07-27.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: green-button-alliance
+    x-apievangelist-harvest:
+      source: https://raw.githubusercontent.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/main/openespi-authserver/docs/openapi.yaml
+      fetched: '2026-07-27'
+      license: Apache-2.0
+    x-apievangelist-artifacts:
+      authentication: authentication/green-button-alliance-authentication.yml
+      errors: errors/green-button-alliance-problem-types.yml
+      rate_limits: rate-limits/green-button-alliance-rate-limits.yml
+      conformance: conformance/green-button-alliance-conformance.yml
+- target: $.servers
+  update:
+    x-apievangelist-server-status:
+    - {url: 'https://authorization.greenbuttonalliance.org', probed: '2026-07-27', dns: unresolved, live: false}
+    - {url: 'https://staging-authorization.greenbuttonalliance.org', probed: '2026-07-27', dns: unresolved, live: false}
+    x-apievangelist-note: The contract is published ahead of the deployment - neither declared host resolves in DNS.
+- target: $.paths
+  update:
+    x-apievangelist-operationid-gap: >-
+      No operation in this document declares an operationId. Every consumer must bind by
+      method + path, which is why mcp/green-button-alliance-tool-crosswalk.yml maps these
+      operations by path rather than by id. This is the single highest-value fix GBA
+      could make to this spec.
+- target: $.components.securitySchemes
+  update:
+    x-apievangelist-posture: >-
+      Unusually strong for an energy-data reference implementation - JWT bearer, HTTP
+      basic client auth, AND X.509 mutual TLS (tls_client_auth), with the spec stating
+      "TLS 1.3 ONLY" and PFS-only cipher suites.

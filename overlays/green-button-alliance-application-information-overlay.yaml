@@ -1,0 +1,39 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Green Button ApplicationInformation API
+  version: 1.0.0
+extends: openapi/green-button-alliance-application-information-openapi.yml
+x-generated: '2026-07-27'
+x-method: generated
+x-source: API Evangelist enrichment round 2026-07-27.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: green-button-alliance
+    x-apievangelist-role: >-
+      ApplicationInformation is Green Button's discovery document AND its RFC 7591 /
+      RFC 7592 dynamic client registration record. Read it before integrating with any
+      certified Data Custodian.
+    x-apievangelist-artifacts:
+      data_model: data-model/green-button-alliance-data-model.yml
+      scopes: scopes/green-button-alliance-scopes.yml
+      webhooks: asyncapi/green-button-alliance-webhooks.yml
+- target: $.servers
+  update:
+    x-apievangelist-server-status:
+    - {url: 'https://virtserver.swaggerhub.com/GreenButtonAlliance/Green_Button_Resource_Server', kind: mock, live: false}
+    - {url: 'https://sandbox.greenbuttonalliance.org:8443/DataCustodian', probed: '2026-07-27', http_status: 403, live: false}
+    - {url: 'https://sandboxdev.greenbuttonalliance.org:8443/DataCustodian', probed: '2026-07-27', http_status: 403, live: false}
+- target: $.components.schemas.ApplicationInformation
+  update:
+    x-apievangelist-deprecated-fields:
+    - thirdPartyScopeSelectionURI
+    - dataCustodianScopeSelectionScreenURI
+    x-apievangelist-sensitive-fields:
+    - client_secret
+    - registration_access_token
+    x-apievangelist-scope-field-note: >-
+      scope[] holds full ESPI function-block scope strings, one per supported
+      capability set - not individual scope words. Decode against
+      vocabulary/green-button-alliance-function-blocks.yml.
+    x-apievangelist-push-field: thirdPartyNotifyUri is the webhook target for the FB_39 BatchList push notification.
