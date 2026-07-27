@@ -1,0 +1,446 @@
+aid: green-button-alliance
+name: Green Button Alliance
+review:
+  question: >-
+    What is genuinely public at the Green Button Alliance — which specifications
+    can be downloaded without payment or membership, is there a certification
+    directory, and does GBA operate any real API?
+  answer: partially
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  tier: industry-body-standards
+  homeMarket: United States
+
+mandate:
+  regime: green-button-voluntary
+  status: not-applicable
+  verbatim: >-
+    The Green Button Alliance is the steward and certifier of the Green Button
+    standard, not an obligated data holder. No mandate compels GBA itself to
+    publish an API. In the United States Green Button is voluntary: there is no
+    federal mandate. GBA's own /us-initiatives page traces the initiative to a
+    2011 voluntary challenge from U.S. CTO Aneesh Chopra and names only
+    state-level obligation — Illinois (ComEd Grid Plan citing "required to
+    comply with data sharing requirements under 220 ILCS 5/16-122"),
+    Connecticut H.B. No 5443 "An Act Establishing an Energy Data Bill of
+    Rights" (2024), and proposed New Jersey rules under N.J.A.C. 14:5
+    establishing "customer ownership of Advanced Metering Infrastructure meter
+    data, standardized data sharing through the Green Button Standard". The
+    only hard mandate GBA documents anywhere is outside the United States:
+    Ontario's O. Reg. 633/21 under the Electricity Act, 1998, s. 25.35.8,
+    requiring LDCs to "implement Green Button Connect My Data (CMD) and
+    Download My Data (DMD) solutions", applied from November 2021 to the
+    majority of Ontario electricity and natural gas local distribution
+    companies. GBA states Nova Scotia has one certified utility and that it has
+    "no information about Green Button deployments in Manitoba, New Brunswick,
+    Newfoundland and Labrador, Prince Edward Island, Quebec, or Saskatchewan."
+  howVerified: >-
+    Read GBA's own /us-initiatives and /canadian-initiatives pages (both HTTP
+    200, 2026-07-27). No CDR-style register, no accreditation scheme and no
+    obligated base URI exists for GBA. Status is recorded as not-applicable
+    rather than voluntary-adopted because GBA runs no live implementation of
+    its own: its ESPI sandbox is offline (see accessGate below), so there is
+    nothing to verify as adopted.
+  notAnImplementation: >-
+    GBA press releases certifying utilities (for example ERTH Power and
+    Consumers Energy certified compliant to NAESB REQ.21 ESPI v3.3) are
+    evidence about THOSE utilities, not about GBA. A certification mark is not
+    an endpoint.
+
+dataStandard:
+  name: Green Button / NAESB REQ.21 Energy Services Provider Interface (ESPI)
+  versions:
+  - ESPI v4.0 — ratified December 2023; TLS 1.3 minimum for transport security;
+    adds bill image delivery. Current certification target.
+  - ESPI v3.3 — published 2020; OAuth 2.0, TLS 1.2, revised data structures.
+    Still certifiable.
+  profiles:
+  - Download My Data (DMD) — file download of ESPI/Atom XML.
+  - Connect My Data (CMD) — third-party API access under customer authorization.
+  underlyingSpecs:
+  - W3C XML — https://www.w3.org/XML/
+  - IETF RFC 4287 Atom Syndication Format
+  - IETF RFC 6749 OAuth 2.0 Authorization Framework
+  - IETF RFC 6750 OAuth 2.0 Bearer Token Usage
+  - IETF RFC 7591 OAuth 2.0 Dynamic Client Registration
+  - IETF RFC 7592 OAuth 2.0 Dynamic Client Registration Management
+  freelyDownloadable: false
+  gateNote: >-
+    THIS IS THE HEADLINE FINDING FOR A STANDARDS BODY. The normative standard
+    is paywalled. https://www.greenbuttonalliance.org/purchase-the-standard
+    (HTTP 200) states implementers undergoing testing "must have purchased
+    NAESB REQ.21 ESPI ver 4.0, NAESB REQ.21 ESPI ver 3.3, or have received
+    either version as a benefit of NAESB membership", and links an order form
+    at https://www.naesb.org/misc/naesb_matl_order_espi_standards.pdf. The
+    standard is sold by NAESB, not GBA. What IS free is GBA's derived material:
+    the OpenAPI 3.x definitions on GitHub under Apache 2.0, the Swagger 1.2
+    resource listings on GitHub Pages, and the explanatory technical pages
+    (accuracy, atom-elements, atom-and-espi, costandcurrency,
+    daylight-savings-time, generating-persistent-uuids, poweroftenmultiplier,
+    aggregated-data, usagepoint-location, utility-bill-data).
+
+dataSplit:
+  consumerDataApi: false
+  consumerDataNote: >-
+    GBA is not a utility and holds no customer data. It publishes the contract
+    a Data Custodian must implement so a third party can obtain an individual
+    customer's usage data under OAuth 2.0 authorization, but exposes no such
+    data itself. The one base URL in its OpenAPI document
+    (https://sandbox.greenbuttonalliance.org:8443/DataCustodian) is GBA's
+    sandbox and is not in service.
+  marketDataOpen: false
+  marketDataNote: >-
+    GBA publishes no grid, market, system or wholesale energy data of any kind.
+    The nearest thing to open data is Directory Services
+    (https://www.greenbuttonalliance.org/directory-services, HTTP 200), three
+    free browser-searchable databases of utilities, third-party app and service
+    providers, and utility-platform providers. It has no API and no
+    machine-readable endpoint, and its terms state use "is not approved for
+    automated retrieval, embedding, or screen-scraping of data". robots.txt
+    (HTTP 200) disallows /api/ and /novi-api/.
+  split: >-
+    Both closed, for different reasons. Consumer data is closed because GBA is
+    a standards body that never touches it; market data is closed because GBA
+    publishes none. What is open is the interface contract — the artifact class
+    a standards body should be open about — and even there the normative
+    document costs money while only the derived OpenAPI is free.
+
+accessGate:
+  gate: none-published
+  gated: true
+  whatADeveloperMustDo: >-
+    There is no live GBA API to onboard to. (1) Free, no signup: clone or fetch
+    the OpenAPI 3.0.0 definition at
+    https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+    (Apache 2.0) and browse the rendered reference at
+    https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/.
+    (2) To read the normative rules: buy NAESB REQ.21 ESPI v4.0 from NAESB or
+    join NAESB. (3) To test against a GBA sandbox: you cannot — GBA's /sandbox
+    page states it no longer provides access to the original reference
+    implementation and "The new platform won't be ready until sometime in
+    2026Q3 (based on our current assessments)"; developers are told to use
+    https://www.greenbuttonalliance.org/contact-us to be "placed on a list for
+    notification". (4) To certify an implementation: purchase a testing session
+    at https://www.greenbuttonalliance.org/offerings/certification — Data
+    Custodian DMD $3,000, CMD $3,200, combined $3,700, extra 2-hour window
+    $2,500, pre-certification testing $250/hour for non-members; GBA states
+    "Membership in the Green Button Alliance is not required for
+    Certification." (5) To reach real customer data: go to a certified Data
+    Custodian utility or a platform provider such as sponsor member UtilityAPI
+    — never to GBA.
+  developerPortal: https://www.greenbuttonalliance.org/developer-resources
+  developerPortalConfirmed: true
+  developerPortalNote: >-
+    HTTP 200, fully public, no login or paywall. It is a curated link page
+    (RFCs, NAESB, GitHub API docs, DMD Validator, on-site technical notes) plus
+    two member/paid offerings (technical education, certification). It is a
+    genuine self-serve developer surface, not a customer login.
+
+authModel:
+  greenButtonApi:
+    scheme: OAuth 2.0
+    flows:
+    - authorizationCode — authorizationUrl
+      https://sandbox.greenbuttonalliance.org:8443/oauth/authorize, tokenUrl
+      https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    - clientCredentials — tokenUrl
+      https://sandbox.greenbuttonalliance.org:8443/oauth/token
+    scopes: >-
+      The harvested OpenAPI declares an empty scopes object for both flows. No
+      scope strings are asserted here. ESPI scope syntax exists in the paywalled
+      NAESB standard and in the frozen archive at
+      https://archive.greenbuttondata.org/espi/access_tokens/ (HTTP 200), which
+      documents access_token, refresh_token and related token types; it is not
+      reproduced as a GBA-published scope list.
+    dynamicClientRegistration: >-
+      RFC 7591 / RFC 7592 are listed as normative references on
+      /developer-resources, indicating dynamic client registration is part of
+      the Green Button OAuth profile.
+    transport: TLS 1.3 minimum under ESPI v4.0; TLS 1.2 under ESPI v3.3.
+  associationSso:
+    scheme: OpenID Connect
+    discovery: https://www.greenbuttonalliance.org/.well-known/openid-configuration
+    fetchedAnonymously: true
+    httpStatus: 200
+    issuer: https://www.greenbuttonalliance.org
+    authorizationEndpoint: https://www.greenbuttonalliance.org/oauth/authorize
+    tokenEndpoint: https://www.greenbuttonalliance.org/oauth/token
+    userinfoEndpoint: https://www.greenbuttonalliance.org/oauth/userinfo
+    jwksUri: https://www.greenbuttonalliance.org/oauth/jwks
+    grantTypes: [authorization_code, refresh_token]
+    scopes: [openid, email, profile]
+    pkce: [S256]
+    tokenEndpointAuthMethods: [client_secret_post, client_secret_basic]
+    idTokenSigningAlgs: [RS256]
+    note: >-
+      This is the association management system's member single sign-on (claims
+      include member_type, member_status, member_sub_status, parent_id), almost
+      certainly Novi AMS given robots.txt disallows /novi-api/. It grants access
+      to membership, not to energy data. Do not confuse it with the Green Button
+      ESPI OAuth server.
+
+standardsBody:
+  publishesSpecifications: true
+  specificationsFree: false
+  certificationProgramme: true
+  certificationRoles:
+  - Data Custodian (utility) — DMD and CMD testing available.
+  - Third-Party Service Provider — GBA's testing page states CMD verification
+    for third parties "has been delayed until 2024".
+  certificationDirectory: >-
+    Yes, but only as a human-readable listing. GBA states a certification mark
+    plus "a listing in the GBA database helps promote tested solutions to a
+    broader audience", surfaced through Directory Services. There is no
+    machine-readable certified-products feed, no version-stamped registry API,
+    and no downloadable list. Individual certifications are announced as news
+    posts (e.g. ERTH Power's Green Button Connector Tool and Consumers Energy's
+    Green Button Connect, both to NAESB REQ.21 ESPI v3.3).
+  certificationCosts:
+    dataCustodianDmd: $3,000 (includes 2-hour testing window)
+    dataCustodianCmd: $3,200 (includes 2-hour testing window)
+    combinedDmdCmd: $3,700 (single 2-hour window)
+    additionalWindow: $2,500 per additional 2-hour window
+    preCertificationTesting: $250/hour
+    membershipRequired: false
+  howMuchIsPublic: >-
+    Roughly: interface contracts and explanatory material are public and
+    Apache-2.0 licensed; the normative standard, the working sandbox, and any
+    structured view of who is certified are not. For a body created by a White
+    House open-data initiative, the machine-readable surface is thinner than the
+    mission implies.
+
+organization:
+  legalForm: >-
+    A North Carolina 501(c)(3) nonprofit corporation filing federally in the USA
+    as an IRS IRC 501(c)(4) nonprofit.
+  headquarters: PO Box 268, Jamison, Pennsylvania 18929, United States
+  origin: >-
+    Formed following the 2012 White House call-to-action, at the request of the
+    White House, U.S. Department of Energy and NIST, to accelerate standardized
+    Green Button implementations.
+  affiliations:
+  - NAESB — publisher of the REQ.21 ESPI standard GBA certifies against.
+  - U.S. DOE DataGuard Energy Data Privacy Program.
+  sponsorMembers:
+  - Con Edison
+  - Enbridge Gas
+  - UtilityAPI
+
+probes:
+  date: '2026-07-27'
+  method: anonymous HTTPS GET with a browser User-Agent, redirects followed
+  results:
+  - url: https://greenbuttonalliance.org/
+    status: 403
+    note: 403 without a browser User-Agent; redirects to www.
+  - url: https://www.greenbuttonalliance.org/
+    status: 200
+  - url: https://www.greenbuttonalliance.org/developer-resources
+    status: 200
+  - url: https://www.greenbuttonalliance.org/sandbox
+    status: 200
+    note: Page exists; states the sandbox itself is unavailable until 2026Q3.
+  - url: https://www.greenbuttonalliance.org/testing
+    status: 200
+  - url: https://www.greenbuttonalliance.org/purchase-the-standard
+    status: 200
+  - url: https://www.greenbuttonalliance.org/directory-services
+    status: 200
+  - url: https://www.greenbuttonalliance.org/technical-info
+    status: 200
+  - url: https://www.greenbuttonalliance.org/about-us
+    status: 200
+  - url: https://www.greenbuttonalliance.org/us-initiatives
+    status: 200
+  - url: https://www.greenbuttonalliance.org/canadian-initiatives
+    status: 200
+  - url: https://www.greenbuttonalliance.org/.well-known/openid-configuration
+    status: 200
+    note: Real OIDC discovery JSON, member SSO. Harvested into review.yml above.
+  - url: https://www.greenbuttonalliance.org/robots.txt
+    status: 200
+    note: Disallows /api/, /novi-api/, /admin/, /login, /client-login.
+  - url: https://www.greenbuttonalliance.org/sitemap.xml
+    status: 200
+  - url: https://www.greenbuttonalliance.org/openapi.json
+    status: 404
+  - url: https://www.greenbuttonalliance.org/swagger.json
+    status: 404
+  - url: https://www.greenbuttonalliance.org/api
+    status: 404
+  - url: https://www.greenbuttonalliance.org/api-docs
+    status: 404
+  - url: https://www.greenbuttonalliance.org/docs
+    status: 404
+  - url: https://www.greenbuttonalliance.org/data
+    status: 404
+  - url: https://www.greenbuttonalliance.org/.well-known/security.txt
+    status: 404
+  - url: https://www.greenbuttonalliance.org/llms.txt
+    status: 404
+  - url: https://developer.greenbuttonalliance.org/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://developers.greenbuttonalliance.org/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://docs.greenbuttonalliance.org/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://api.greenbuttonalliance.org/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://data.greenbuttonalliance.org/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://dev.greenbuttonalliance.org/
+    status: 403
+    note: Host resolves and answers but blocks anonymous automated clients.
+  - url: https://dev.greenbuttonalliance.org/library.html
+    status: 403
+  - url: https://dmdvalidator.greenbuttonalliance.org/
+    status: 403
+    note: DMD Validator; blocks anonymous automated clients.
+  - url: https://sandbox.greenbuttonalliance.org/
+    status: 403
+  - url: https://sandboxdev.greenbuttonalliance.org/
+    status: 403
+  - url: https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/ApplicationInformation
+    status: 403
+    note: >-
+      The one base URL in the published OpenAPI. Refused anonymously, consistent
+      with GBA's statement that the sandbox is out of service.
+  - url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+    status: 200
+    note: Rendered Swagger UI reference; states "Access to Green Button APIs
+      requires an OAuth2 Access Token".
+  - url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/
+    status: 200
+  - url: https://services.greenbuttondata.org/ThirdParty
+    status: 200
+    note: Documented Third Party base path; responded 200 with an empty body.
+  - url: https://archive.greenbuttondata.org/
+    status: 200
+    note: Explicitly "frozen in time"; no longer updated.
+  - url: https://archive.greenbuttondata.org/espi/access_tokens/
+    status: 200
+  - url: https://www.greenbuttondata.org/
+    status: 200
+  - url: https://www.naesb.org/espi_standards.asp
+    status: 200
+
+harvest:
+  openapiDirectory: openapi/
+  specs:
+  - file: openapi/green-button-alliance-green-button-api-openapi.yml
+    sourceURL: https://raw.githubusercontent.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation/main/green-button-openapi.yaml
+    repository: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+    fetchDate: '2026-07-27'
+    httpStatus: 200
+    bytes: 20333
+    openapiVersion: 3.0.0
+    title: Green Button API Documentation
+    infoDescription: Green Button API - ESPI 4.0
+    license: Apache 2.0
+    parses: true
+    pathCount: 7
+    paths:
+    - GET /espi/1_1/resource/ApplicationInformation
+    - GET /espi/1_1/resource/ApplicationInformation/{applicationInformationId}
+    - GET /espi/1_1/resource/Authorization
+    - GET /espi/1_1/resource/Authorization/{authorizationId}
+    - GET /espi/1_1/resource/Batch/Bulk/{bulkId}
+    - GET /espi/1_1/resource/UsagePoint
+    - GET /espi/1_1/resource/UsagePoint/{usagePointId}
+    servers:
+    - https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+    securitySchemes: [oauth2 (authorizationCode, clientCredentials)]
+    note: >-
+      A JSON twin (green-button-openapi.json, HTTP 200, 20894 bytes) exists in
+      the same repository and parses identically; only the YAML is stored to
+      avoid duplication.
+  - file: openapi/green-button-alliance-application-information-openapi.yml
+    sourceURL: https://raw.githubusercontent.com/GreenButtonAlliance/SwaggerHub-GreenButton-API-Documentation/main/OAS_APIs/ApplicationInformation.yaml
+    repository: https://github.com/GreenButtonAlliance/SwaggerHub-GreenButton-API-Documentation
+    fetchDate: '2026-07-27'
+    httpStatus: 200
+    bytes: 12660
+    openapiVersion: 3.0.3
+    title: Green Button Resource Server ApplicationInformation API Documentation
+    license: Apache 2.0
+    parses: true
+    pathCount: 1
+    paths:
+    - /espi/1_1/resource/ApplicationInformation
+    servers:
+    - https://virtserver.swaggerhub.com/GreenButtonAlliance/Green_Button_Resource_Server
+      (SwaggerHub auto-mock)
+    - https://sandbox.greenbuttonalliance.org:8443/DataCustodian (production sandbox)
+    - https://sandboxdev.greenbuttonalliance.org:8443/DataCustodian (development sandbox)
+  notHarvested:
+  - what: Swagger 1.2 resource listings (legacy)
+    where: >-
+      https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/api-docs
+      plus 11 listings under API/listings/ (ApplicationInformation, Authorization,
+      Batch, ElectricPowerQualitySummary, IntervalBlock, LocalTimeParameters,
+      MeterReading, ReadingType, ServiceStatus, UsagePoint, UsageSummary) and 4
+      under ThirdParty/listings/.
+    httpStatus: 200
+    reason: >-
+      Real and reachable, but Swagger 1.2 — superseded by the OpenAPI 3.0.0
+      document above and not valid OpenAPI. Recorded here rather than converted,
+      because converting would fabricate a contract GBA has not published. Worth
+      noting the legacy listings cover 11 ESPI resources versus the 7 paths in
+      the current OpenAPI, so the modern definition is the narrower artifact.
+  - what: NAESB REQ.21 ESPI v4.0 / v3.3 normative standard
+    reason: Paywalled — sold by NAESB. Not fetched, not reproduced.
+  - what: Certified-implementation registry
+    reason: No machine-readable form exists; Directory Services is HTML-only and
+      forbids automated retrieval.
+
+sources:
+- url: https://www.greenbuttonalliance.org/
+  type: Website
+- url: https://www.greenbuttonalliance.org/about-us
+  type: Documentation
+  note: Legal form, headquarters, origin, DataGuard affiliation.
+- url: https://www.greenbuttonalliance.org/developer-resources
+  type: DeveloperPortal
+  note: Confirmed public self-serve link hub; source for the RFC/NAESB/GitHub links.
+- url: https://www.greenbuttonalliance.org/sandbox
+  type: Documentation
+  note: Source for the 2026Q3 sandbox unavailability statement.
+- url: https://www.greenbuttonalliance.org/testing
+  type: Documentation
+  note: Source for ESPI v4.0 certification scope, roles, pricing, membership-not-required.
+- url: https://www.greenbuttonalliance.org/purchase-the-standard
+  type: Documentation
+  note: Source for the paywall on the normative standard.
+- url: https://www.greenbuttonalliance.org/directory-services
+  type: Documentation
+  note: Source for the no-API, no-scraping directory posture.
+- url: https://www.greenbuttonalliance.org/us-initiatives
+  type: Documentation
+  note: Source for US voluntary posture and the named state actions.
+- url: https://www.greenbuttonalliance.org/canadian-initiatives
+  type: Documentation
+  note: Source for Ontario O. Reg. 633/21.
+- url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  type: APIReference
+- url: https://github.com/GreenButtonAlliance
+  type: GitHubOrganization
+  note: 57 public repositories; OpenESPI-Common-java, OpenESPI-DataCustodian-java,
+    OpenESPI-ThirdParty-java are the substantive Green Button implementations.
+- url: https://www.naesb.org/espi_standards.asp
+  type: Specification
+
+actions:
+  apisYmlCreated: true
+  apisListed: 2
+  specsHarvested: 2
+  reason: >-
+    Bootstrap identity plus honest API capture. Two real, parsing OpenAPI 3.x
+    documents were harvested from GBA's own GitHub organization under Apache
+    2.0. No live GBA-operated API was confirmed; the only documented base URL
+    refused anonymous access and GBA itself says the sandbox is out of service
+    until 2026Q3. Nothing was invented, converted, or inferred.

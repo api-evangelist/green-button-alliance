@@ -1,0 +1,186 @@
+aid: green-button-alliance
+url: https://raw.githubusercontent.com/api-evangelist/green-button-alliance/refs/heads/main/apis.yml
+name: Green Button Alliance
+kind: company
+description: >-
+  The Green Button Alliance (GBA) is the non-profit that stewards, tests and
+  certifies the Green Button standard — the NAESB REQ.21 Energy Services
+  Provider Interface (ESPI) profile for utility customer electricity, natural
+  gas and water usage data, in its Download My Data (DMD) and Connect My Data
+  (CMD) forms. Incorporated in North Carolina and headquartered at PO Box 268,
+  Jamison, Pennsylvania, it was formed after the 2012 White House / U.S.
+  Department of Energy / NIST call to action and is the industry's only source
+  of Green Button certification (Data Custodian DMD $3,000, CMD $3,200,
+  membership not required), alongside a free public Directory Services listing
+  of utilities, third-party apps and platform providers. GBA sits in the
+  standards-and-certification layer of the United States energy value chain,
+  above the investor-owned utilities and the energy-data platforms (UtilityAPI,
+  Con Edison and Enbridge Gas are sponsor members) that actually move consumer
+  data. Its API posture is contracts without a service: two real OpenAPI 3.x
+  definitions of the CMD ESPI resource server are published free under Apache
+  2.0 on GitHub, but the normative ESPI v4.0 standard itself must be purchased
+  from NAESB, GBA operates no production consumer-data or market-data API of
+  its own, and its ESPI sandbox at sandbox.greenbuttonalliance.org:8443 is
+  offline pending a replacement platform expected 2026Q3. Green Button in the
+  United States is voluntary — there is no federal mandate — with obligation
+  arriving only through state action and, outside the US, Ontario's O. Reg.
+  633/21.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+tags:
+- Energy
+- United States
+- Utilities
+- Electricity
+- Gas
+- Water
+- Smart Metering
+- Green Button
+- ESPI
+- Standards Body
+- Certification
+- Consumer Energy Data
+created: '2026-07-27'
+modified: '2026-07-27'
+specificationVersion: '0.19'
+apis:
+- aid: green-button-alliance:green-button-connect-my-data-api
+  name: Green Button Connect My Data (CMD) ESPI Resource Server API
+  description: >-
+    The Green Button Connect My Data resource server API as specified by the
+    Green Button Alliance against NAESB REQ.21 ESPI 4.0 — read access to
+    ApplicationInformation, Authorization, UsagePoint and bulk Batch resources
+    under /espi/1_1/resource, returned as ESPI/Atom XML and protected by OAuth
+    2.0 (authorization code and client credentials). GBA publishes the contract
+    openly under Apache 2.0 on GitHub; the only base URL documented in it is
+    GBA's own ESPI sandbox, which returned HTTP 403 to anonymous probes on
+    2026-07-27 and which GBA states is unavailable pending a new platform in
+    2026Q3. This is a specification of the interface every certified Data
+    Custodian implements, not a live service run by GBA.
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - Green Button
+  - Connect My Data
+  - ESPI
+  - Energy
+  - Usage Data
+  - OAuth 2.0
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-green-button-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/green-button-alliance-application-information-openapi.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-third-party-api
+  name: Green Button Third Party (OpenESPI) API
+  description: >-
+    The Third Party side of the OpenESPI reference implementation —
+    ApplicationInformation, Authorization and RetailCustomer operations
+    documented as legacy Swagger 1.2 resource listings served from GBA's
+    GitHub Pages site. The documented base path is
+    https://services.greenbuttondata.org/ThirdParty, which returned HTTP 200
+    with an empty body on 2026-07-27. No OpenAPI 3.x definition of this surface
+    was found and no live, callable service was confirmed; listed here because
+    the documentation is genuinely published and reachable.
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/
+  baseURL: https://services.greenbuttondata.org/ThirdParty
+  tags:
+  - Green Button
+  - Third Party
+  - ESPI
+  - Energy
+  - Reference Implementation
+  properties:
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-Common-java
+common:
+- type: Website
+  url: https://www.greenbuttonalliance.org/
+- type: About
+  url: https://www.greenbuttonalliance.org/about-us
+- type: Documentation
+  url: https://www.greenbuttonalliance.org/developer-resources
+- type: Documentation
+  url: https://www.greenbuttonalliance.org/technical-info
+- type: APIReference
+  url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+- type: OpenIDConnect
+  url: https://www.greenbuttonalliance.org/.well-known/openid-configuration
+  name: Member Single Sign-On Discovery
+  description: >-
+    Anonymously fetchable OpenID Connect discovery document (HTTP 200,
+    2026-07-27) for the association's member account system. Issuer
+    https://www.greenbuttonalliance.org, authorization code grant with PKCE
+    S256, scopes openid/email/profile, RS256 id tokens. This is membership SSO,
+    not access to any energy data.
+- type: Certification
+  url: https://www.greenbuttonalliance.org/testing
+  name: Green Button Certification and Testing Programme
+- type: Certification
+  url: https://www.greenbuttonalliance.org/offerings/certification
+- type: Directory
+  url: https://www.greenbuttonalliance.org/directory-services
+  name: Green Button Directory Services
+  description: >-
+    Free public browser-based directories of utilities, third-party app and
+    service providers, and utility-platform providers offering Green Button.
+    No API or machine-readable endpoint is published, and the terms state use
+    "is not approved for automated retrieval, embedding, or screen-scraping of
+    data."
+- type: Specification
+  url: https://www.greenbuttonalliance.org/purchase-the-standard
+  name: Purchase the Standard (NAESB REQ.21 ESPI)
+  description: >-
+    The normative standard is not freely downloadable. Implementers must
+    purchase NAESB REQ.21 ESPI v4.0 (ratified December 2023, TLS 1.3 minimum,
+    bill images) or v3.3 from NAESB, or receive it as a NAESB member benefit.
+- type: Specification
+  url: https://www.naesb.org/espi_standards.asp
+- type: Sandbox
+  url: https://www.greenbuttonalliance.org/sandbox
+  name: Green Button CMD Sandbox (unavailable)
+  description: >-
+    GBA states the reference-implementation sandbox is no longer provided and
+    the replacement platform "won't be ready until sometime in 2026Q3".
+    Developers are directed to the contact form to join a notification list.
+- type: Tools
+  url: https://dmdvalidator.greenbuttonalliance.org/
+  name: Green Button DMD Validator
+  description: >-
+    Public Download My Data file validator linked from the developer-resources
+    page; returned HTTP 403 to anonymous automated probes on 2026-07-27.
+- type: GitHubOrganization
+  url: https://github.com/GreenButtonAlliance
+- type: LinkedIn
+  url: https://www.linkedin.com/company/green-button-alliance
+- type: Blog
+  url: https://www.greenbuttonalliance.org/news
+- type: Membership
+  url: https://www.greenbuttonalliance.org/membership-information
+- type: ContactUs
+  url: https://www.greenbuttonalliance.org/contact-us
+- type: Archive
+  url: https://archive.greenbuttondata.org/
+  name: greenbuttondata.org Archive
+  description: >-
+    Historical Green Button developer material, explicitly "frozen in time" and
+    no longer updated; includes the ESPI OAuth 2.0 access-token reference at
+    https://archive.greenbuttondata.org/espi/access_tokens/.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
