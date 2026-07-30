@@ -48,16 +48,13 @@ apis:
 - aid: green-button-alliance:green-button-connect-my-data-api
   name: Green Button Connect My Data (CMD) ESPI Resource Server API
   description: >-
-    The Green Button Connect My Data resource server API as specified by the
-    Green Button Alliance against NAESB REQ.21 ESPI 4.0 — read access to
-    ApplicationInformation, Authorization, UsagePoint and bulk Batch resources
-    under /espi/1_1/resource, returned as ESPI/Atom XML and protected by OAuth
-    2.0 (authorization code and client credentials). GBA publishes the contract
-    openly under Apache 2.0 on GitHub; the only base URL documented in it is
-    GBA's own ESPI sandbox, which returned HTTP 403 to anonymous probes on
-    2026-07-27 and which GBA states is unavailable pending a new platform in
-    2026Q3. This is a specification of the interface every certified Data
-    Custodian implements, not a live service run by GBA.
+    The Green Button Connect My Data resource server API as specified by the Green Button Alliance against
+    NAESB REQ.21 ESPI 4.0 — read access to ApplicationInformation, Authorization, UsagePoint and bulk
+    Batch resources under /espi/1_1/resource, returned as ESPI/Atom XML and protected by OAuth 2.0 (authorization
+    code and client credentials). GBA publishes the contract openly under Apache 2.0 on GitHub; the only
+    base URL documented in it is GBA's own ESPI sandbox, which returned HTTP 403 to anonymous probes on
+    2026-07-27 and which GBA states is unavailable pending a new platform in 2026Q3. This is a specification
+    of the interface every certified Data Custodian implements, not a live service run by GBA.
   humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
   baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
   tags:
@@ -93,14 +90,12 @@ apis:
 - aid: green-button-alliance:green-button-third-party-api
   name: Green Button Third Party (OpenESPI) API
   description: >-
-    The Third Party side of the OpenESPI reference implementation —
-    ApplicationInformation, Authorization and RetailCustomer operations
-    documented as legacy Swagger 1.2 resource listings served from GBA's
-    GitHub Pages site. The documented base path is
-    https://services.greenbuttondata.org/ThirdParty, which returned HTTP 200
-    with an empty body on 2026-07-27. No OpenAPI 3.x definition of this surface
-    was found and no live, callable service was confirmed; listed here because
-    the documentation is genuinely published and reachable.
+    The Third Party side of the OpenESPI reference implementation — ApplicationInformation, Authorization
+    and RetailCustomer operations documented as legacy Swagger 1.2 resource listings served from GBA's
+    GitHub Pages site. The documented base path is https://services.greenbuttondata.org/ThirdParty, which
+    returned HTTP 200 with an empty body on 2026-07-27. No OpenAPI 3.x definition of this surface was
+    found and no live, callable service was confirmed; listed here because the documentation is genuinely
+    published and reachable.
   humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/
   baseURL: https://services.greenbuttondata.org/ThirdParty
   tags:
@@ -116,52 +111,16 @@ apis:
     url: https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
   - type: Repository
     url: https://github.com/GreenButtonAlliance/OpenESPI-Common-java
-- aid: green-button-alliance:openespi-authorization-server-api
-  name: OpenESPI Authorization Server API
+- aid: green-button-alliance:green-button-alliance-authorization-server-openapi
+  name: Green Button Alliance OpenESPI Authorization Server API
   description: >-
-    The OAuth 2.0 / OpenID Connect authorization server the Green Button Alliance
-    publishes as part of its OpenESPI reference implementation, and the only Green
-    Button contract with a modern write surface. Sixteen operations across four
-    groups - OAuth2 client management (/api/v1/oauth2/clients CRUD plus per-client
-    usage metrics), DataCustodian integration (user verification, retail-customer
-    lookup, customer usage points, health), an OIDC /userinfo endpoint extended with
-    ESPI claims (customer_id, customer_type, account_number, service_territory,
-    espi_scopes, authorized_usage_points), and the standard OAuth2 protocol endpoints
-    (authorize, token, introspect, revoke). Security posture is unusually strong -
-    JWT bearer, HTTP basic client authentication and X.509 mutual TLS
-    (tls_client_auth), with the specification stating "TLS 1.3 ONLY" and
-    Perfect-Forward-Secrecy-only cipher suites, and describing itself as certified for
-    NAESB ESPI 4.0 compliance including Function Block 4.5.15+. Harvested verbatim
-    from the openespi-authserver module under Apache 2.0 on 2026-07-27. Both declared
-    servers (authorization.greenbuttonalliance.org and its staging sibling) failed to
-    resolve in DNS on that date - the contract is published ahead of its deployment.
-    No operation in the document declares an operationId.
-  humanURL: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/tree/main/openespi-authserver
-  baseURL: https://authorization.greenbuttonalliance.org
-  tags:
-  - Green Button
-  - OAuth 2.0
-  - OpenID Connect
-  - ESPI
-  - Authorization Server
-  - Mutual TLS
+    Green Button Alliance OpenESPI Authorization Server API from Green Button Alliance — 12 path(s) described
+    in OpenAPI.
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
   properties:
   - type: OpenAPI
     url: openapi/green-button-alliance-authorization-server-openapi.yml
-  - type: Overlay
-    url: overlays/green-button-alliance-authorization-server-overlay.yaml
-  - type: Documentation
-    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/API_DOCUMENTATION.md
-  - type: Documentation
-    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OAUTH2_CLIENT_MANAGEMENT_API.md
-  - type: Documentation
-    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/docs/OIDC_USERINFO_ENDPOINT.md
-  - type: GettingStarted
-    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-authserver/QUICK_START.md
-  - type: RateLimits
-    url: rate-limits/green-button-alliance-rate-limits.yml
-  - type: Repository
-    url: https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java
 common:
 - type: AgenticAccess
   url: agentic-access/green-button-alliance-agentic-access.yml
