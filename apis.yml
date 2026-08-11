@@ -122,6 +122,11 @@ apis:
   - type: OpenAPI
     url: openapi/green-button-alliance-authorization-server-openapi.yml
 common:
+- type: IssueTracker
+  url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation/issues
+- type: License
+  name: Apache-2.0
+  url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation/blob/main/LICENSE
 - type: AgenticAccess
   url: agentic-access/green-button-alliance-agentic-access.yml
 - type: DomainSecurity
