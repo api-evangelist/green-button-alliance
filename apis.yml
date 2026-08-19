@@ -43,7 +43,7 @@ tags:
 - Consumer Energy Data
 created: '2026-07-27'
 modified: '2026-07-27'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: green-button-alliance:green-button-connect-my-data-api
   name: Green Button Connect My Data (CMD) ESPI Resource Server API
