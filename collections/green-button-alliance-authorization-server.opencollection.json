@@ -1,0 +1,450 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenESPI Authorization Server API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OAuth2 Client Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List OAuth2 clients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (zero-based)"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Page size"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort field"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search term for client name or ID"
+              },
+              {
+                "name": "espiCompliant",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ESPI compliance"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a paginated list of registered OAuth2 clients"
+        },
+        {
+          "info": {
+            "name": "Create new OAuth2 client",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Register a new OAuth2 client"
+        },
+        {
+          "info": {
+            "name": "Get client by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients/:clientId",
+            "params": [
+              {
+                "name": "clientId",
+                "value": "",
+                "type": "path",
+                "description": "Client identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a specific OAuth2 client by ID"
+        },
+        {
+          "info": {
+            "name": "Update client",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients/:clientId",
+            "params": [
+              {
+                "name": "clientId",
+                "value": "",
+                "type": "path",
+                "description": "Client identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an existing OAuth2 client"
+        },
+        {
+          "info": {
+            "name": "Delete client",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients/:clientId",
+            "params": [
+              {
+                "name": "clientId",
+                "value": "",
+                "type": "path",
+                "description": "Client identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove an OAuth2 client (soft delete)"
+        },
+        {
+          "info": {
+            "name": "Get client metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/oauth2/clients/:clientId/metrics",
+            "params": [
+              {
+                "name": "clientId",
+                "value": "",
+                "type": "path",
+                "description": "Client identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve usage metrics for a specific client"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "DataCustodian Integration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verify user credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/datacustodian/verify-user",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Verify user credentials with DataCustodian"
+        },
+        {
+          "info": {
+            "name": "Get retail customer info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/datacustodian/customers/:customerId",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "DataCustodian customer identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve retail customer information from DataCustodian"
+        },
+        {
+          "info": {
+            "name": "Get customer usage points",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/datacustodian/customers/:customerId/usage-points",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "DataCustodian customer identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve usage points for a customer"
+        },
+        {
+          "info": {
+            "name": "DataCustodian health check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/api/v1/datacustodian/health",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Check DataCustodian integration health status"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OIDC",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/userinfo",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "OpenID Connect UserInfo endpoint with ESPI-specific claims.\n\nReturns user information based on the scopes granted to the access token.\n\n**Standard OIDC Claims:**\n- `openid` scope: sub\n- `profile` scope: name, given_name, family_name, etc.\n- `email` scope: email, email_verified\n\n**ESPI-specific Claims:**\n- FB scopes: customer_id, usage_point_details, data_rights\n- Green Button Alliance extensions\n"
+        },
+        {
+          "info": {
+            "name": "Get user information (POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/userinfo",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "access_token",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Alternative POST method for UserInfo endpoint"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OAuth2 Standard",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authorization endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://authorization.greenbuttonalliance.org/oauth2/authorize",
+            "params": [
+              {
+                "name": "response_type",
+                "value": "",
+                "type": "query",
+                "description": "Response type (must be 'code')"
+              },
+              {
+                "name": "client_id",
+                "value": "",
+                "type": "query",
+                "description": "Client identifier"
+              },
+              {
+                "name": "redirect_uri",
+                "value": "",
+                "type": "query",
+                "description": "Callback URI"
+              },
+              {
+                "name": "scope",
+                "value": "",
+                "type": "query",
+                "description": "Requested scopes (space-separated)"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "CSRF protection parameter"
+              },
+              {
+                "name": "code_challenge",
+                "value": "",
+                "type": "query",
+                "description": "PKCE code challenge"
+              },
+              {
+                "name": "code_challenge_method",
+                "value": "",
+                "type": "query",
+                "description": "PKCE code challenge method"
+              }
+            ]
+          },
+          "docs": "OAuth2 authorization endpoint for initiating authorization code flow.\n\nSupports PKCE (Proof Key for Code Exchange) for enhanced security.\n"
+        },
+        {
+          "info": {
+            "name": "Token endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/oauth2/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "OAuth2 token endpoint for exchanging authorization codes for access tokens"
+        },
+        {
+          "info": {
+            "name": "Token introspection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/oauth2/introspect",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "OAuth2 token introspection endpoint"
+        },
+        {
+          "info": {
+            "name": "Token revocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://authorization.greenbuttonalliance.org/oauth2/revoke",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "OAuth2 token revocation endpoint"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

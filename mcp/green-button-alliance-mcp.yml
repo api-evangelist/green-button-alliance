@@ -2,19 +2,18 @@ generated: '2026-07-27'
 method: derived
 status: candidate
 source: openapi/green-button-alliance-green-button-api-openapi.yml, openapi/green-button-alliance-authorization-server-openapi.yml
-description: >-
-  The Green Button Alliance operates NO MCP server - searched and not found (no
-  mcp.greenbuttonalliance.org, nothing in the GitHub organisation, nothing in the
-  public MCP registries, no /.well-known/oauth-protected-resource anywhere). The tool
-  set below is DERIVED by API Evangelist from the operations in GBA's own published
-  OpenAPI documents. It is a candidate design, not a provider claim, and it describes
-  the interface a certified Data Custodian implements rather than a service GBA runs.
+description: The Green Button Alliance operates NO MCP server - searched and not found (no mcp.greenbuttonalliance.org,
+  nothing in the GitHub organisation, nothing in the public MCP registries, no /.well-known/oauth-protected-resource
+  anywhere). The tool set below is DERIVED by API Evangelist from the operations in GBA's own published
+  OpenAPI documents. It is a candidate design, not a provider claim, and it describes the interface a
+  certified Data Custodian implements rather than a service GBA runs.
 search:
   date: '2026-07-27'
   checked:
   - github.com/GreenButtonAlliance (all repositories)
   - mcp.greenbuttonalliance.org / api.greenbuttonalliance.org (DNS does not resolve)
-  - '/.well-known/oauth-protected-resource and /.well-known/oauth-authorization-server on every known host (404)'
+  - /.well-known/oauth-protected-resource and /.well-known/oauth-authorization-server on every known host
+    (404)
   - greenbuttonalliance.org developer resources and technical info pages
   result: no official or third-party MCP server found
 server:
@@ -22,10 +21,9 @@ server:
   transport: null
   url: null
   published: false
-transport_note: >-
-  Any implementation would have to be pointed at a specific certified Data Custodian's
-  base URL, because Green Button is a contract many utilities implement, not one
-  endpoint. GBA's own sandbox is out of service until 2026Q3.
+transport_note: Any implementation would have to be pointed at a specific certified Data Custodian's base
+  URL, because Green Button is a contract many utilities implement, not one endpoint. GBA's own sandbox
+  is out of service until 2026Q3.
 tools:
 - name: list_usage_points
   description: List the usage points (metered service delivery points) authorized to the caller.
@@ -57,36 +55,35 @@ tools:
   action_class: read
 - name: list_oauth_clients
   description: List registered OAuth2 clients on an OpenESPI Authorization Server.
-  source_operation: 'openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients'
+  source_operation: openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients
   action_class: read
 - name: get_oauth_client
   description: Retrieve a registered OAuth2 client by id.
-  source_operation: 'openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}'
+  source_operation: openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}
   action_class: read
 - name: get_oauth_client_metrics
   description: Retrieve usage metrics for a registered OAuth2 client.
-  source_operation: 'openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}/metrics'
+  source_operation: openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/oauth2/clients/{clientId}/metrics
   action_class: read
 - name: get_customer_usage_points
-  description: Retrieve the usage points of a retail customer through the authorization server's DataCustodian integration.
-  source_operation: 'openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}/usage-points'
+  description: Retrieve the usage points of a retail customer through the authorization server's DataCustodian
+    integration.
+  source_operation: openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/customers/{customerId}/usage-points
   action_class: read
 - name: datacustodian_health
   description: Check the health of the DataCustodian integration.
-  source_operation: 'openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/health'
+  source_operation: openapi/green-button-alliance-authorization-server-openapi.yml#GET /api/v1/datacustodian/health
   action_class: read
 write_operations_excluded:
-  note: >-
-    Client create/update/delete and verify-user are deliberately left out of the
-    candidate tool set. Creating or revoking an OAuth client on an energy-data
-    authorization server is a consequential write; see
-    agentic-access/green-button-alliance-agentic-access.yml for the recommended
-    execution contract before any of these are exposed to an agent.
+  note: Client create/update/delete and verify-user are deliberately left out of the candidate tool set.
+    Creating or revoking an OAuth client on an energy-data authorization server is a consequential write;
+    see agentic-access/green-button-alliance-agentic-access.yml for the recommended execution contract
+    before any of these are exposed to an agent.
   operations:
-  - 'POST /api/v1/oauth2/clients'
-  - 'PUT /api/v1/oauth2/clients/{clientId}'
-  - 'DELETE /api/v1/oauth2/clients/{clientId}'
-  - 'POST /api/v1/datacustodian/verify-user'
+  - POST /api/v1/oauth2/clients
+  - PUT /api/v1/oauth2/clients/{clientId}
+  - DELETE /api/v1/oauth2/clients/{clientId}
+  - POST /api/v1/datacustodian/verify-user
 authentication:
   required: true
   scheme: OAuth 2.0 bearer with an ESPI Function Block scope
@@ -95,3 +92,9 @@ caveats:
 - No live server exists to introspect - tools/list was never callable.
 - Responses are Atom/XML, not JSON; any implementation must parse ESPI XML.
 - All input schemas must be inherited from the backing OpenAPI operation; see mcp/green-button-alliance-tool-crosswalk.yml.
+deployment:
+  mode: none
+  verified: derived
+  tools: 12
+  checked: '2026-08-12'
+  source: catalog MCP census

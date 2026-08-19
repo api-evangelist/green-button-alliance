@@ -1,0 +1,268 @@
+{
+  "item": [
+    {
+      "id": "0e961618-c0d6-448b-89b1-447e498be259",
+      "name": "ApplicationInformation",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e581bfcc-2488-4a77-93a5-11072bd71193",
+          "name": "Find all ApplicationInformation resource entries.",
+          "request": {
+            "name": "Find all ApplicationInformation resource entries.",
+            "description": {
+              "content": "Returns all ApplicationInformation resource entries",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "espi",
+                "1_1",
+                "resource",
+                "ApplicationInformation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/atom+xml"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b7d05568-6a7c-4b49-a66a-08dcbfc53a0c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/atom+xml"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/atom+xml"
+                }
+              ],
+              "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<element>\n  <dataCustodianId>817212172021</dataCustodianId>\n  <dataCustodianApplicationStatus>2</dataCustodianApplicationStatus>\n  <thirdPartyApplicationDescription>The SolarPower application helps electricity customers to reduce their energy expenses by converting to solar energy.</thirdPartyApplicationDescription>\n  <thirdPartyApplicationStatus>3</thirdPartyApplicationStatus>\n  <thirdPartyApplicationType>1</thirdPartyApplicationType>\n  <thirdPartyApplicationUse>1</thirdPartyApplicationUse>\n  <thirdPartyPhone>(123) 456-7890</thirdPartyPhone>\n  <authorizationServerUri>https://sandbox.greenbuttonalliance.org:8443/DataCustodian</authorizationServerUri>\n  <thirdPartyNotifyUri>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/espi/1_1/Notification</thirdPartyNotifyUri>\n  <authorizationServerAuthorizationEndpoint>https://sandbox.greenbuttonalliance.org:8443/DataCustodian/oauth/authorize</authorizationServerAuthorizationEndpoint>\n  <authorizationServerRegistrationEndpoint>https://sandbox.greenbuttonalliance.org:8443/DataCustodian/oauth/register</authorizationServerRegistrationEndpoint>\n  <authorizationServerTokenEndpoint>https://sandbox.greenbuttonalliance.org:8443/DataCustodian/oauth/token</authorizationServerTokenEndpoint>\n  <dataCustodianBulkRequestURI>https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource/Batch/Bulk/{bulkId}</dataCustodianBulkRequestURI>\n  <dataCustodianResourceEndpoint>https://sandbox.greenbuttonalliance.org:8443/DataCustodian/espi/1_1/resource</dataCustodianResourceEndpoint>\n  <thirdPartyScopeSelectionURI>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/RetailCustomer/ScopeSelection</thirdPartyScopeSelectionURI>\n  <thirdPartyUserPortalScreenURI>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/</thirdPartyUserPortalScreenURI>\n  <client_secret>secret</client_secret>\n  <logo_uri>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/resources/ico/favicon.png</logo_uri>\n  <client_name>Green Button Alliance, Inc. Demonstration Third Party Application</client_name>\n  <client_uri>https://sandbox.greenbuttonalliance.org:8443/ThirdParty</client_uri>\nhttps://sandbox.greenbuttonalliance.org:8443/ThirdParty/espi/1_1/OAuthCallBack\n  <client_id>641d16dcbacb0e40e41d</client_id>\n  <tos_uri>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/TermsOfService</tos_uri>\n  <policy_uri>https://sandbox.greenbuttonalliance.org:8443/ThirdParty/UsagePolicy</policy_uri>\n  <software_id>Demo_ThirdParty_App</software_id>\n  <software_version>1.0.0</software_version>\n  <client_id_issued_at>1608418866</client_id_issued_at>\n  <client_secret_expires_at>0</client_secret_expires_at>\n  <contacts>dcoffin@greenbuttonalliance.org</contacts>\n  <contacts>jroberts@greenbuttonalliance.org</contacts>\n  <token_endpoint_auth_method>client_secret_basic</token_endpoint_auth_method>\n  <scope>FB=1_3_4_5_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13,FB=1_3_4_10_13_15_31_37_39;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13,FB=1_3_4_11_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13</scope>\n  <scope>FB=1_3_4_5_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13,FB=1_3_4_10_13_15_31_37_39;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13,FB=1_3_4_11_13_31_37_39;IntervalDuration=900;BlockDuration=monthly;HistoryLength=13</scope>\n  <grant_types>authorization_code,client_credentials,refresh_token</grant_types>\n  <grant_types>authorization_code,client_credentials,refresh_token</grant_types>\n  <response_types>code</response_types>\n  <registration_client_uri>https://sandbox.greenbuttonalliance.org:8443/DataCustpdian/espi/1_1/resource/ApplicationInformation/{applicationInformationId}</registration_client_uri>\n  <registration_access_token>c66b0854-ea1f-4e24-afb7-afab9e0f6c5e</registration_access_token>\n  <dataCustodianScopeSelectionScreenURI>https://sandbox.greenbuttonalliance.org:8443/DataCustpdian/RetailCustomer/ScopeSelectionList</dataCustodianScopeSelectionScreenURI>\n</element>",
+              "cookie": [],
+              "_postman_previewlanguage": "xml"
+            },
+            {
+              "id": "c451c209-c606-4aa4-87f7-c51744333875",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7c2ceec4-d128-4726-b09b-05cb2dc1c9da",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2e749948-baea-4d40-a830-f4e42101f59f",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c3861266-bd44-4662-a78e-d4088972bf40",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1036c7c8-8d62-4fd3-9e2e-07070e511e6a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "espi",
+                    "1_1",
+                    "resource",
+                    "ApplicationInformation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://virtserver.swaggerhub.com/GreenButtonAlliance/Green_Button_Resource_Server",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "489bcb0d-d3c3-41c5-9d9d-740f4c1349dd",
+    "name": "Green Button Resource Server ApplicationInformation API Documentation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The ApplicationInformation resource contains information used by Data Custodians and Third Party applications to communicate with each other.  The ApplicationInformation resource is created when a Third Party Application registers with a Data Custodian.\n\nContact Support:\n Name: Donald F. Coffin\n Email: dcoffin@greenbuttonalliance.org",
+      "type": "text/plain"
+    }
+  }
+}
