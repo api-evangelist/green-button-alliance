@@ -63,6 +63,13 @@ apis:
   - ESPI
   - Energy
   - Usage Data
+  - Authentication
+  tags_raw:
+  - Green Button
+  - Connect My Data
+  - ESPI
+  - Energy
+  - Usage Data
   - OAuth 2.0
   properties:
   - type: OpenAPI
@@ -99,6 +106,12 @@ apis:
   humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/
   baseURL: https://services.greenbuttondata.org/ThirdParty
   tags:
+  - Green Button
+  - Third-Party
+  - ESPI
+  - Energy
+  - Reference Implementation
+  tags_raw:
   - Green Button
   - Third Party
   - ESPI
