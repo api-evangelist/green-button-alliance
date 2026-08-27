@@ -45,55 +45,6 @@ created: '2026-07-27'
 modified: '2026-07-27'
 specificationVersion: '0.23'
 apis:
-- aid: green-button-alliance:green-button-connect-my-data-api
-  name: Green Button Connect My Data (CMD) ESPI Resource Server API
-  description: >-
-    The Green Button Connect My Data resource server API as specified by the Green Button Alliance against
-    NAESB REQ.21 ESPI 4.0 — read access to ApplicationInformation, Authorization, UsagePoint and bulk
-    Batch resources under /espi/1_1/resource, returned as ESPI/Atom XML and protected by OAuth 2.0 (authorization
-    code and client credentials). GBA publishes the contract openly under Apache 2.0 on GitHub; the only
-    base URL documented in it is GBA's own ESPI sandbox, which returned HTTP 403 to anonymous probes on
-    2026-07-27 and which GBA states is unavailable pending a new platform in 2026Q3. This is a specification
-    of the interface every certified Data Custodian implements, not a live service run by GBA.
-  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
-  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
-  tags:
-  - Green Button
-  - Connect My Data
-  - ESPI
-  - Energy
-  - Usage Data
-  - Authentication
-  tags_raw:
-  - Green Button
-  - Connect My Data
-  - ESPI
-  - Energy
-  - Usage Data
-  - OAuth 2.0
-  properties:
-  - type: OpenAPI
-    url: openapi/green-button-alliance-green-button-api-openapi.yml
-  - type: OpenAPI
-    url: openapi/green-button-alliance-application-information-openapi.yml
-  - type: Overlay
-    url: overlays/green-button-alliance-green-button-api-overlay.yaml
-  - type: Overlay
-    url: overlays/green-button-alliance-application-information-overlay.yaml
-  - type: Examples
-    url: examples/_index.yml
-  - type: APIReference
-    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
-  - type: Documentation
-    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
-  - type: Documentation
-    url: https://www.greenbuttonalliance.org/developer-resources
-  - type: Repository
-    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
-  - type: Repository
-    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
-  - type: Specification
-    url: https://www.naesb.org/espi_standards.asp
 - aid: green-button-alliance:green-button-third-party-api
   name: Green Button Third Party (OpenESPI) API
   description: >-
@@ -124,17 +75,204 @@ apis:
     url: https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java
   - type: Repository
     url: https://github.com/GreenButtonAlliance/OpenESPI-Common-java
-- aid: green-button-alliance:green-button-alliance-authorization-server-openapi
-  name: Green Button Alliance OpenESPI Authorization Server API
+- aid: green-button-alliance:green-button-alliance-applicationinformation-api
+  name: Green Button Alliance Application Information API
   description: >-
-    Green Button Alliance OpenESPI Authorization Server API from Green Button Alliance — 12 path(s) described
-    in OpenAPI.
+    The ApplicationInformation API from Green Button Alliance — 2 operation(s) for applicationinformation.
   humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
   baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - ApplicationInformation
   properties:
   - type: OpenAPI
-    url: openapi/green-button-alliance-authorization-server-openapi.yml
+    url: openapi/green-button-alliance-applicationinformation-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-authorization-api
+  name: Green Button Alliance Authorization API
+  description: Authorization endpoints
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - Authorization
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-authorization-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-batch-api
+  name: Green Button Alliance Batch API
+  description: Batch data transfer endpoints
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-batch-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-datacustodian-integration-api
+  name: Green Button Alliance DataCustodian Integration API
+  description: Integration with OpenESPI DataCustodian
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - DataCustodian Integration
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-datacustodian-integration-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-oauth2-client-management-api
+  name: Green Button Alliance OAuth2 Client Management API
+  description: Manage OAuth2 client registrations
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - OAuth2 Client Management
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-oauth2-client-management-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-oauth2-standard-api
+  name: Green Button Alliance OAuth2 Standard API
+  description: Standard OAuth2 endpoints
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - OAuth2 Standard
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-oauth2-standard-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-oidc-api
+  name: Green Button Alliance OIDC API
+  description: OpenID Connect endpoints
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - OIDC
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-oidc-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
+- aid: green-button-alliance:green-button-alliance-usagepoint-api
+  name: Green Button Alliance Usage Point API
+  description: Usage Point endpoints
+  humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
+  tags:
+  - UsagePoint
+  properties:
+  - type: OpenAPI
+    url: openapi/green-button-alliance-usagepoint-api-openapi.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: APIReference
+    url: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd
+  - type: Documentation
+    url: https://www.greenbuttonalliance.org/developer-resources
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation
+  - type: Repository
+    url: https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java
+  - type: Specification
+    url: https://www.naesb.org/espi_standards.asp
 common:
+- type: Overlay
+  url: overlays/green-button-alliance-green-button-api-overlay.yaml
+- type: Overlay
+  url: overlays/green-button-alliance-application-information-overlay.yaml
 - type: IssueTracker
   url: https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation/issues
 - type: License
