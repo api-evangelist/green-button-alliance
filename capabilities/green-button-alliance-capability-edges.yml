@@ -1,0 +1,26 @@
+slug: green-button-alliance
+provider: Green Button Alliance
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Power & Water Utilities
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: UsagePoint
+  spec_file: green-button-alliance-usagepoint-api-openapi.yml
+  capability_id: BC-3910.10
+  capability_id_l1: BC-3910
+  capability_name: Utility Customer Account Management
+  confidence: 0.72
+  evidence: 'GET /espi/1_1/resource/UsagePoint  findUsagePoints  Retrieve all Usage Points; vendor: "ESPI
+    profile for utility customer electricity, natural gas and water usage data"'
+  reason: The ESPI UsagePoint is the utility supply/service point to which customer usage data is attached,
+    so the surface is utility customer & metering management; the sub-capability for supply-point identifiers
+    is the closest fit, though it borders on meter data acquisition.

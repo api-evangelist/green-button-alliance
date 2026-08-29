@@ -283,6 +283,9 @@ apis:
   - type: Specification
     url: https://www.naesb.org/espi_standards.asp
 common:
+- type: CapabilityMap
+  url: capabilities/green-button-alliance-capability-edges.yml
+  name: Green Button Alliance Business Capability Map
 - type: Overlay
   url: overlays/green-button-alliance-green-button-api-overlay.yaml
 - type: Overlay
