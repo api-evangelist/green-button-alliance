@@ -27,6 +27,20 @@ description: >-
   United States is voluntary — there is no federal mandate — with obligation
   arriving only through state action and, outside the US, Ontario's O. Reg.
   633/21.
+deliveryModel:
+  model: open-core
+  license: Apache-2.0
+  open_source: true
+  commercial: true
+  callable_host: true
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://assets-002.noviams.com/novi-file-uploads/gba/structure/gba-logo-2023-tm-500-1.png
 tags:
 - Energy
