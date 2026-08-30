@@ -1,0 +1,316 @@
+openapi: 3.2.0
+info:
+  title: OpenESPI Authorization Server OAuth2 Standard API
+  description: "OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.\n\nThis API provides:\n- OAuth2 client management\n- DataCustodian integration\n- OIDC UserInfo endpoint with ESPI claims\n- NAESB ESPI 4.0 compliance features\n\n## Security\n\n- **TLS 1.3 ONLY**: All communications must use TLS 1.3\n- **Certificate Authentication**: Support for X.509 client certificates\n- **Bearer Token**: Required for API access\n- **Perfect Forward Secrecy**: All cipher suites support PFS\n\n## ESPI Compliance\n\nThis server is certified for NAESB ESPI 4.0 compliance and supports:\n- Green Button Connect My Data (CMD)\n- Function Block 4.5.15+ \n- Certificate-based client authentication\n- ESPI-specific scope validation\n"
+  version: 1.0.0
+  contact:
+    name: Green Button Alliance
+    email: support@greenbuttonalliance.org
+    url: https://www.greenbuttonalliance.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  termsOfService: https://www.greenbuttonalliance.org/terms
+servers:
+- url: https://authorization.greenbuttonalliance.org
+  description: Production server
+- url: https://staging-authorization.greenbuttonalliance.org
+  description: Staging server
+security:
+- BearerAuth: []
+- ClientCertificate: []
+tags:
+- name: OAuth2 Standard
+  description: Standard OAuth2 endpoints
+paths:
+  /oauth2/authorize:
+    get:
+      tags:
+      - OAuth2 Standard
+      summary: Authorization endpoint
+      description: 'OAuth2 authorization endpoint for initiating authorization code flow.
+
+
+        Supports PKCE (Proof Key for Code Exchange) for enhanced security.
+
+        '
+      parameters:
+      - name: response_type
+        in: query
+        required: true
+        description: Response type (must be 'code')
+        schema:
+          type: string
+          enum:
+          - code
+      - name: client_id
+        in: query
+        required: true
+        description: Client identifier
+        schema:
+          type: string
+      - name: redirect_uri
+        in: query
+        required: true
+        description: Callback URI
+        schema:
+          type: string
+          format: uri
+      - name: scope
+        in: query
+        required: true
+        description: Requested scopes (space-separated)
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: true
+        description: CSRF protection parameter
+        schema:
+          type: string
+      - name: code_challenge
+        in: query
+        description: PKCE code challenge
+        schema:
+          type: string
+      - name: code_challenge_method
+        in: query
+        description: PKCE code challenge method
+        schema:
+          type: string
+          enum:
+          - S256
+      responses:
+        '302':
+          description: Redirect to callback URI with authorization code
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Authentication required
+  /oauth2/token:
+    post:
+      tags:
+      - OAuth2 Standard
+      summary: Token endpoint
+      description: OAuth2 token endpoint for exchanging authorization codes for access tokens
+      security:
+      - ClientCredentials: []
+      - ClientCertificate: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/AuthorizationCodeTokenRequest'
+              - $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Access token response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/OAuth2Error'
+        '401':
+          $ref: '#/components/responses/OAuth2Error'
+  /oauth2/introspect:
+    post:
+      tags:
+      - OAuth2 Standard
+      summary: Token introspection
+      description: OAuth2 token introspection endpoint
+      security:
+      - ClientCredentials: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntrospectionRequest'
+      responses:
+        '200':
+          description: Token introspection response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrospectionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /oauth2/revoke:
+    post:
+      tags:
+      - OAuth2 Standard
+      summary: Token revocation
+      description: OAuth2 token revocation endpoint
+      security:
+      - ClientCredentials: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RevocationRequest'
+      responses:
+        '200':
+          description: Token revoked successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    RevocationRequest:
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+          enum:
+          - access_token
+          - refresh_token
+    IntrospectionResponse:
+      type: object
+      properties:
+        active:
+          type: boolean
+        sub:
+          type: string
+        aud:
+          type: string
+        iss:
+          type: string
+        exp:
+          type: integer
+        iat:
+          type: integer
+        scope:
+          type: string
+        client_id:
+          type: string
+        token_type:
+          type: string
+    IntrospectionRequest:
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+          enum:
+          - access_token
+          - refresh_token
+    AuthorizationCodeTokenRequest:
+      type: object
+      required:
+      - grant_type
+      - code
+      - redirect_uri
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - authorization_code
+        code:
+          type: string
+        redirect_uri:
+          type: string
+          format: uri
+        code_verifier:
+          type: string
+          description: PKCE code verifier
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
+    RefreshTokenRequest:
+      type: object
+      required:
+      - grant_type
+      - refresh_token
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - refresh_token
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Optional scope limitation
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          enum:
+          - Bearer
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Granted scopes
+        id_token:
+          type: string
+          description: OpenID Connect ID token
+  responses:
+    OAuth2Error:
+      description: OAuth2 error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            invalid_grant:
+              value:
+                error: invalid_grant
+                error_description: The provided authorization grant is invalid
+            invalid_client:
+              value:
+                error: invalid_client
+                error_description: Client authentication failed
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_token
+            error_description: The access token is invalid or expired
+            timestamp: '2024-01-16T15:30:00Z'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+    ClientCertificate:
+      type: mutualTLS
+externalDocs:
+  description: OpenESPI Authorization Server Documentation
+  url: https://docs.greenbuttonalliance.org/authorization-server

@@ -1,0 +1,299 @@
+openapi: 3.2.0
+info:
+  title: OpenESPI Authorization Server OIDC API
+  description: "OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.\n\nThis API provides:\n- OAuth2 client management\n- DataCustodian integration\n- OIDC UserInfo endpoint with ESPI claims\n- NAESB ESPI 4.0 compliance features\n\n## Security\n\n- **TLS 1.3 ONLY**: All communications must use TLS 1.3\n- **Certificate Authentication**: Support for X.509 client certificates\n- **Bearer Token**: Required for API access\n- **Perfect Forward Secrecy**: All cipher suites support PFS\n\n## ESPI Compliance\n\nThis server is certified for NAESB ESPI 4.0 compliance and supports:\n- Green Button Connect My Data (CMD)\n- Function Block 4.5.15+ \n- Certificate-based client authentication\n- ESPI-specific scope validation\n"
+  version: 1.0.0
+  contact:
+    name: Green Button Alliance
+    email: support@greenbuttonalliance.org
+    url: https://www.greenbuttonalliance.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  termsOfService: https://www.greenbuttonalliance.org/terms
+servers:
+- url: https://authorization.greenbuttonalliance.org
+  description: Production server
+- url: https://staging-authorization.greenbuttonalliance.org
+  description: Staging server
+security:
+- BearerAuth: []
+- ClientCertificate: []
+tags:
+- name: OIDC
+  description: OpenID Connect endpoints
+paths:
+  /userinfo:
+    get:
+      tags:
+      - OIDC
+      summary: Get user information
+      description: 'OpenID Connect UserInfo endpoint with ESPI-specific claims.
+
+
+        Returns user information based on the scopes granted to the access token.
+
+
+        **Standard OIDC Claims:**
+
+        - `openid` scope: sub
+
+        - `profile` scope: name, given_name, family_name, etc.
+
+        - `email` scope: email, email_verified
+
+
+        **ESPI-specific Claims:**
+
+        - FB scopes: customer_id, usage_point_details, data_rights
+
+        - Green Button Alliance extensions
+
+        '
+      security:
+      - BearerAuth:
+        - openid
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/InsufficientScope'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+      - OIDC
+      summary: Get user information (POST)
+      description: Alternative POST method for UserInfo endpoint
+      security:
+      - BearerAuth:
+        - openid
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  description: Access token (alternative to Authorization header)
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/InsufficientScope'
+components:
+  schemas:
+    UserInfoResponse:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Subject identifier
+        name:
+          type: string
+          description: Full name
+        given_name:
+          type: string
+          description: Given name
+        family_name:
+          type: string
+          description: Family name
+        preferred_username:
+          type: string
+          description: Preferred username
+        email:
+          type: string
+          format: email
+          description: Email address
+        email_verified:
+          type: boolean
+          description: Email verification status
+        locale:
+          type: string
+          description: Locale preference
+        zoneinfo:
+          type: string
+          description: Time zone
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update time
+        aud:
+          type: string
+          description: Audience (client ID)
+        iss:
+          type: string
+          description: Issuer
+        iat:
+          type: string
+          format: date-time
+          description: Issued at time
+        exp:
+          type: string
+          format: date-time
+          description: Expiration time
+        auth_time:
+          type: string
+          format: date-time
+          description: Authentication time
+        scope:
+          type: string
+          description: Granted scopes
+        customer_id:
+          type: string
+          description: DataCustodian customer identifier
+        customer_type:
+          type: string
+          enum:
+          - RESIDENTIAL
+          - COMMERCIAL
+          - INDUSTRIAL
+          description: Customer type
+        account_number:
+          type: string
+          description: Utility account number
+        service_territory:
+          type: string
+          description: Geographic service territory
+        espi_scopes:
+          type: array
+          items:
+            type: string
+          description: ESPI-specific scopes granted
+        datacustodian_grant_id:
+          type: string
+          description: DataCustodian grant identifier
+        authorized_usage_points:
+          type: array
+          items:
+            type: string
+          description: Authorized usage point IDs
+        usage_point_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsagePointInfo'
+          description: Detailed usage point information
+        gba_version:
+          type: string
+          description: Green Button Alliance version
+        espi_version:
+          type: string
+          description: NAESB ESPI version
+        data_rights:
+          type: array
+          items:
+            type: string
+            enum:
+            - ENERGY_USAGE_DATA
+            - 15_MINUTE_INTERVALS
+            - HOURLY_INTERVALS
+            - DAILY_USAGE_DATA
+            - MONTHLY_BILLING_DATA
+            - ADMIN_ACCESS
+            - UPLOAD_ACCESS
+          description: Granted data access rights
+    UsagePointInfo:
+      type: object
+      properties:
+        usage_point_id:
+          type: string
+        usage_point_uuid:
+          type: string
+          format: uuid
+        service_category:
+          type: string
+          enum:
+          - ELECTRICITY
+          - GAS
+          - WATER
+          - TIME
+        service_kind:
+          type: string
+          enum:
+          - ENERGY
+          - DEMAND
+          - VOLTAGE
+          - CURRENT
+        meter_number:
+          type: string
+        service_address:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_token
+            error_description: The access token is invalid or expired
+            timestamp: '2024-01-16T15:30:00Z'
+    InsufficientScope:
+      description: Insufficient scope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: insufficient_scope
+            error_description: Token missing required openid scope
+            timestamp: '2024-01-16T15:30:00Z'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: server_error
+            error_description: Internal server error
+            timestamp: '2024-01-16T15:30:00Z'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+    ClientCertificate:
+      type: mutualTLS
+externalDocs:
+  description: OpenESPI Authorization Server Documentation
+  url: https://docs.greenbuttonalliance.org/authorization-server

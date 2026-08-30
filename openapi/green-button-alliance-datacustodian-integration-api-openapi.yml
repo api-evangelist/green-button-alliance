@@ -1,0 +1,341 @@
+openapi: 3.2.0
+info:
+  title: OpenESPI Authorization Server DataCustodian Integration API
+  description: "OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.\n\nThis API provides:\n- OAuth2 client management\n- DataCustodian integration\n- OIDC UserInfo endpoint with ESPI claims\n- NAESB ESPI 4.0 compliance features\n\n## Security\n\n- **TLS 1.3 ONLY**: All communications must use TLS 1.3\n- **Certificate Authentication**: Support for X.509 client certificates\n- **Bearer Token**: Required for API access\n- **Perfect Forward Secrecy**: All cipher suites support PFS\n\n## ESPI Compliance\n\nThis server is certified for NAESB ESPI 4.0 compliance and supports:\n- Green Button Connect My Data (CMD)\n- Function Block 4.5.15+ \n- Certificate-based client authentication\n- ESPI-specific scope validation\n"
+  version: 1.0.0
+  contact:
+    name: Green Button Alliance
+    email: support@greenbuttonalliance.org
+    url: https://www.greenbuttonalliance.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  termsOfService: https://www.greenbuttonalliance.org/terms
+servers:
+- url: https://authorization.greenbuttonalliance.org
+  description: Production server
+- url: https://staging-authorization.greenbuttonalliance.org
+  description: Staging server
+security:
+- BearerAuth: []
+- ClientCertificate: []
+tags:
+- name: DataCustodian Integration
+  description: Integration with OpenESPI DataCustodian
+paths:
+  /api/v1/datacustodian/verify-user:
+    post:
+      tags:
+      - DataCustodian Integration
+      summary: Verify user credentials
+      description: Verify user credentials with DataCustodian
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyUserRequest'
+      responses:
+        '200':
+          description: User verification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyUserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/DataCustodianError'
+  /api/v1/datacustodian/customers/{customerId}:
+    get:
+      tags:
+      - DataCustodian Integration
+      summary: Get retail customer info
+      description: Retrieve retail customer information from DataCustodian
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: DataCustodian customer identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Customer information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailCustomerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/DataCustodianError'
+  /api/v1/datacustodian/customers/{customerId}/usage-points:
+    get:
+      tags:
+      - DataCustodian Integration
+      summary: Get customer usage points
+      description: Retrieve usage points for a customer
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        description: DataCustodian customer identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Usage points information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsagePointsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/DataCustodianError'
+  /api/v1/datacustodian/health:
+    get:
+      tags:
+      - DataCustodian Integration
+      summary: DataCustodian health check
+      description: Check DataCustodian integration health status
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: client_not_found
+            error_description: The specified client was not found
+            timestamp: '2024-01-16T15:30:00Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_request
+            error_description: The request is malformed
+            timestamp: '2024-01-16T15:30:00Z'
+            path: /api/v1/oauth2/clients
+    DataCustodianError:
+      description: DataCustodian integration error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: datacustodian_error
+            error_description: DataCustodian service is unavailable
+            timestamp: '2024-01-16T15:30:00Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_token
+            error_description: The access token is invalid or expired
+            timestamp: '2024-01-16T15:30:00Z'
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - HEALTHY
+          - DEGRADED
+          - UNHEALTHY
+        datacustodianVersion:
+          type: string
+        connectionStatus:
+          type: string
+          enum:
+          - CONNECTED
+          - DISCONNECTED
+          - ERROR
+        responseTime:
+          type: integer
+          description: Response time in milliseconds
+        lastSuccessfulCall:
+          type: string
+          format: date-time
+        metrics:
+          $ref: '#/components/schemas/HealthMetrics'
+    HealthMetrics:
+      type: object
+      properties:
+        totalRequests:
+          type: integer
+          format: int64
+        successfulRequests:
+          type: integer
+          format: int64
+        failedRequests:
+          type: integer
+          format: int64
+        averageResponseTime:
+          type: integer
+          description: Average response time in milliseconds
+    UsagePoint:
+      type: object
+      properties:
+        usagePointId:
+          type: string
+        usagePointUUID:
+          type: string
+          format: uuid
+        serviceCategory:
+          type: string
+          enum:
+          - ELECTRICITY
+          - GAS
+          - WATER
+          - TIME
+        serviceKind:
+          type: string
+          enum:
+          - ENERGY
+          - DEMAND
+          - VOLTAGE
+          - CURRENT
+        meterNumber:
+          type: string
+        serviceAddress:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        installationDate:
+          type: string
+          format: date-time
+    VerifyUserRequest:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    UsagePointsResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        usagePoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsagePoint'
+    VerifyUserResponse:
+      type: object
+      properties:
+        verified:
+          type: boolean
+        customerId:
+          type: string
+        customerType:
+          type: string
+          enum:
+          - RESIDENTIAL
+          - COMMERCIAL
+          - INDUSTRIAL
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
+    RetailCustomerResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        customerType:
+          type: string
+          enum:
+          - RESIDENTIAL
+          - COMMERCIAL
+          - INDUSTRIAL
+        accountNumber:
+          type: string
+        serviceTerritory:
+          type: string
+        enrollmentDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - SUSPENDED
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+    ClientCertificate:
+      type: mutualTLS
+externalDocs:
+  description: OpenESPI Authorization Server Documentation
+  url: https://docs.greenbuttonalliance.org/authorization-server
