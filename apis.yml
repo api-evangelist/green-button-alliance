@@ -72,7 +72,7 @@ apis:
   baseURL: https://services.greenbuttondata.org/ThirdParty
   tags:
   - Green Button
-  - Third-Party
+  - Third Party
   - ESPI
   - Energy
   - Reference Implementation
