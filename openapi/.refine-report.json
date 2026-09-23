@@ -1,0 +1,38 @@
+{
+  "provider": "green-button-alliance",
+  "sources": [
+    "_original/green-button-alliance-authorization-server-openapi.yml",
+    "_original/green-button-alliance-green-button-api-openapi.yml"
+  ],
+  "outputs": [
+    "green-button-alliance-datacustodian-integration-api-openapi.yml",
+    "green-button-alliance-oauth2-client-management-api-openapi.yml",
+    "green-button-alliance-oauth2-standard-api-openapi.yml",
+    "green-button-alliance-oidc-api-openapi.yml",
+    "green-button-alliance-applicationinformation-api-openapi.yml",
+    "green-button-alliance-authorization-api-openapi.yml",
+    "green-button-alliance-batch-api-openapi.yml",
+    "green-button-alliance-usagepoint-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "green-button-alliance-authorization-server-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "green-button-alliance-green-button-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/green-button-alliance-application-information-openapi.yml: archived document superseded by a larger archived document",
+    "green-button-alliance-applicationinformation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-authorization-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-datacustodian-integration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-oauth2-client-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-oauth2-standard-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-oidc-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "green-button-alliance-usagepoint-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

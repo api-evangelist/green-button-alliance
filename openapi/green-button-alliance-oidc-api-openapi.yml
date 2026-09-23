@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: OpenESPI Authorization Server OIDC API
-  description: "OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.\n\nThis API provides:\n- OAuth2 client management\n- DataCustodian integration\n- OIDC UserInfo endpoint with ESPI claims\n- NAESB ESPI 4.0 compliance features\n\n## Security\n\n- **TLS 1.3 ONLY**: All communications must use TLS 1.3\n- **Certificate Authentication**: Support for X.509 client certificates\n- **Bearer Token**: Required for API access\n- **Perfect Forward Secrecy**: All cipher suites support PFS\n\n## ESPI Compliance\n\nThis server is certified for NAESB ESPI 4.0 compliance and supports:\n- Green Button Connect My Data (CMD)\n- Function Block 4.5.15+ \n- Certificate-based client authentication\n- ESPI-specific scope validation\n"
+  description: OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.
   version: 1.0.0
   contact:
     name: Green Button Alliance
@@ -47,9 +47,7 @@ paths:
 
         - FB scopes: customer_id, usage_point_details, data_rights
 
-        - Green Button Alliance extensions
-
-        '
+        - Green Button Alliance extensions'
       security:
       - BearerAuth:
         - openid
@@ -66,6 +64,8 @@ paths:
           $ref: '#/components/responses/InsufficientScope'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      operationId: getUserinfo
+      x-operation-id-source: derived
     post:
       tags:
       - OIDC
@@ -94,8 +94,27 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/InsufficientScope'
+      operationId: postUserinfo
+      x-operation-id-source: derived
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
     UserInfoResponse:
       type: object
       properties:
@@ -236,33 +255,16 @@ components:
           enum:
           - ACTIVE
           - INACTIVE
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        error_uri:
-          type: string
-          format: uri
-        timestamp:
-          type: string
-          format: date-time
-        path:
-          type: string
-        correlationId:
-          type: string
   responses:
-    Unauthorized:
-      description: Unauthorized
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: invalid_token
-            error_description: The access token is invalid or expired
+            error: server_error
+            error_description: Internal server error
             timestamp: '2024-01-16T15:30:00Z'
     InsufficientScope:
       description: Insufficient scope
@@ -274,15 +276,15 @@ components:
             error: insufficient_scope
             error_description: Token missing required openid scope
             timestamp: '2024-01-16T15:30:00Z'
-    InternalServerError:
-      description: Internal server error
+    Unauthorized:
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: server_error
-            error_description: Internal server error
+            error: invalid_token
+            error_description: The access token is invalid or expired
             timestamp: '2024-01-16T15:30:00Z'
   securitySchemes:
     BearerAuth:

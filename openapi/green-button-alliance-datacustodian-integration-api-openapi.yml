@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: OpenESPI Authorization Server DataCustodian Integration API
-  description: "OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.\n\nThis API provides:\n- OAuth2 client management\n- DataCustodian integration\n- OIDC UserInfo endpoint with ESPI claims\n- NAESB ESPI 4.0 compliance features\n\n## Security\n\n- **TLS 1.3 ONLY**: All communications must use TLS 1.3\n- **Certificate Authentication**: Support for X.509 client certificates\n- **Bearer Token**: Required for API access\n- **Perfect Forward Secrecy**: All cipher suites support PFS\n\n## ESPI Compliance\n\nThis server is certified for NAESB ESPI 4.0 compliance and supports:\n- Green Button Connect My Data (CMD)\n- Function Block 4.5.15+ \n- Certificate-based client authentication\n- ESPI-specific scope validation\n"
+  description: OAuth2/OIDC Authorization Server for Green Button Alliance ESPI 4.0 compliant applications.
   version: 1.0.0
   contact:
     name: Green Button Alliance
@@ -50,6 +50,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '502':
           $ref: '#/components/responses/DataCustodianError'
+      operationId: postApiV1DatacustodianVerifyUser
+      x-operation-id-source: derived
   /api/v1/datacustodian/customers/{customerId}:
     get:
       tags:
@@ -78,6 +80,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '502':
           $ref: '#/components/responses/DataCustodianError'
+      operationId: getApiV1DatacustodianCustomersByCustomerId
+      x-operation-id-source: derived
   /api/v1/datacustodian/customers/{customerId}/usage-points:
     get:
       tags:
@@ -106,6 +110,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '502':
           $ref: '#/components/responses/DataCustodianError'
+      operationId: getApiV1DatacustodianCustomersByCustomerIdUsagePoints
+      x-operation-id-source: derived
   /api/v1/datacustodian/health:
     get:
       tags:
@@ -123,18 +129,10 @@ paths:
                 $ref: '#/components/schemas/HealthResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      operationId: getApiV1DatacustodianHealth
+      x-operation-id-source: derived
 components:
   responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error: client_not_found
-            error_description: The specified client was not found
-            timestamp: '2024-01-16T15:30:00Z'
     BadRequest:
       description: Bad request
       content:
@@ -156,6 +154,16 @@ components:
             error: datacustodian_error
             error_description: DataCustodian service is unavailable
             timestamp: '2024-01-16T15:30:00Z'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: client_not_found
+            error_description: The specified client was not found
+            timestamp: '2024-01-16T15:30:00Z'
     Unauthorized:
       description: Unauthorized
       content:
@@ -167,31 +175,23 @@ components:
             error_description: The access token is invalid or expired
             timestamp: '2024-01-16T15:30:00Z'
   schemas:
-    HealthResponse:
+    ErrorResponse:
       type: object
       properties:
-        status:
+        error:
           type: string
-          enum:
-          - HEALTHY
-          - DEGRADED
-          - UNHEALTHY
-        datacustodianVersion:
+        error_description:
           type: string
-        connectionStatus:
+        error_uri:
           type: string
-          enum:
-          - CONNECTED
-          - DISCONNECTED
-          - ERROR
-        responseTime:
-          type: integer
-          description: Response time in milliseconds
-        lastSuccessfulCall:
+          format: uri
+        timestamp:
           type: string
           format: date-time
-        metrics:
-          $ref: '#/components/schemas/HealthMetrics'
+        path:
+          type: string
+        correlationId:
+          type: string
     HealthMetrics:
       type: object
       properties:
@@ -207,6 +207,26 @@ components:
         averageResponseTime:
           type: integer
           description: Average response time in milliseconds
+    VerifyUserRequest:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    UsagePointsResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        usagePoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsagePoint'
     UsagePoint:
       type: object
       properties:
@@ -241,26 +261,6 @@ components:
         installationDate:
           type: string
           format: date-time
-    VerifyUserRequest:
-      type: object
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-          format: password
-    UsagePointsResponse:
-      type: object
-      properties:
-        customerId:
-          type: string
-        usagePoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsagePoint'
     VerifyUserResponse:
       type: object
       properties:
@@ -276,23 +276,31 @@ components:
           - INDUSTRIAL
         message:
           type: string
-    ErrorResponse:
+    HealthResponse:
       type: object
       properties:
-        error:
+        status:
           type: string
-        error_description:
+          enum:
+          - HEALTHY
+          - DEGRADED
+          - UNHEALTHY
+        datacustodianVersion:
           type: string
-        error_uri:
+        connectionStatus:
           type: string
-          format: uri
-        timestamp:
+          enum:
+          - CONNECTED
+          - DISCONNECTED
+          - ERROR
+        responseTime:
+          type: integer
+          description: Response time in milliseconds
+        lastSuccessfulCall:
           type: string
           format: date-time
-        path:
-          type: string
-        correlationId:
-          type: string
+        metrics:
+          $ref: '#/components/schemas/HealthMetrics'
     RetailCustomerResponse:
       type: object
       properties:
