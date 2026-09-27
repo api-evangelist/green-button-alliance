@@ -116,84 +116,6 @@ paths:
           description: Forbidden
 components:
   schemas:
-    ApplicationInformation:
-      type: object
-      description: Contains information about a Third Party Application requesting access to DataCustodian services
-      xml:
-        name: ApplicationInformation
-        namespace: http://naesb.org/espi
-      properties:
-        dataCustodianId:
-          type: string
-          description: Identifier for the Data Custodian
-        dataCustodianApplicationStatus:
-          type: integer
-          description: Current status of the application (provided by Data Custodian)
-        thirdPartyApplicationDescription:
-          type: string
-          description: Description of the Third Party Application
-        thirdPartyApplicationStatus:
-          type: integer
-          description: Current status of the Third Party Application
-        thirdPartyApplicationType:
-          type: integer
-          description: Type of application (1=Web, 2=Desktop, 3=Mobile, 4=Device)
-        thirdPartyApplicationUse:
-          type: integer
-          description: Expected use of the application
-        client_name:
-          type: string
-          description: Name of the application (OAuth client_name)
-        client_id:
-          type: string
-          description: Identifier for the Third Party (OAuth client_id)
-        client_secret:
-          type: string
-          description: Secret for the client (OAuth client_secret)
-        redirect_uri:
-          type: array
-          items:
-            type: string
-          description: OAuth redirect URIs
-        scope:
-          type: array
-          items:
-            type: string
-          description: OAuth scopes
-        grant_types:
-          type: array
-          items:
-            type: string
-          description: Supported OAuth grant types
-    AtomEntry:
-      type: object
-      description: Atom feed entry (RFC 4287) containing ESPI resource
-      xml:
-        name: entry
-        namespace: http://www.w3.org/2005/Atom
-      properties:
-        id:
-          type: string
-          format: uri
-          description: Unique entry identifier
-        title:
-          type: string
-          description: Entry title
-        published:
-          type: string
-          format: date-time
-          description: ISO 8601 publication timestamp
-        updated:
-          type: string
-          format: date-time
-          description: ISO 8601 last update timestamp
-        link:
-          type: array
-          items:
-            $ref: '#/components/schemas/AtomLink'
-          description: Entry links (minimum 2 required per Atom spec)
-        content:
-          $ref: '#/components/schemas/AtomContent'
     AtomFeed:
       type: object
       description: Atom Feed (RFC 4287) containing ESPI resources
@@ -249,6 +171,84 @@ components:
         type:
           type: string
           description: Media type (e.g., 'application/atom+xml')
+    AtomEntry:
+      type: object
+      description: Atom feed entry (RFC 4287) containing ESPI resource
+      xml:
+        name: entry
+        namespace: http://www.w3.org/2005/Atom
+      properties:
+        id:
+          type: string
+          format: uri
+          description: Unique entry identifier
+        title:
+          type: string
+          description: Entry title
+        published:
+          type: string
+          format: date-time
+          description: ISO 8601 publication timestamp
+        updated:
+          type: string
+          format: date-time
+          description: ISO 8601 last update timestamp
+        link:
+          type: array
+          items:
+            $ref: '#/components/schemas/AtomLink'
+          description: Entry links (minimum 2 required per Atom spec)
+        content:
+          $ref: '#/components/schemas/AtomContent'
+    ApplicationInformation:
+      type: object
+      description: Contains information about a Third Party Application requesting access to DataCustodian services
+      xml:
+        name: ApplicationInformation
+        namespace: http://naesb.org/espi
+      properties:
+        dataCustodianId:
+          type: string
+          description: Identifier for the Data Custodian
+        dataCustodianApplicationStatus:
+          type: integer
+          description: Current status of the application (provided by Data Custodian)
+        thirdPartyApplicationDescription:
+          type: string
+          description: Description of the Third Party Application
+        thirdPartyApplicationStatus:
+          type: integer
+          description: Current status of the Third Party Application
+        thirdPartyApplicationType:
+          type: integer
+          description: Type of application (1=Web, 2=Desktop, 3=Mobile, 4=Device)
+        thirdPartyApplicationUse:
+          type: integer
+          description: Expected use of the application
+        client_name:
+          type: string
+          description: Name of the application (OAuth client_name)
+        client_id:
+          type: string
+          description: Identifier for the Third Party (OAuth client_id)
+        client_secret:
+          type: string
+          description: Secret for the client (OAuth client_secret)
+        redirect_uri:
+          type: array
+          items:
+            type: string
+          description: OAuth redirect URIs
+        scope:
+          type: array
+          items:
+            type: string
+          description: OAuth scopes
+        grant_types:
+          type: array
+          items:
+            type: string
+          description: Supported OAuth grant types
   securitySchemes:
     oauth2:
       type: oauth2

@@ -182,21 +182,6 @@ components:
           type: string
         correlationId:
           type: string
-    RefreshTokenRequest:
-      type: object
-      required:
-      - grant_type
-      - refresh_token
-      properties:
-        grant_type:
-          type: string
-          enum:
-          - refresh_token
-        refresh_token:
-          type: string
-        scope:
-          type: string
-          description: Optional scope limitation
     IntrospectionResponse:
       type: object
       properties:
@@ -218,6 +203,53 @@ components:
           type: string
         token_type:
           type: string
+    RevocationRequest:
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+          enum:
+          - access_token
+          - refresh_token
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          enum:
+          - Bearer
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Granted scopes
+        id_token:
+          type: string
+          description: OpenID Connect ID token
+    RefreshTokenRequest:
+      type: object
+      required:
+      - grant_type
+      - refresh_token
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - refresh_token
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Optional scope limitation
     IntrospectionRequest:
       type: object
       required:
@@ -249,39 +281,17 @@ components:
         code_verifier:
           type: string
           description: PKCE code verifier
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          enum:
-          - Bearer
-        expires_in:
-          type: integer
-          description: Token lifetime in seconds
-        refresh_token:
-          type: string
-        scope:
-          type: string
-          description: Granted scopes
-        id_token:
-          type: string
-          description: OpenID Connect ID token
-    RevocationRequest:
-      type: object
-      required:
-      - token
-      properties:
-        token:
-          type: string
-        token_type_hint:
-          type: string
-          enum:
-          - access_token
-          - refresh_token
   responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_token
+            error_description: The access token is invalid or expired
+            timestamp: '2024-01-16T15:30:00Z'
     OAuth2Error:
       description: OAuth2 error
       content:
@@ -297,16 +307,6 @@ components:
               value:
                 error: invalid_client
                 error_description: Client authentication failed
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error: invalid_token
-            error_description: The access token is invalid or expired
-            timestamp: '2024-01-16T15:30:00Z'
   securitySchemes:
     BearerAuth:
       type: http

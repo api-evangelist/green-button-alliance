@@ -92,6 +92,35 @@ paths:
           description: Forbidden
 components:
   schemas:
+    AtomEntry:
+      type: object
+      description: Atom feed entry (RFC 4287) containing ESPI resource
+      xml:
+        name: entry
+        namespace: http://www.w3.org/2005/Atom
+      properties:
+        id:
+          type: string
+          format: uri
+          description: Unique entry identifier
+        title:
+          type: string
+          description: Entry title
+        published:
+          type: string
+          format: date-time
+          description: ISO 8601 publication timestamp
+        updated:
+          type: string
+          format: date-time
+          description: ISO 8601 last update timestamp
+        link:
+          type: array
+          items:
+            $ref: '#/components/schemas/AtomLink'
+          description: Entry links (minimum 2 required per Atom spec)
+        content:
+          $ref: '#/components/schemas/AtomContent'
     AtomFeed:
       type: object
       description: Atom Feed (RFC 4287) containing ESPI resources
@@ -147,35 +176,6 @@ components:
         type:
           type: string
           description: Media type (e.g., 'application/atom+xml')
-    AtomEntry:
-      type: object
-      description: Atom feed entry (RFC 4287) containing ESPI resource
-      xml:
-        name: entry
-        namespace: http://www.w3.org/2005/Atom
-      properties:
-        id:
-          type: string
-          format: uri
-          description: Unique entry identifier
-        title:
-          type: string
-          description: Entry title
-        published:
-          type: string
-          format: date-time
-          description: ISO 8601 publication timestamp
-        updated:
-          type: string
-          format: date-time
-          description: ISO 8601 last update timestamp
-        link:
-          type: array
-          items:
-            $ref: '#/components/schemas/AtomLink'
-          description: Entry links (minimum 2 required per Atom spec)
-        content:
-          $ref: '#/components/schemas/AtomContent'
   securitySchemes:
     oauth2:
       type: oauth2
