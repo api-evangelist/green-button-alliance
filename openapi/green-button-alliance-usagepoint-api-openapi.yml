@@ -158,6 +158,16 @@ paths:
           description: Forbidden
 components:
   schemas:
+    AtomContent:
+      type: object
+      description: Atom content element containing ESPI resource (RFC 4287)
+      xml:
+        name: content
+        namespace: http://www.w3.org/2005/Atom
+      properties:
+        type:
+          type: string
+          description: Content media type (typically 'application/xml')
     AtomFeed:
       type: object
       description: Atom Feed (RFC 4287) containing ESPI resources
@@ -186,16 +196,6 @@ components:
           items:
             $ref: '#/components/schemas/AtomEntry'
           description: Feed entries containing ESPI resources
-    AtomContent:
-      type: object
-      description: Atom content element containing ESPI resource (RFC 4287)
-      xml:
-        name: content
-        namespace: http://www.w3.org/2005/Atom
-      properties:
-        type:
-          type: string
-          description: Content media type (typically 'application/xml')
     UsagePoint:
       type: object
       description: Logical point on a network at which consumption or production is measured or estimated

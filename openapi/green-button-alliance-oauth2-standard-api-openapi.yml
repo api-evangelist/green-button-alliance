@@ -165,6 +165,38 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    RevocationRequest:
+      type: object
+      required:
+      - token
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+          enum:
+          - access_token
+          - refresh_token
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          enum:
+          - Bearer
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Granted scopes
+        id_token:
+          type: string
+          description: OpenID Connect ID token
     ErrorResponse:
       type: object
       properties:
@@ -203,7 +235,7 @@ components:
           type: string
         token_type:
           type: string
-    RevocationRequest:
+    IntrospectionRequest:
       type: object
       required:
       - token
@@ -215,26 +247,6 @@ components:
           enum:
           - access_token
           - refresh_token
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          enum:
-          - Bearer
-        expires_in:
-          type: integer
-          description: Token lifetime in seconds
-        refresh_token:
-          type: string
-        scope:
-          type: string
-          description: Granted scopes
-        id_token:
-          type: string
-          description: OpenID Connect ID token
     RefreshTokenRequest:
       type: object
       required:
@@ -250,18 +262,6 @@ components:
         scope:
           type: string
           description: Optional scope limitation
-    IntrospectionRequest:
-      type: object
-      required:
-      - token
-      properties:
-        token:
-          type: string
-        token_type_hint:
-          type: string
-          enum:
-          - access_token
-          - refresh_token
     AuthorizationCodeTokenRequest:
       type: object
       required:

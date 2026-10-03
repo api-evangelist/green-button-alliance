@@ -243,6 +243,86 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
+    WeeklyStats:
+      type: object
+      properties:
+        currentWeek:
+          $ref: '#/components/schemas/WeekStats'
+        previousWeek:
+          $ref: '#/components/schemas/WeekStats'
+    ClientMetricsResponse:
+      type: object
+      properties:
+        clientId:
+          type: string
+        metrics:
+          $ref: '#/components/schemas/UsageMetrics'
+    WeekStats:
+      type: object
+      properties:
+        authorizationsGranted:
+          type: integer
+        tokensIssued:
+          type: integer
+    ValidationErrorResponse:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      - type: object
+        properties:
+          details:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                message:
+                  type: string
+    Pageable:
+      type: object
+      properties:
+        sort:
+          type: object
+          properties:
+            sorted:
+              type: boolean
+            orderBy:
+              type: string
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+    TokenSettings:
+      type: object
+      properties:
+        accessTokenTimeToLive:
+          type: string
+          description: ISO 8601 duration (e.g., PT1H)
+          default: PT1H
+        refreshTokenTimeToLive:
+          type: string
+          description: ISO 8601 duration (e.g., P30D)
+          default: P30D
+        reuseRefreshTokens:
+          type: boolean
+          default: false
     UpdateClientRequest:
       type: object
       properties:
@@ -287,6 +367,152 @@ components:
           $ref: '#/components/schemas/ClientSettings'
         tokenSettings:
           $ref: '#/components/schemas/TokenSettings'
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        clientId:
+          type: string
+        deletedAt:
+          type: string
+          format: date-time
+    ClientSettings:
+      type: object
+      properties:
+        requireAuthorizationConsent:
+          type: boolean
+          default: true
+        requireProofKey:
+          type: boolean
+          default: true
+    CreateClientRequest:
+      type: object
+      required:
+      - clientName
+      - redirectUris
+      - scopes
+      properties:
+        clientName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        redirectUris:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uri
+        scopes:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        authorizationGrantTypes:
+          type: array
+          items:
+            type: string
+            enum:
+            - authorization_code
+            - refresh_token
+            - client_credentials
+          default:
+          - authorization_code
+          - refresh_token
+        clientAuthenticationMethods:
+          type: array
+          items:
+            type: string
+            enum:
+            - client_secret_basic
+            - client_secret_post
+            - tls_client_auth
+          default:
+          - client_secret_basic
+        espiCompliant:
+          type: boolean
+          default: false
+        securityLevel:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          default: MEDIUM
+        clientSettings:
+          $ref: '#/components/schemas/ClientSettings'
+        tokenSettings:
+          $ref: '#/components/schemas/TokenSettings'
+    UsageMetrics:
+      type: object
+      properties:
+        totalTokensIssued:
+          type: integer
+          format: int64
+        totalAuthorizationsGranted:
+          type: integer
+          format: int64
+        totalRefreshTokensUsed:
+          type: integer
+          format: int64
+        averageTokenLifetime:
+          type: integer
+          description: Average token lifetime in seconds
+        lastTokenIssuedAt:
+          type: string
+          format: date-time
+        peakUsageHour:
+          type: integer
+          minimum: 0
+          maximum: 23
+        weeklyStats:
+          $ref: '#/components/schemas/WeeklyStats'
+    ClientListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientSummary'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+    ClientSummary:
+      type: object
+      properties:
+        clientId:
+          type: string
+        clientName:
+          type: string
+        espiCompliant:
+          type: boolean
+        securityLevel:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+        certificationStatus:
+          type: string
+          enum:
+          - PENDING
+          - CERTIFIED
+          - EXPIRED
+          - REVOKED
+        createdAt:
+          type: string
+          format: date-time
+        lastUsed:
+          type: string
+          format: date-time
     ClientResponse:
       type: object
       properties:
@@ -348,232 +574,6 @@ components:
           format: date-time
         usageMetrics:
           $ref: '#/components/schemas/UsageMetrics'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        error_uri:
-          type: string
-          format: uri
-        timestamp:
-          type: string
-          format: date-time
-        path:
-          type: string
-        correlationId:
-          type: string
-    ValidationErrorResponse:
-      allOf:
-      - $ref: '#/components/schemas/ErrorResponse'
-      - type: object
-        properties:
-          details:
-            type: array
-            items:
-              type: object
-              properties:
-                field:
-                  type: string
-                message:
-                  type: string
-    UsageMetrics:
-      type: object
-      properties:
-        totalTokensIssued:
-          type: integer
-          format: int64
-        totalAuthorizationsGranted:
-          type: integer
-          format: int64
-        totalRefreshTokensUsed:
-          type: integer
-          format: int64
-        averageTokenLifetime:
-          type: integer
-          description: Average token lifetime in seconds
-        lastTokenIssuedAt:
-          type: string
-          format: date-time
-        peakUsageHour:
-          type: integer
-          minimum: 0
-          maximum: 23
-        weeklyStats:
-          $ref: '#/components/schemas/WeeklyStats'
-    ClientMetricsResponse:
-      type: object
-      properties:
-        clientId:
-          type: string
-        metrics:
-          $ref: '#/components/schemas/UsageMetrics'
-    ClientListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientSummary'
-        pageable:
-          $ref: '#/components/schemas/Pageable'
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
-    WeeklyStats:
-      type: object
-      properties:
-        currentWeek:
-          $ref: '#/components/schemas/WeekStats'
-        previousWeek:
-          $ref: '#/components/schemas/WeekStats'
-    WeekStats:
-      type: object
-      properties:
-        authorizationsGranted:
-          type: integer
-        tokensIssued:
-          type: integer
-    Pageable:
-      type: object
-      properties:
-        sort:
-          type: object
-          properties:
-            sorted:
-              type: boolean
-            orderBy:
-              type: string
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-    ClientSummary:
-      type: object
-      properties:
-        clientId:
-          type: string
-        clientName:
-          type: string
-        espiCompliant:
-          type: boolean
-        securityLevel:
-          type: string
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-        certificationStatus:
-          type: string
-          enum:
-          - PENDING
-          - CERTIFIED
-          - EXPIRED
-          - REVOKED
-        createdAt:
-          type: string
-          format: date-time
-        lastUsed:
-          type: string
-          format: date-time
-    DeleteResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        clientId:
-          type: string
-        deletedAt:
-          type: string
-          format: date-time
-    ClientSettings:
-      type: object
-      properties:
-        requireAuthorizationConsent:
-          type: boolean
-          default: true
-        requireProofKey:
-          type: boolean
-          default: true
-    TokenSettings:
-      type: object
-      properties:
-        accessTokenTimeToLive:
-          type: string
-          description: ISO 8601 duration (e.g., PT1H)
-          default: PT1H
-        refreshTokenTimeToLive:
-          type: string
-          description: ISO 8601 duration (e.g., P30D)
-          default: P30D
-        reuseRefreshTokens:
-          type: boolean
-          default: false
-    CreateClientRequest:
-      type: object
-      required:
-      - clientName
-      - redirectUris
-      - scopes
-      properties:
-        clientName:
-          type: string
-          minLength: 1
-          maxLength: 100
-        redirectUris:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            format: uri
-        scopes:
-          type: array
-          minItems: 1
-          items:
-            type: string
-        authorizationGrantTypes:
-          type: array
-          items:
-            type: string
-            enum:
-            - authorization_code
-            - refresh_token
-            - client_credentials
-          default:
-          - authorization_code
-          - refresh_token
-        clientAuthenticationMethods:
-          type: array
-          items:
-            type: string
-            enum:
-            - client_secret_basic
-            - client_secret_post
-            - tls_client_auth
-          default:
-          - client_secret_basic
-        espiCompliant:
-          type: boolean
-          default: false
-        securityLevel:
-          type: string
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          default: MEDIUM
-        clientSettings:
-          $ref: '#/components/schemas/ClientSettings'
-        tokenSettings:
-          $ref: '#/components/schemas/TokenSettings'
   responses:
     ValidationError:
       description: Validation error
@@ -588,17 +588,26 @@ components:
             details:
             - field: clientName
               message: Client name is required
-    BadRequest:
-      description: Bad request
+    Conflict:
+      description: Conflict
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: invalid_request
-            error_description: The request is malformed
+            error: client_already_exists
+            error_description: A client with this ID already exists
             timestamp: '2024-01-16T15:30:00Z'
-            path: /api/v1/oauth2/clients
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: client_not_found
+            error_description: The specified client was not found
+            timestamp: '2024-01-16T15:30:00Z'
     RateLimit:
       description: Rate limit exceeded
       headers:
@@ -622,16 +631,6 @@ components:
             error: rate_limit_exceeded
             error_description: Too many requests
             timestamp: '2024-01-16T15:30:00Z'
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error: client_already_exists
-            error_description: A client with this ID already exists
-            timestamp: '2024-01-16T15:30:00Z'
     Forbidden:
       description: Forbidden
       content:
@@ -652,16 +651,17 @@ components:
             error: invalid_token
             error_description: The access token is invalid or expired
             timestamp: '2024-01-16T15:30:00Z'
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: client_not_found
-            error_description: The specified client was not found
+            error: invalid_request
+            error_description: The request is malformed
             timestamp: '2024-01-16T15:30:00Z'
+            path: /api/v1/oauth2/clients
   securitySchemes:
     BearerAuth:
       type: http
