@@ -1,21 +1,19 @@
-# Kin Score artifact — green-button-alliance — 2026-08-28T221322
+# Kin Score artifact — green-button-alliance — 2026-09-23T000603
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: green-button-alliance
-  schema_version: 0.15.1
-  scored_at: '2026-08-28'
-  run_ts: 2026-08-28T221322
-  composite: 61.3
+  schema_version: 0.22.0
+  scored_at: '2026-09-23'
+  run_ts: 2026-09-23T000603
+  composite: 55.3
   band: strong
   facets:
-    discoverability: 85.2
-    contract_quality: 61.4
-    governance: 45.5
+    discoverability: 74.1
+    contract_quality: 61.2
+    contract_governance: 33.3
     operational_transparency: 21.1
     developer_ergonomics: 54.2
-    commercial_clarity: 44.7
-    contract_governance: 45.5
     access_clarity: 44.7
   agent_readiness:
     score: 39.9
@@ -45,7 +43,7 @@ kin_score:
     applies: true
     regime: Energy & Utilities
     regime_id: energy_utilities
-    score: 82.4
+    score: 64.9
     matched_via: tags
   provenance:
     mcp: derived
@@ -53,7 +51,7 @@ kin_score:
     agentic_access: derived
     conformance: first-party
     contracts:
-      total: 3
+      total: 8
       derived: 0
       coverage: 0.0
-      callable: 33.3
+      callable: 0.0
