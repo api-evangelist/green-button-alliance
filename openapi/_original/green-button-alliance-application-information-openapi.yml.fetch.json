@@ -1,0 +1,12 @@
+{
+ "url": "https://raw.githubusercontent.com/greenbuttonalliance/SwaggerHub-GreenButton-API-Documentation/HEAD/OAS_APIs/ApplicationInformation.yaml",
+ "requested_url": "https://raw.githubusercontent.com/greenbuttonalliance/SwaggerHub-GreenButton-API-Documentation/HEAD/OAS_APIs/ApplicationInformation.yaml",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 12660,
+ "sha256": "14bab49edbb92c9bcc31aa878c857b273d4efb9a00fbf609aead887f315eba47",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
