@@ -165,78 +165,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        error_uri:
-          type: string
-          format: uri
-        timestamp:
-          type: string
-          format: date-time
-        path:
-          type: string
-        correlationId:
-          type: string
-    AuthorizationCodeTokenRequest:
-      type: object
-      required:
-      - grant_type
-      - code
-      - redirect_uri
-      properties:
-        grant_type:
-          type: string
-          enum:
-          - authorization_code
-        code:
-          type: string
-        redirect_uri:
-          type: string
-          format: uri
-        code_verifier:
-          type: string
-          description: PKCE code verifier
-    RefreshTokenRequest:
-      type: object
-      required:
-      - grant_type
-      - refresh_token
-      properties:
-        grant_type:
-          type: string
-          enum:
-          - refresh_token
-        refresh_token:
-          type: string
-        scope:
-          type: string
-          description: Optional scope limitation
-    IntrospectionResponse:
-      type: object
-      properties:
-        active:
-          type: boolean
-        sub:
-          type: string
-        aud:
-          type: string
-        iss:
-          type: string
-        exp:
-          type: integer
-        iat:
-          type: integer
-        scope:
-          type: string
-        client_id:
-          type: string
-        token_type:
-          type: string
     RevocationRequest:
       type: object
       required:
@@ -281,6 +209,78 @@ components:
         id_token:
           type: string
           description: OpenID Connect ID token
+    AuthorizationCodeTokenRequest:
+      type: object
+      required:
+      - grant_type
+      - code
+      - redirect_uri
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - authorization_code
+        code:
+          type: string
+        redirect_uri:
+          type: string
+          format: uri
+        code_verifier:
+          type: string
+          description: PKCE code verifier
+    IntrospectionResponse:
+      type: object
+      properties:
+        active:
+          type: boolean
+        sub:
+          type: string
+        aud:
+          type: string
+        iss:
+          type: string
+        exp:
+          type: integer
+        iat:
+          type: integer
+        scope:
+          type: string
+        client_id:
+          type: string
+        token_type:
+          type: string
+    RefreshTokenRequest:
+      type: object
+      required:
+      - grant_type
+      - refresh_token
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - refresh_token
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Optional scope limitation
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
   responses:
     OAuth2Error:
       description: OAuth2 error

@@ -133,6 +133,15 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    UsagePointsResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        usagePoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsagePoint'
     HealthMetrics:
       type: object
       properties:
@@ -148,68 +157,6 @@ components:
         averageResponseTime:
           type: integer
           description: Average response time in milliseconds
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        error_uri:
-          type: string
-          format: uri
-        timestamp:
-          type: string
-          format: date-time
-        path:
-          type: string
-        correlationId:
-          type: string
-    UsagePointsResponse:
-      type: object
-      properties:
-        customerId:
-          type: string
-        usagePoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsagePoint'
-    VerifyUserRequest:
-      type: object
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-          format: password
-    HealthResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - HEALTHY
-          - DEGRADED
-          - UNHEALTHY
-        datacustodianVersion:
-          type: string
-        connectionStatus:
-          type: string
-          enum:
-          - CONNECTED
-          - DISCONNECTED
-          - ERROR
-        responseTime:
-          type: integer
-          description: Response time in milliseconds
-        lastSuccessfulCall:
-          type: string
-          format: date-time
-        metrics:
-          $ref: '#/components/schemas/HealthMetrics'
     RetailCustomerResponse:
       type: object
       properties:
@@ -243,6 +190,17 @@ components:
           - ACTIVE
           - INACTIVE
           - SUSPENDED
+    VerifyUserRequest:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
     UsagePoint:
       type: object
       properties:
@@ -292,6 +250,48 @@ components:
           - INDUSTRIAL
         message:
           type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        error_uri:
+          type: string
+          format: uri
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        correlationId:
+          type: string
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - HEALTHY
+          - DEGRADED
+          - UNHEALTHY
+        datacustodianVersion:
+          type: string
+        connectionStatus:
+          type: string
+          enum:
+          - CONNECTED
+          - DISCONNECTED
+          - ERROR
+        responseTime:
+          type: integer
+          description: Response time in milliseconds
+        lastSuccessfulCall:
+          type: string
+          format: date-time
+        metrics:
+          $ref: '#/components/schemas/HealthMetrics'
   responses:
     NotFound:
       description: Resource not found
@@ -303,6 +303,17 @@ components:
             error: client_not_found
             error_description: The specified client was not found
             timestamp: '2024-01-16T15:30:00Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: invalid_request
+            error_description: The request is malformed
+            timestamp: '2024-01-16T15:30:00Z'
+            path: /api/v1/oauth2/clients
     DataCustodianError:
       description: DataCustodian integration error
       content:
@@ -323,17 +334,6 @@ components:
             error: invalid_token
             error_description: The access token is invalid or expired
             timestamp: '2024-01-16T15:30:00Z'
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error: invalid_request
-            error_description: The request is malformed
-            timestamp: '2024-01-16T15:30:00Z'
-            path: /api/v1/oauth2/clients
   securitySchemes:
     BearerAuth:
       type: http
