@@ -255,6 +255,8 @@ apis:
   humanURL: https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/
   baseURL: https://sandbox.greenbuttonalliance.org:8443/DataCustodian
   tags:
+  - OpenID Connect
+  tags_raw:
   - OIDC
   properties:
   - type: OpenAPI
