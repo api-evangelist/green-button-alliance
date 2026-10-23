@@ -260,3 +260,9 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox.greenbuttonalliance.org:8443/oauth/token
           scopes: {}
+x-provenance:
+  method: harvested
+  publisher: Green Button Alliance
+  source: https://raw.githubusercontent.com/greenbuttonalliance/OpenAPI-Green-Button-Documentation/HEAD/green-button-openapi.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
