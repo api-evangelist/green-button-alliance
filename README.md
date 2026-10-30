@@ -1,4 +1,4 @@
-# Green Button Alliance (green-button-alliance)
+# Green Button Alliance
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,118 +64,160 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Green Button Alliance (GBA) is the non-profit that stewards, tests and certifies the Green Button standard — the NAESB REQ.21 Energy Services Provider Interface (ESPI) profile for utility customer electricity, natural gas and water usage data, in its Download My Data (DMD) and Connect My Data (CMD) forms. Incorporated in North Carolina and headquartered at PO Box 268, Jamison, Pennsylvania, it was formed after the 2012 White House / U.S. Department of Energy / NIST call to action and is the industry's only source of Green Button certification (Data Custodian DMD $3,000, CMD $3,200, membership not required), alongside a free public Directory Services listing of utilities, third-party apps and platform providers. GBA sits in the standards-and-certification layer of the United States energy value chain, above the investor-owned utilities and the energy-data platforms (UtilityAPI, Con Edison and Enbridge Gas are sponsor members) that actually move consumer data. Its API posture is contracts without a service: two real OpenAPI 3.x definitions of the CMD ESPI resource server are published free under Apache 2.0 on GitHub, but the normative ESPI v4.0 standard itself must be purchased from NAESB, GBA operates no production consumer-data or market-data API of its own, and its ESPI sandbox at sandbox.greenbuttonalliance.org:8443 is offline pending a replacement platform expected 2026Q3. Green Button in the United States is voluntary — there is no federal mandate — with obligation arriving only through state action and, outside the US, Ontario's O. Reg. 633/21.
+The Green Button Alliance (GBA) is the non-profit that stewards, tests and certifies the Green Button standard — the NAESB REQ.21 Energy Services Provider Interface (ESPI) profile for utility customer electricity, natural gas and water usage data, in its Download My Data (DMD) and Connect My Data (CMD) forms. Incorporated in North Carolina and headquartered at PO Box 268, Jamison, Pennsylvania, it was formed after the 2012 White House / U.S. Department of Energy / NIST call to action and is the industry's only source of Green Button certification (Data Custodian DMD $3,000, CMD $3,200, membership not required), alongside a free public Directory Services listing of utilities, third-party apps and platform providers. GBA sits in the standards-and-certification layer of the United States energy value chain, above the investor-owned utilities and the energy-data platforms (UtilityAPI, Con Edison and Enbridge Gas are sponsor members) that actually move consumer data. Its API posture is contracts without a service: three real OpenAPI 3.x definitions - the CMD ESPI resource server, the ApplicationInformation registration resource, and the OpenESPI OAuth 2.0 / OIDC authorization server - are published free under Apache 2.0 on GitHub, but the normative ESPI v4.0 standard itself must be purchased from NAESB, GBA operates no production consumer-data or market-data API of its own, and its ESPI sandbox at sandbox.greenbuttonalliance.org:8443 is offline pending a replacement platform expected 2026Q3. Green Button in the United States is voluntary — there is no federal mandate — with obligation arriving only through state action and, outside the US, Ontario's O. Reg. 633/21.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/green-button-alliance/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/green-button-alliance/refs/heads/main/apis.yml)
+**Areas:** Energy · United States · Utilities · Electricity · Gas · Water · Smart Metering · Green Button · ESPI · Standards Body · Certification · Consumer Energy Data
 
-## Tags
+## Green Button Alliance on APIs.io
 
-- Energy
-- United States
-- Utilities
-- Electricity
-- Gas
-- Water
-- Smart Metering
-- Green Button
-- ESPI
-- Standards Body
-- Certification
-- Consumer Energy Data
+Everything profiled for Green Button Alliance is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/green-button-alliance/](https://apis.io/providers/green-button-alliance/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (9)
 
-- **Created:** 2026-07-27
-- **Modified:** 2026-07-27
+- [Green Button Third Party (OpenESPI) API](https://apis.io/apis/green-button-alliance/green-button-third-party-api/) — The Third Party side of the OpenESPI reference implementation — ApplicationInformation, Authorization and RetailCustomer operations documented as legacy…
+- [Green Button Alliance Application Information API](https://apis.io/apis/green-button-alliance/green-button-alliance-applicationinformation-api/) — The ApplicationInformation API from Green Button Alliance — 2 operation(s) for applicationinformation.
+- [Green Button Alliance Authorization API](https://apis.io/apis/green-button-alliance/green-button-alliance-authorization-api/) — Authorization endpoints
+- [Green Button Alliance Batch API](https://apis.io/apis/green-button-alliance/green-button-alliance-batch-api/) — Batch data transfer endpoints
+- [Green Button Alliance DataCustodian Integration API](https://apis.io/apis/green-button-alliance/green-button-alliance-datacustodian-integration-api/) — Integration with OpenESPI DataCustodian
+- [Green Button Alliance OAuth2 Client Management API](https://apis.io/apis/green-button-alliance/green-button-alliance-oauth2-client-management-api/) — Manage OAuth2 client registrations
+- [Green Button Alliance OAuth2 Standard API](https://apis.io/apis/green-button-alliance/green-button-alliance-oauth2-standard-api/) — Standard OAuth2 endpoints
+- [Green Button Alliance OIDC API](https://apis.io/apis/green-button-alliance/green-button-alliance-oidc-api/) — OpenID Connect endpoints
+- [Green Button Alliance Usage Point API](https://apis.io/apis/green-button-alliance/green-button-alliance-usagepoint-api/) — Usage Point endpoints
 
-## APIs
+### Published properties
 
-### Green Button Connect My Data (CMD) ESPI Resource Server API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The Green Button Connect My Data resource server API as specified by the Green Button Alliance against NAESB REQ.21 ESPI 4.0 — read access to ApplicationInformation, Authorization, UsagePoint and bulk Batch resources under `/espi/1_1/resource`, returned as ESPI/Atom XML and protected by OAuth 2.0 (authorization code and client credentials). GBA publishes the contract openly under Apache 2.0 on GitHub; the only base URL documented in it is GBA's own ESPI sandbox, which returned HTTP 403 to anonymous probes on 2026-07-27 and which GBA states is unavailable pending a new platform in 2026Q3. This is a specification of the interface every certified Data Custodian implements, not a live service run by GBA.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/)
-- **Base URL:** `https://sandbox.greenbuttonalliance.org:8443/DataCustodian`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Green Button Alliance Webhooks](https://apis.io/asyncapis/green-button-alliance/green-button-alliance-webhooks/)
 
-- Green Button
-- Connect My Data
-- ESPI
-- Energy
-- Usage Data
-- OAuth 2.0
+#### MCP servers (1)
 
-#### Properties
+Model Context Protocol servers that expose the API to agents.
 
-- [OpenAPI](openapi/green-button-alliance-green-button-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](openapi/green-button-alliance-application-information-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [API Reference](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/)
-- [Documentation](https://www.greenbuttonalliance.org/green-button-connect-my-data-cmd)
-- [Documentation](https://www.greenbuttonalliance.org/developer-resources)
-- [Repository](https://github.com/GreenButtonAlliance/OpenAPI-Green-Button-Documentation)
-- [Repository](https://github.com/GreenButtonAlliance/OpenESPI-DataCustodian-java)
-- [Specification](https://www.naesb.org/espi_standards.asp)
+- [green-button-alliance](https://apis.io/servers/green-button-alliance/green-button-alliance/)
 
-### Green Button Third Party (OpenESPI) API
+#### Agentic access (1)
 
-The Third Party side of the OpenESPI reference implementation — ApplicationInformation, Authorization and RetailCustomer operations documented as legacy Swagger 1.2 resource listings served from GBA's GitHub Pages site. The documented base path is `https://services.greenbuttondata.org/ThirdParty`, which returned HTTP 200 with an empty body on 2026-07-27. No OpenAPI 3.x definition of this surface was found and no live, callable service was confirmed; listed here because the documentation is genuinely published and reachable.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/)
-- **Base URL:** `https://services.greenbuttondata.org/ThirdParty`
+- [Green Button Alliance Agentic Access](https://apis.io/agentic-access/green-button-alliance/green-button-alliance-agentic-access/)
 
-#### Tags
+#### Examples (4)
 
-- Green Button
-- Third Party
-- ESPI
-- Energy
-- Reference Implementation
+Example requests and responses.
 
-#### Properties
+- [Green Button Alliance Backchannel Subscription Request](https://apis.io/examples/green-button-alliance/green-button-alliance-backchannel-subscription-request/)
+- [Green Button Alliance Backchannel Subscription Response](https://apis.io/examples/green-button-alliance/green-button-alliance-backchannel-subscription-response/)
+- [Green Button Alliance Token Response Bulk](https://apis.io/examples/green-button-alliance/green-button-alliance-token-response-bulk/)
+- [Green Button Alliance Token Response Subscription](https://apis.io/examples/green-button-alliance/green-button-alliance-token-response-subscription/)
 
-- [API Reference](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/ThirdParty/)
-- [Repository](https://github.com/GreenButtonAlliance/OpenESPI-ThirdParty-java)
-- [Repository](https://github.com/GreenButtonAlliance/OpenESPI-Common-java)
+#### Collections (3)
 
-## Common Properties
+Postman and Open Collection request collections.
+
+- [Green Button Resource Server ApplicationInformation API Documentation](https://apis.io/collections/green-button-alliance/open-green-button-alliance-application-information/)
+- [OpenESPI Authorization Server API](https://apis.io/collections/green-button-alliance/open-green-button-alliance-authorization-server/)
+- [Green Button API Documentation](https://apis.io/collections/green-button-alliance/open-green-button-alliance-green-button-api/)
+
+#### Overlays (3)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Green Button Alliance Application Information Overlay](https://apis.io/overlays/green-button-alliance/green-button-alliance-application-information-overlay/)
+- [Green Button Alliance Authorization Server Overlay](https://apis.io/overlays/green-button-alliance/green-button-alliance-authorization-server-overlay/)
+- [Green Button Alliance Green Button Api Overlay](https://apis.io/overlays/green-button-alliance/green-button-alliance-green-button-api-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Green Button Alliance Authentication](https://apis.io/security/green-button-alliance/green-button-alliance-authentication/)
+- [Green Button Alliance Domain Security](https://apis.io/security/green-button-alliance/green-button-alliance-domain-security/)
+- [Green Button Alliance Vulnerability Disclosure](https://apis.io/security/green-button-alliance/green-button-alliance-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Green Button Alliance Scopes](https://apis.io/scopes/green-button-alliance/green-button-alliance-scopes/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Green Button Alliance Rate Limits](https://apis.io/rate-limits/green-button-alliance/green-button-alliance-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.greenbuttonalliance.org/)
-- [About](https://www.greenbuttonalliance.org/about-us)
 - [Documentation](https://www.greenbuttonalliance.org/developer-resources)
-- [Documentation](https://www.greenbuttonalliance.org/technical-info)
-- [API Reference](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/)
-- [OpenID Connect](https://www.greenbuttonalliance.org/.well-known/openid-configuration) — member single sign-on discovery, not energy data
-- [Certification](https://www.greenbuttonalliance.org/testing)
-- [Certification](https://www.greenbuttonalliance.org/offerings/certification)
-- [Directory](https://www.greenbuttonalliance.org/directory-services)
-- [Specification](https://www.greenbuttonalliance.org/purchase-the-standard)
-- [Specification](https://www.naesb.org/espi_standards.asp)
-- [Sandbox](https://www.greenbuttonalliance.org/sandbox) — unavailable until 2026Q3
-- [Tools](https://dmdvalidator.greenbuttonalliance.org/) — Green Button DMD Validator
-- [GitHub Organization](https://github.com/GreenButtonAlliance)
-- [LinkedIn](https://www.linkedin.com/company/green-button-alliance)
+- [API reference](https://greenbuttonalliance.github.io/OpenESPI-GreenButton-API-Documentation/API/)
+- [Pricing](https://www.greenbuttonalliance.org/offerings/certification)
+- [Sign up](https://www.greenbuttonalliance.org/register)
+- [Support](https://www.greenbuttonalliance.org/faqs-technical)
 - [Blog](https://www.greenbuttonalliance.org/news)
-- [Membership](https://www.greenbuttonalliance.org/membership-information)
-- [Contact Us](https://www.greenbuttonalliance.org/contact-us)
-- [Archive](https://archive.greenbuttondata.org/)
+- [Security](https://github.com/GreenButtonAlliance/OpenESPI-GreenButton-Java/blob/main/openespi-common/SECURITY.md)
+- [Terms of service](https://www.greenbuttonalliance.org/legal)
+- [Privacy policy](https://www.greenbuttonalliance.org/privacy-policy)
+- [GitHub](https://github.com/GreenButtonAlliance)
 
-## Mandate and Access Posture
+## API Evangelist rating
 
-| Question | Finding |
-| --- | --- |
-| Mandate regime | `green-button-voluntary` — GBA stewards a standard adopted without federal compulsion in the United States |
-| Mandate status | `not-applicable` — GBA is a standards body, not an obligated data holder, and runs no live implementation of its own |
-| Data standard | Green Button / NAESB REQ.21 ESPI v4.0 (and v3.3), over Atom + OAuth 2.0 |
-| Specification freely downloadable | **No** — the normative standard must be purchased from NAESB; only the derived OpenAPI and explanatory pages are free |
-| Consumer data API | No — GBA holds no customer data; it publishes the contract others implement |
-| Market data open | No — GBA publishes no grid or market data; Directory Services is HTML-only and forbids automated retrieval |
-| Access gate | `none-published` — there is no live GBA API to onboard to; the sandbox is out of service until 2026Q3 |
-| Auth model | OAuth 2.0 (authorization code + client credentials, RFC 7591/7592 dynamic client registration, TLS 1.3 under ESPI v4.0) for Green Button; separate OpenID Connect for association member SSO |
-| Home market | United States |
+**Kin Score 50.9** — developing · rubric 0.25.0 · scored 2026-10-23
 
-Full probe log, HTTP statuses and harvest provenance are in [review.yml](review.yml).
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 56.3 |
+| Contract governance | 33.3 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 54.2 |
+| Access clarity | 44.7 |
 
-## Maintainers
+**Agent readiness 41.2** — agent-ready (gated down from agent-native)
 
-- Kin Lane — kin@apievangelist.com
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 39.3** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/green-button-alliance/](https://apis.io/providers/green-button-alliance/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Green Button Alliance: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/green-button-alliance/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
